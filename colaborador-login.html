@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingreso · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body {
+    background: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar { background: rgba(0,0,0,0.4); }
+
+  .login-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .login-box {
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .login-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(44,110,115,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 24px;
+  }
+
+  .login-title {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--white);
+    opacity: 0.45;
+    text-align: center;
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  .field { margin-bottom: 20px; }
+
+  .field label { color: var(--white); opacity: 0.55; }
+
+  .field .input {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.15);
+    color: var(--white);
+  }
+
+  .field .input::placeholder { color: rgba(255,255,255,0.25); }
+  .field .input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(225,208,130,0.15); }
+
+  .field select.input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23EAE3CD' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+
+  .field select.input option { background: #2a2a25; color: var(--white); }
+
+  .btn-login {
+    width: 100%;
+    justify-content: center;
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 14px;
+    padding: 16px;
+    margin-top: 8px;
+  }
+  .btn-login:hover { background: #d4c36e; }
+
+  .error-msg {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(192,57,43,0.2);
+    border: 1px solid rgba(192,57,43,0.4);
+    border-radius: 8px;
+    color: #ffb3b3;
+    font-size: 13px;
+    display: none;
+  }
+
+  .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--white);
+    opacity: 0.35;
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .back-link:hover { opacity: 0.6; }
+
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,24,0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .loading-overlay.show { display: flex; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid rgba(225,208,130,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { color: var(--white); font-size: 13px; opacity: 0.6; }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Casa Yuma · Academia</a>
+  <span class="subtitle">La Marea</span>
+</nav>
+
+<div class="login-wrap">
+  <div class="login-box">
+    <div class="login-icon">🌊</div>
+    <h1 class="login-title">¡Bienvenido!</h1>
+    <p class="login-sub">Ingresa tus datos para acceder a tus módulos de capacitación.</p>
+
+    <div class="field">
+      <label>Tu nombre completo</label>
+      <input id="nombre" class="input" type="text" placeholder="Ej. María González López" autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label>Número de empleado</label>
+      <input id="numero" class="input" type="text" placeholder="Ej. 001" maxlength="10">
+    </div>
+
+    <div class="field">
+      <label>Departamento</label>
+      <select id="departamento" class="input">
+        <option value="">Selecciona tu departamento</option>
+        <option value="Recepción">Recepción</option>
+        <option value="Ama de Llaves">Ama de Llaves</option>
+        <option value="Alimentos & Bebidas">Alimentos &amp; Bebidas</option>
+        <option value="Mantenimiento">Mantenimiento</option>
+        <option value="Spa">Spa</option>
+        <option value="Administración">Administración</option>
+        <option value="Dirección">Dirección</option>
+      </select>
+    </div>
+
+    <button class="btn btn-login" onclick="ingresar()">Entrar →</button>
+
+    <div class="error-msg" id="errorMsg"></div>
+    <a href="index.html" class="back-link">← Volver al inicio</a>
+  </div>
+</div>
+
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <span class="loading-text">Cargando tu progreso…</span>
+</div>
+
+<script type="module">
+  import { registrarColaborador, setSession } from './firebase.js';
+
+  window.ingresar = async function() {
+    const nombre      = document.getElementById('nombre').value.trim();
+    const numero      = document.getElementById('numero').value.trim();
+    const departamento = document.getElementById('departamento').value;
+    const errorEl     = document.getElementById('errorMsg');
+
+    errorEl.style.display = 'none';
+
+    if (!nombre) return mostrarError('Por favor escribe tu nombre completo.');
+    if (!numero) return mostrarError('Por favor ingresa tu número de empleado.');
+    if (!departamento) return mostrarError('Por favor selecciona tu departamento.');
+
+    document.getElementById('loading').classList.add('show');
+
+    try {
+      const result = await registrarColaborador(nombre, numero, departamento);
+      setSession(result.id, nombre, departamento);
+      window.location.href = 'academia.html';
+    } catch(e) {
+      document.getElementById('loading').classList.remove('show');
+      mostrarError('Hubo un problema al conectar. Verifica tu internet e intenta de nuevo.');
+      console.error(e);
+    }
+  };
+
+  function mostrarError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.ingresar();
+  });
+</script>
+</body>
+</html>

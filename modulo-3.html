@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 3 · Código YUMA · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="academia.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">Módulo 3 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+
+const MODULO = {
+  key: 'm3',
+  numero: 3,
+  icono: '⚡',
+  titulo: 'El código YUMA',
+  color: '#E1D082',
+  siguiente: 'modulo-4.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'El código YUMA',
+      texto: 'Son 4 principios. No son un guión — son una actitud. Si los internalizas, sabrás cómo actuar en cualquier situación.',
+      imagen: '⚡'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Y — Ya estoy aquí',
+      items: [
+        { icono: '👁️', texto: '<strong>Presencia total.</strong> Cuando atiendes a un huésped, él es lo único que existe en ese momento.' },
+        { icono: '📵', texto: 'Sin distracciones. Sin mirar el celular. Sin responder a medias.' },
+        { icono: '🧘', texto: 'La presencia completa es <strong>la base de todo lo demás</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'U — Únete a su historia',
+      items: [
+        { icono: '💑', texto: 'Cada huésped trae algo propio: un aniversario, un viaje en solitario, una luna de miel.' },
+        { icono: '👂', texto: '<strong>Nota el contexto. Adapta el trato.</strong> El servicio personalizado no es un lujo — es escuchar bien.' },
+        { icono: '🎂', texto: 'Una pareja en aniversario, un viajero de trabajo y una familia tienen <strong>expectativas distintas</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'M — Mueve el problema',
+      items: [
+        { icono: '🚀', texto: 'Si algo no funciona, <strong>tú eres responsable de que se resuelva</strong> — no de encontrar a quién culpar.' },
+        { icono: '🔑', texto: 'La queja que recibes es tuya <strong>hasta que esté cerrada</strong>.' },
+        { icono: '⏱️', texto: 'Si prometiste resolver algo en 20 minutos, en 20 minutos regresas — con la solución o con una actualización honesta.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'A — Anticipa',
+      items: [
+        { icono: '🔮', texto: '<strong>No esperes que te pidan.</strong> La diferencia entre un buen servicio y uno excepcional está en lo que pasa antes.' },
+        { icono: '🏖️', texto: 'La toalla antes de que llegue al mar. El menú antes de que pregunte.' },
+        { icono: '🚕', texto: 'El taxi reservado la noche anterior. <strong>Piensa un paso adelante.</strong>' }
+      ]
+    },
+    {
+      tipo: 'cita',
+      texto: '"Cada huésped llega como visita y se va como parte de la historia del lugar."'
+    }
+  ],
+  preguntas: [
+    {
+      pregunta: 'La "Y" del código YUMA significa:',
+      opciones: ['Yo primero', 'Ya estoy aquí — Presencia total', 'Yo decido', 'Yelp y reseñas'],
+      correcta: 1
+    },
+    {
+      pregunta: '¿Qué significa "Únete a su historia"?',
+      opciones: [
+        'Contarle al huésped la historia del hotel',
+        'Notar el contexto del huésped y adaptar el trato',
+        'Pedirle al huésped que cuente su vida',
+        'Ser amable con todos por igual'
+      ],
+      correcta: 1
+    },
+    {
+      pregunta: 'Según el código YUMA, si un huésped tiene una queja:',
+      opciones: [
+        'Hay que buscar al responsable del problema',
+        'Quien la recibe es dueño de ella hasta que esté resuelta',
+        'Hay que avisar al gerente y esperar',
+        'Hay que anotar la queja para la reunión mensual'
+      ],
+      correcta: 1
+    },
+    {
+      pregunta: '"Anticipa" en el código YUMA quiere decir:',
+      opciones: [
+        'Estar listo 15 minutos antes del turno',
+        'Preparar el inventario con anticipación',
+        'Actuar antes de que el huésped tenga que pedir',
+        'Anticipar las temporadas altas'
+      ],
+      correcta: 2
+    },
+    {
+      pregunta: '¿Cuál de estas situaciones aplica mejor el principio de "Anticipa"?',
+      opciones: [
+        'Llevar la toalla al huésped antes de que llegue a la playa',
+        'Responder rápido cuando el huésped llama',
+        'Disculparse cuando algo sale mal',
+        'Preguntar si el huésped necesita algo'
+      ],
+      correcta: 0
+    }
+  ]
+};
+
+renderModulo(MODULO);
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 4 · Los espacios · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="academia.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">Módulo 4 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+
+const MODULO = {
+  key: 'm4',
+  numero: 4,
+  icono: '🏨',
+  titulo: 'Los espacios del hotel',
+  color: '#72785E',
+  siguiente: 'modulo-5.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'Conoce el hotel',
+      texto: 'Para hablar con propiedad del hotel frente a un huésped, primero tienes que conocerlo bien. Esto es tu casa.',
+      imagen: '🏨'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Las habitaciones — 25 en total',
+      items: [
+        { icono: '🌿', texto: '<strong>Garden King (6)</strong> — Rodeadas de vegetación. Ambiente íntimo y fresco para quienes buscan tranquilidad y naturaleza.' },
+        { icono: '⭐', texto: '<strong>Standard King (4)</strong> — El estándar completo de Casa Yuma. Diseño limpio y cuidado en cada detalle.' },
+        { icono: '🏙️', texto: '<strong>Yuma King Terrace (12)</strong> — Terrazas privadas con vista panorámica. Muy solicitadas al atardecer.' },
+        { icono: '🌊', texto: '<strong>Ocean King (3)</strong> — Vista directa al Pacífico. Las más premium. Alta demanda en temporada alta.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Qué tiene cada habitación?',
+      items: [
+        { icono: '🛏️', texto: '<strong>Cama king-size</strong> en todas las habitaciones.' },
+        { icono: '🚿', texto: '<strong>Ducha tipo lluvia estilo spa</strong>, con piedra local y flora endémica.' },
+        { icono: '🔒', texto: 'Cada habitación es un <strong>retiro privado</strong> con todas las comodidades modernas.' },
+        { icono: '🧑‍🤝‍🧑', texto: 'Solo para adultos — esto es parte de la propuesta del hotel.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Espacios del hotel',
+      items: [
+        { icono: '🍽️', texto: '<strong>Restaurante Casa Yuma</strong> — Al aire libre, de día y de noche. Capacidad: 70 banquete / 100 cóctel. Sabores locales de temporada.' },
+        { icono: '🔥', texto: '<strong>Fogata</strong> — Área lounge frente al mar. Noches alrededor del fuego con vista al Pacífico. Capacidad: 20 personas.' },
+        { icono: '🏖️', texto: '<strong>Playa Yuma</strong> — Espacio frente al mar para eventos. Capacidad: 100 personas.' },
+        { icono: '💻', texto: '<strong>Coworking</strong> — Ambiente natural para trabajar. Capacidad: 25 personas.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Experiencias que ofrecemos',
+      items: [
+        { icono: '🌅', texto: '<strong>Yuma Sunset Picnic</strong> — Montaje en playa al atardecer. Vino de la casa y fruta de temporada. 90 min.' },
+        { icono: '🕯️', texto: '<strong>Cena romántica</strong> — Mesa privada en playa, 4 tiempos, mesero exclusivo. 2 horas.' },
+        { icono: '💍', texto: '<strong>Pedida de mano</strong> — Montaje con arco de bambú, fotógrafo, bouquet. Coordinación completa.' },
+        { icono: '🎂', texto: '<strong>Cumpleaños</strong> — Espumoso, pastel pequeño y decoración con globos.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Los 7 departamentos',
+      items: [
+        { icono: '🏪', texto: '<strong>Recepción</strong> — Primera impresión, check-in/out, comunicación con huéspedes.' },
+        { icono: '🛏️', texto: '<strong>Ama de Llaves</strong> — Limpieza y preparación de habitaciones.' },
+        { icono: '🍳', texto: '<strong>Alimentos & Bebidas</strong> — Restaurante, bar, desayunos, experiencias.' },
+        { icono: '🔧', texto: '<strong>Mantenimiento</strong> — Operación técnica y prevención.' },
+        { icono: '💆', texto: '<strong>Spa</strong> — Tratamientos, reservas y day passes.' },
+        { icono: '📊', texto: '<strong>Administración</strong> — Finanzas, nómina y proveedores.' },
+        { icono: '🧭', texto: '<strong>Dirección</strong> — Estrategia, relaciones externas y Guest Experience.' }
+      ]
+    }
+  ],
+  preguntas: [
+    {
+      pregunta: '¿Cuántas habitaciones tiene Casa Yuma en total?',
+      opciones: ['20', '25', '30', '35'],
+      correcta: 1
+    },
+    {
+      pregunta: '¿Qué tipo de habitación tiene vista directa al Pacífico?',
+      opciones: ['Garden King', 'Standard King', 'Yuma King Terrace', 'Ocean King'],
+      correcta: 3
+    },
+    {
+      pregunta: 'El Restaurante Casa Yuma tiene capacidad de banquete para:',
+      opciones: ['50 personas', '70 personas', '100 personas', '120 personas'],
+      correcta: 1
+    },
+    {
+      pregunta: '¿Cuántos departamentos opera el hotel?',
+      opciones: ['5', '6', '7', '8'],
+      correcta: 2
+    },
+    {
+      pregunta: 'Las habitaciones de Casa Yuma son exclusivamente para:',
+      opciones: ['Familias con niños', 'Adultos', 'Grupos corporativos', 'Surfistas'],
+      correcta: 1
+    }
+  ]
+};
+
+renderModulo(MODULO);
+</script>
+</body>
+</html>

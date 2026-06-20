@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 6 · Protocolo al huésped · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="academia.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">Módulo 6 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+
+const MODULO = {
+  key: 'm6',
+  numero: 6,
+  icono: '🤝',
+  titulo: 'Protocolo al huésped',
+  color: '#E1D082',
+  siguiente: 'evaluacion-final.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'Protocolo al huésped',
+      texto: 'El check-in y el check-out son los momentos de mayor impacto. El primero fija el tono. El último determina el recuerdo.',
+      imagen: '🤝'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Check-in — Los 5 pasos',
+      items: [
+        { icono: '👋', texto: '<strong>1. Recibimiento</strong> — Saluda con el nombre del huésped si lo tienes. Él primero, los trámites después.' },
+        { icono: '🔍', texto: '<strong>2. Verificación</strong> — Confirma identidad y reserva en Cloudbeds. Actúa sobre preferencias especiales.' },
+        { icono: '🗺️', texto: '<strong>3. Orientación</strong> — Presenta el hotel brevemente: habitación, desayuno, restaurante, spa, horarios.' },
+        { icono: '🚶', texto: '<strong>4. Acompañamiento</strong> — Lleva al huésped a su habitación siempre que sea posible. No solo des indicaciones.' },
+        { icono: '😊', texto: '<strong>5. Cierre</strong> — "Estamos aquí para lo que necesiten. ¿Tienen alguna pregunta?"' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Durante la estadía',
+      items: [
+        { icono: '🗣️', texto: 'Usa el <strong>nombre del huésped</strong> en cada interacción. Un momento natural por interacción es suficiente.' },
+        { icono: '👀', texto: 'Si notas algo fuera de lugar, <strong>resuélvelo o repórtalo</strong> sin esperar a que el huésped lo diga.' },
+        { icono: '🧩', texto: 'Anticipa por contexto: <strong>pareja en aniversario, viajero solo, familia</strong> — cada uno tiene expectativas distintas.' },
+        { icono: '💾', texto: 'Cualquier preferencia o dato relevante se <strong>registra en Cloudbeds</strong> y se comunica al equipo.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Check-out — Los 5 pasos',
+      items: [
+        { icono: '🚗', texto: '<strong>1. Anticipación</strong> — El día anterior, confirma que el huésped tiene resuelto su transporte.' },
+        { icono: '🧾', texto: '<strong>2. Revisión de cuenta</strong> — Presenta el resumen con claridad. Beneficio de la duda siempre al huésped.' },
+        { icono: '💬', texto: '<strong>3. Cierre de experiencia</strong> — Pregunta cómo fue la estadía. Escucha de verdad.' },
+        { icono: '🤗', texto: '<strong>4. Despedida</strong> — "Fue un gusto recibirle. Esperamos verle pronto."' },
+        { icono: '📝', texto: '<strong>5. Seguimiento</strong> — Si mencionó algo mejorable, regístralo y comunícalo al líder.' }
+      ]
+    },
+    {
+      tipo: 'cita',
+      texto: '"La última impresión es tan importante como la primera. Un check-out mal manejado puede borrar cinco días de experiencia impecable."'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Cómo manejar una queja — 5 pasos',
+      items: [
+        { icono: '👂', texto: '<strong>1. Escucha</strong> — Reconoce el problema de inmediato. No minimices ni te defiendas. Escucha completo.' },
+        { icono: '🙏', texto: '<strong>2. Discúlpate</strong> — "Entiendo que eso no debió pasar. Lo lamento." No es admitir culpa — es reconocer su experiencia.' },
+        { icono: '🛠️', texto: '<strong>3. Ofrece opciones</strong> — Presenta dos soluciones cuando sea posible. El huésped debe sentir control.' },
+        { icono: '✅', texto: '<strong>4. Actúa</strong> — Confirma lo que vas a hacer y hazlo. Si prometiste 20 minutos, en 20 minutos regresas.' },
+        { icono: '🔄', texto: '<strong>5. Seguimiento</strong> — Después de resolver, verifica que el huésped quedó satisfecho.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Nuestros sistemas — qué hace cada uno',
+      items: [
+        { icono: '🖥️', texto: '<strong>Cloudbeds</strong> — Sistema de reservas (PMS). Información de huéspedes, ocupación y tarifas.' },
+        { icono: '🍽️', texto: '<strong>Poster</strong> — Punto de venta del restaurante y bar.' },
+        { icono: '💬', texto: '<strong>WhatsApp Business</strong> — Comunicación directa con huéspedes antes, durante y después.' },
+        { icono: '📱', texto: '<strong>Whistle</strong> — Mensajería integrada con Booking, Airbnb, Expedia y Priceline.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Cuándo escalar al líder',
+      items: [
+        { icono: '🔥', texto: 'El huésped está muy alterado y la situación está <strong>escalando</strong>.' },
+        { icono: '💰', texto: 'El problema requiere <strong>compensación económica</strong> o cambio de habitación.' },
+        { icono: '🔁', texto: 'La misma queja ya ocurrió antes con <strong>el mismo huésped</strong>.' },
+        { icono: '⚠️', texto: 'Hay un <strong>accidente o incidente de seguridad</strong> — siempre escala sin excepción.' }
+      ]
+    }
+  ],
+  preguntas: [
+    {
+      pregunta: 'En el check-in, ¿qué va primero: el huésped o los trámites?',
+      opciones: [
+        'Los trámites, para no cometer errores',
+        'El huésped siempre va primero',
+        'Depende del día y la ocupación',
+        'Los dos al mismo tiempo'
+      ],
+      correcta: 1
+    },
+    {
+      pregunta: 'Si un huésped tiene una queja, ¿quién es responsable de resolverla?',
+      opciones: [
+        'El gerente del turno',
+        'El departamento que causó el problema',
+        'Quien recibió la queja, hasta que esté resuelta',
+        'El líder de Recepción'
+      ],
+      correcta: 2
+    },
+    {
+      pregunta: '¿Cuál es el sistema que usamos para ver reservas y datos del huésped?',
+      opciones: ['Poster', 'Whistle', 'Cloudbeds', 'WhatsApp Business'],
+      correcta: 2
+    },
+    {
+      pregunta: 'Antes del check-out, ¿qué debes verificar el día anterior?',
+      opciones: [
+        'Que la habitación esté limpia',
+        'Que el huésped tenga resuelto su transporte',
+        'Que la cuenta esté impresa',
+        'Que haya dejado buena reseña'
+      ],
+      correcta: 1
+    },
+    {
+      pregunta: '¿Cuál de estas situaciones amerita escalar al líder inmediatamente?',
+      opciones: [
+        'El huésped pregunta por el menú',
+        'El huésped solicita toallas extra',
+        'Ocurre un accidente o incidente de seguridad',
+        'El huésped quiere salir tarde (late check-out)'
+      ],
+      correcta: 2
+    }
+  ]
+};
+
+renderModulo(MODULO);
+</script>
+</body>
+</html>

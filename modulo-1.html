@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 1 · Historia · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="academia.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">Módulo 1 de 6</span>
+</nav>
+
+<div id="app"></div>
+
+<script type="module">
+import { renderModulo } from './modulo.js';
+
+const MODULO = {
+  key: 'm1',
+  numero: 1,
+  icono: '🏠',
+  titulo: 'Historia y el nombre Yuma',
+  color: '#2C6E73',
+  siguiente: 'modulo-2.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: '¿Qué es Casa Yuma?',
+      texto: 'Antes de saber qué hacer, hay que saber dónde estás parado. Esto es tu historia — y la nuestra.',
+      imagen: '🌊'
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Qué significa "Yuma"?',
+      items: [
+        { icono: '🌎', texto: 'El nombre viene de la cultura nativa americana.' },
+        { icono: '👑', texto: 'Significa: <strong>Hijo del Líder</strong>.' },
+        { icono: '🤝', texto: 'No era un título de privilegio — era una responsabilidad de servir a su comunidad.' },
+        { icono: '🌿', texto: 'En el Pacífico mexicano, "yuma" también significa algo que viene de lejos, del norte.' }
+      ]
+    },
+    {
+      tipo: 'cita',
+      texto: '"Casa Yuma es la casa de los que pertenecen a este lugar. Eso incluye a nuestros huéspedes, a la comunidad de Puerto Escondido, y a cada persona del equipo."',
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Cómo nació el hotel?',
+      items: [
+        { icono: '📅', texto: 'Abrimos en <strong>marzo de 2024</strong> en Puerto Escondido, Oaxaca.' },
+        { icono: '🏗️', texto: 'Fundado por <strong>Tim de Belloy</strong>. Diseñado por Ricardo de La Concha y Sara Skalli.' },
+        { icono: '🏨', texto: 'Tenemos <strong>25 habitaciones</strong> en 4 categorías: Garden, Standard, Rooftop y Ocean.' },
+        { icono: '✨', texto: 'Somos intencionalmente pequeños. Cada huésped importa, cada detalle se nota.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'El reconocimiento Michelin',
+      items: [
+        { icono: '⭐', texto: 'En <strong>menos de un año</strong>, Casa Yuma fue reconocido por la <strong>Guía Michelin</strong>.' },
+        { icono: '🎯', texto: 'Michelin no evalúa lujo. Evalúa <strong>carácter, consistencia</strong> y experiencias memorables.' },
+        { icono: '👤', texto: 'Ese reconocimiento depende de <strong>cada persona del equipo, en cada turno, todos los días</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Por qué Puerto Escondido?',
+      items: [
+        { icono: '🏄', texto: 'Uno de los mejores breaks de surf del mundo.' },
+        { icono: '🌮', texto: 'Gastronomía que mezcla la cocina oaxaqueña con el Pacífico.' },
+        { icono: '🤝', texto: 'Nuestro equipo es en su mayoría <strong>de la región</strong>.' },
+        { icono: '💬', texto: 'Cuando un huésped pregunta qué hacer, la respuesta viene de alguien que lo vive — <strong>ese eres tú</strong>.' }
+      ]
+    }
+  ],
+  preguntas: [
+    {
+      pregunta: '¿Qué significa el nombre "Yuma"?',
+      opciones: ['Hijo del Líder', 'Mar del Pacífico', 'Casa del Sol', 'Tierra de Cactus'],
+      correcta: 0
+    },
+    {
+      pregunta: '¿En qué año abrió Casa Yuma?',
+      opciones: ['2022', '2023', '2024', '2025'],
+      correcta: 2
+    },
+    {
+      pregunta: '¿Cuántas habitaciones tiene Casa Yuma?',
+      opciones: ['15', '20', '25', '30'],
+      correcta: 2
+    },
+    {
+      pregunta: '¿Qué evalúa la Guía Michelin?',
+      opciones: ['El precio de las habitaciones', 'El tamaño del hotel', 'Carácter, consistencia y experiencias memorables', 'El número de restaurantes'],
+      correcta: 2
+    },
+    {
+      pregunta: '¿Quién es el socio fundador de Casa Yuma?',
+      opciones: ['Ricardo de La Concha', 'Tim de Belloy', 'Sara Skalli', 'Manu García'],
+      correcta: 1
+    }
+  ]
+};
+
+renderModulo(MODULO);
+</script>
+</body>
+</html>

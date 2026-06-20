@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Módulos · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: var(--light); }
+
+  .hero-strip {
+    background: var(--dark);
+    padding: 40px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-strip::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 40px;
+    background: var(--light);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .hero-wave {
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    background: repeating-linear-gradient(0deg, transparent, transparent 16px, var(--blue) 16px, var(--blue) 18px);
+  }
+  .greeting {
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-name {
+    font-size: clamp(22px, 4vw, 32px);
+    color: var(--white);
+    font-family: var(--font-mono);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 20px;
+  }
+
+  /* Progress ring */
+  .progress-ring-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 8px;
+  }
+  .progress-ring-wrap svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
+  .ring-fill {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease;
+  }
+  .ring-label {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    color: var(--white);
+    font-family: var(--font-mono);
+  }
+  .ring-sub { font-size: 11px; color: var(--white); opacity: 0.45; letter-spacing: 0.08em; }
+
+  /* Level badge */
+  .level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(225,208,130,0.12);
+    border: 1px solid rgba(225,208,130,0.25);
+    border-radius: 20px;
+    padding: 8px 18px;
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Main content */
+  .content { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .section-title {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+
+  /* Module cards */
+  .module-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+
+  .module-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-decoration: none;
+    color: var(--dark);
+    transition: all 0.2s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    border: 1.5px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-card:hover { box-shadow: 0 4px 20px rgba(44,110,115,0.12); border-color: var(--blue); transform: translateX(3px); }
+  .module-card.locked { opacity: 0.5; pointer-events: none; cursor: not-allowed; }
+  .module-card.done { border-color: #e8f5e9; }
+  .module-card.done::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #27ae60; border-radius: 14px 0 0 14px; }
+
+  .mod-icon {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .mod-icon.blue   { background: #e0f0f1; }
+  .mod-icon.gold   { background: #faf6dc; }
+  .mod-icon.green  { background: #e8ead5; }
+  .mod-icon.purple { background: #f5e0ec; }
+
+  .mod-info { flex: 1; }
+  .mod-num { font-size: 11px; color: var(--mid); opacity: 0.5; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .mod-title { font-size: 15px; color: var(--dark); margin-bottom: 4px; }
+  .mod-desc { font-size: 12px; color: var(--mid); opacity: 0.65; line-height: 1.4; }
+
+  .mod-status {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .mod-score {
+    font-size: 20px;
+    font-family: var(--font-mono);
+    color: var(--blue);
+  }
+  .mod-score.done { color: #27ae60; }
+  .mod-check { font-size: 20px; }
+
+  /* Final eval card */
+  .final-card {
+    background: var(--dark);
+    border-radius: 14px;
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    border: 1.5px solid rgba(225,208,130,0.2);
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(225,208,130,0.02) 10px, rgba(225,208,130,0.02) 20px);
+  }
+  .final-card.locked { opacity: 0.4; pointer-events: none; }
+  .final-card:hover:not(.locked) { border-color: var(--gold); box-shadow: 0 8px 30px rgba(225,208,130,0.15); }
+  .final-card .mod-icon { background: rgba(225,208,130,0.15); font-size: 28px; }
+  .final-card .mod-title { font-size: 16px; color: var(--white); }
+  .final-card .mod-desc { color: rgba(255,255,255,0.5); }
+  .final-card .mod-score { color: var(--gold); }
+  .final-card .lock-msg { font-size: 11px; color: var(--gold); opacity: 0.6; letter-spacing: 0.06em; }
+
+  /* Score summary */
+  .score-summary {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .score-item { text-align: center; }
+  .score-num { font-size: 28px; color: var(--blue); font-family: var(--font-mono); }
+  .score-label { font-size: 11px; color: var(--mid); opacity: 0.6; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .logout-btn {
+    display: block;
+    text-align: center;
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--mid);
+    opacity: 0.4;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+  .logout-btn:hover { opacity: 0.7; }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Casa Yuma · Academia</a>
+  <span class="subtitle" id="deptoBadge">La Marea</span>
+</nav>
+
+<div class="hero-strip">
+  <div class="hero-wave"></div>
+  <div class="greeting">Hola,</div>
+  <div class="hero-name" id="heroName">Cargando…</div>
+
+  <div class="progress-ring-wrap">
+    <div style="position:relative;width:100px;height:100px;">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle class="ring-bg" cx="50" cy="50" r="42"/>
+        <circle class="ring-fill" id="ringFill" cx="50" cy="50" r="42"
+          stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
+      </svg>
+      <div class="ring-label" id="ringPct">0%</div>
+    </div>
+    <div class="ring-sub">Completado</div>
+  </div>
+
+  <div class="level-badge" id="levelBadge">🐚 Ola Nueva</div>
+</div>
+
+<div class="content">
+
+  <!-- Score summary -->
+  <div class="score-summary mb-24" id="scoreSummary" style="display:none;">
+    <div class="section-title">Tu puntaje</div>
+    <div class="score-grid">
+      <div class="score-item">
+        <div class="score-num" id="scoreModulos">—</div>
+        <div class="score-label">Módulos</div>
+      </div>
+      <div class="score-item">
+        <div class="score-num" id="scoreFinal">—</div>
+        <div class="score-label">Evaluación Final</div>
+      </div>
+      <div class="score-item">
+        <div class="score-num" id="scoreTotal">—</div>
+        <div class="score-label">Puntaje Global</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modules -->
+  <div class="section-title">Módulos de aprendizaje</div>
+  <div class="module-list" id="moduleList">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Final evaluation -->
+  <div class="section-title">Evaluación final</div>
+  <a href="evaluacion-final.html" class="final-card locked" id="finalCard">
+    <div class="mod-icon" style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;background:rgba(225,208,130,0.15);">⭐</div>
+    <div class="mod-info">
+      <div class="mod-title">Evaluación Final</div>
+      <div class="mod-desc">Repaso completo de los 6 módulos · 20 preguntas</div>
+      <div class="lock-msg" id="lockMsg">🔒 Completa todos los módulos primero</div>
+    </div>
+    <div class="mod-status">
+      <div class="mod-score" id="finalScore">—</div>
+    </div>
+  </a>
+
+  <a href="index.html" class="logout-btn" onclick="cerrarSesion(event)">Cerrar sesión →</a>
+</div>
+
+<script type="module">
+  import { getColaborador, getSession, clearSession } from './firebase.js';
+
+  const MODULOS = [
+    { key:'m1', icon:'🏠', color:'blue',   titulo:'Historia y el nombre Yuma',       desc:'El origen, el significado, Puerto Escondido y el Michelin', url:'modulo-1.html' },
+    { key:'m2', icon:'🌊', color:'blue',   titulo:'La Marea — Nuestra identidad',     desc:'Quiénes somos, los valores CASA y nuestra paleta', url:'modulo-2.html' },
+    { key:'m3', icon:'⚡', color:'gold',   titulo:'El código YUMA',                  desc:'Los 4 principios de servicio que nos definen', url:'modulo-3.html' },
+    { key:'m4', icon:'🏨', color:'green',  titulo:'Los espacios del hotel',           desc:'Habitaciones, restaurante, spa, alberca y experiencias', url:'modulo-4.html' },
+    { key:'m5', icon:'✅', color:'purple', titulo:'Cómo nos comportamos',             desc:'Do\'s & don\'ts, apariencia y código de conducta', url:'modulo-5.html' },
+    { key:'m6', icon:'🤝', color:'gold',   titulo:'Protocolo al huésped',             desc:'Check-in, manejo de quejas, check-out y sistemas', url:'modulo-6.html' },
+  ];
+
+  function getLevel(pct) {
+    if (pct >= 100) return '⭐ La Marea';
+    if (pct >= 57)  return '🌊 Marea Activa';
+    return '🐚 Ola Nueva';
+  }
+
+  async function init() {
+    const session = getSession();
+    if (!session.id) { window.location.href = 'colaborador-login.html'; return; }
+
+    document.getElementById('heroName').textContent = session.nombre;
+    document.getElementById('deptoBadge').textContent = session.departamento;
+
+    let data = null;
+    try {
+      data = await getColaborador(session.id);
+    } catch(e) {
+      console.error(e);
+    }
+
+    const modulos = data?.modulos || {};
+    const evalFinal = data?.evaluacion_final || {};
+    const pctTotal  = data?.porcentaje_completado || 0;
+    const puntajeTotal = data?.puntaje_total || 0;
+
+    // Ring
+    const circumference = 263.9;
+    const offset = circumference - (pctTotal / 100) * circumference;
+    document.getElementById('ringFill').style.strokeDashoffset = offset;
+    document.getElementById('ringPct').textContent = pctTotal + '%';
+    document.getElementById('levelBadge').textContent = getLevel(pctTotal);
+
+    // Score summary
+    const completados = MODULOS.filter(m => modulos[m.key]?.completado).length;
+    if (completados > 0 || evalFinal.completado) {
+      document.getElementById('scoreSummary').style.display = 'block';
+
+      let sumaModulos = 0, countMod = 0;
+      MODULOS.forEach(m => {
+        if (modulos[m.key]?.completado) { sumaModulos += modulos[m.key].porcentaje || 0; countMod++; }
+      });
+      const promedioMod = countMod > 0 ? Math.round(sumaModulos / countMod) : 0;
+      document.getElementById('scoreModulos').textContent = countMod > 0 ? promedioMod + '%' : '—';
+      document.getElementById('scoreFinal').textContent   = evalFinal.completado ? (evalFinal.porcentaje + '%') : '—';
+      document.getElementById('scoreTotal').textContent   = puntajeTotal > 0 ? puntajeTotal + '%' : '—';
+    }
+
+    // Module list
+    const list = document.getElementById('moduleList');
+    list.innerHTML = '';
+    MODULOS.forEach((m, i) => {
+      const mod = modulos[m.key];
+      const done = mod?.completado;
+      // Each module unlocked after previous one done (except first)
+      const unlocked = i === 0 || modulos[MODULOS[i-1].key]?.completado;
+
+      const card = document.createElement('a');
+      card.href = unlocked ? m.url : '#';
+      card.className = `module-card ${done ? 'done' : ''} ${!unlocked ? 'locked' : ''}`;
+      card.innerHTML = `
+        <div class="mod-icon ${m.color}">${m.icon}</div>
+        <div class="mod-info">
+          <div class="mod-num">Módulo ${i+1} de 6</div>
+          <div class="mod-title">${m.titulo}</div>
+          <div class="mod-desc">${m.desc}</div>
+        </div>
+        <div class="mod-status">
+          ${done
+            ? `<div class="mod-score done">${mod.porcentaje}%</div><div class="mod-check">✅</div>`
+            : unlocked
+              ? `<div style="color:var(--blue);font-size:18px;">→</div>`
+              : `<div style="font-size:18px;opacity:0.4;">🔒</div>`
+          }
+        </div>
+      `;
+      list.appendChild(card);
+    });
+
+    // Final eval unlock
+    const allDone = MODULOS.every(m => modulos[m.key]?.completado);
+    const finalCard = document.getElementById('finalCard');
+    if (allDone) {
+      finalCard.classList.remove('locked');
+      document.getElementById('lockMsg').style.display = 'none';
+    }
+    if (evalFinal.completado) {
+      document.getElementById('finalScore').textContent = evalFinal.porcentaje + '%';
+    }
+  }
+
+  window.cerrarSesion = function(e) {
+    e.preventDefault();
+    clearSession();
+    window.location.href = 'index.html';
+  };
+
+  init();
+</script>
+</body>
+</html>

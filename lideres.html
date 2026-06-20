@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Líderes · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: var(--light); }
+
+  /* ── PIN screen ── */
+  .pin-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dark);
+    padding: 20px;
+  }
+  .pin-box {
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .pin-icon { font-size: 48px; margin-bottom: 20px; display: block; }
+  .pin-title { font-size: 22px; color: var(--white); font-family: var(--font-mono); margin-bottom: 8px; }
+  .pin-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
+  .pin-input {
+    width: 100%;
+    padding: 18px;
+    font-size: 28px;
+    letter-spacing: 0.4em;
+    text-align: center;
+    border-radius: 12px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    color: var(--white);
+    font-family: var(--font-mono);
+    margin-bottom: 16px;
+  }
+  .pin-input:focus { outline: none; border-color: var(--gold); }
+  .pin-btn {
+    width: 100%;
+    justify-content: center;
+    background: var(--gold);
+    color: var(--dark);
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  /* ── Dashboard ── */
+  #dashboard { display: none; }
+
+  .dash-header {
+    background: var(--dark);
+    padding: 28px 24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dash-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 32px;
+    background: var(--light);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .dash-header-wave {
+    position: absolute; inset: 0; opacity: 0.04;
+    background: repeating-linear-gradient(0deg, transparent, transparent 16px, var(--blue) 16px, var(--blue) 18px);
+  }
+  .dash-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .dash-title { font-size: 28px; color: var(--white); font-family: var(--font-mono); margin-bottom: 4px; }
+  .dash-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
+
+  /* KPI cards */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .kpi-num { font-size: 32px; font-family: var(--font-mono); color: var(--gold); }
+  .kpi-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+
+  /* Content */
+  .content { max-width: 960px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  .filter-select {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #e0dcd0;
+    background: white;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--dark);
+    cursor: pointer;
+  }
+  .filter-select:focus { outline: none; border-color: var(--blue); }
+  .search-input {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1.5px solid #e0dcd0;
+    background: white;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--dark);
+    flex: 1;
+    min-width: 200px;
+  }
+  .search-input:focus { outline: none; border-color: var(--blue); }
+
+  /* Table */
+  .table-wrap {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 800px; }
+  thead { background: var(--dark); }
+  thead th {
+    padding: 14px 16px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-align: left;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-weight: normal;
+  }
+  thead th:first-child { color: var(--gold); }
+  tbody tr { border-bottom: 1px solid #f0ece0; transition: background 0.15s; }
+  tbody tr:hover { background: #faf8f2; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 14px 16px; font-size: 13px; vertical-align: middle; }
+
+  .col-name { font-weight: 500; color: var(--dark); }
+  .col-num { font-family: var(--font-mono); font-size: 12px; color: var(--mid); opacity: 0.6; }
+  .col-depto .badge { font-size: 10px; }
+
+  /* Module dots */
+  .mod-dots { display: flex; gap: 5px; }
+  .mod-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-family: var(--font-mono);
+    border: 1.5px solid #e0dcd0;
+    color: #bbb;
+  }
+  .mod-dot.done-high { background: #e8f5e9; border-color: #27ae60; color: #27ae60; }
+  .mod-dot.done-mid  { background: #faf6dc; border-color: #e67e22; color: #e67e22; }
+  .mod-dot.done-low  { background: #fde8e8; border-color: #c0392b; color: #c0392b; }
+
+  .col-pct-bar { width: 80px; }
+  .mini-bar { height: 6px; background: #ede9db; border-radius: 3px; overflow: hidden; margin-top: 4px; }
+  .mini-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+
+  .col-score-chip {
+    display: inline-flex; align-items: center;
+    padding: 4px 10px; border-radius: 12px;
+    font-size: 12px; font-family: var(--font-mono);
+  }
+  .col-final-done { font-size: 18px; }
+
+  /* Detail modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,26,24,0.7); z-index: 100;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: white; border-radius: 20px;
+    width: 100%; max-width: 560px;
+    max-height: 85vh; overflow-y: auto;
+    padding: 32px;
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+  .modal-close { cursor: pointer; font-size: 22px; opacity: 0.4; background: none; border: none; color: var(--dark); }
+  .modal-name { font-size: 20px; font-family: var(--font-mono); }
+  .modal-meta { font-size: 12px; color: var(--mid); opacity: 0.6; margin-top: 2px; }
+
+  .mod-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid #f0ece0;
+  }
+  .mod-row:last-child { border-bottom: none; }
+  .mod-row-icon { font-size: 20px; width: 32px; text-align: center; }
+  .mod-row-info { flex: 1; }
+  .mod-row-name { font-size: 13px; color: var(--dark); }
+  .mod-row-detail { font-size: 11px; color: var(--mid); opacity: 0.6; margin-top: 2px; }
+  .mod-row-score { font-size: 16px; font-family: var(--font-mono); }
+  .mod-row-score.high { color: #27ae60; }
+  .mod-row-score.mid  { color: #e67e22; }
+  .mod-row-score.low  { color: #c0392b; }
+  .mod-row-score.pending { color: #bbb; }
+
+  /* Export */
+  .export-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    background: white;
+    border: 1.5px solid #e0dcd0;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--dark);
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+  .export-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+  .loading-msg { text-align: center; padding: 60px 20px; color: var(--mid); opacity: 0.5; font-size: 14px; }
+
+  @media (max-width: 640px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .dash-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PIN Screen -->
+<div class="pin-screen" id="pinScreen">
+  <div class="pin-box">
+    <span class="pin-icon">🧭</span>
+    <div class="pin-title">Portal Líderes</div>
+    <p class="pin-sub">Ingresa el PIN para acceder al dashboard de seguimiento.</p>
+    <input type="password" class="pin-input" id="pinInput" placeholder="····" maxlength="6"
+      onkeydown="if(event.key==='Enter') verificarPin()">
+    <button class="btn pin-btn" onclick="verificarPin()">Ingresar →</button>
+    <div id="pinError" style="color:#ffb3b3;font-size:13px;margin-top:12px;display:none;">PIN incorrecto. Inténtalo de nuevo.</div>
+    <a href="index.html" style="display:block;margin-top:20px;font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;text-align:center;">← Volver</a>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard">
+  <nav class="topbar">
+    <a href="index.html" class="logo">Casa Yuma · Academia</a>
+    <span class="subtitle">Panel de Líderes</span>
+  </nav>
+
+  <div class="dash-header">
+    <div class="dash-header-wave"></div>
+    <div class="dash-inner">
+      <div class="dash-title">Dashboard de capacitación</div>
+      <div class="dash-sub" id="lastUpdate">Cargando datos…</div>
+      <div class="kpi-row" id="kpiRow">
+        <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-label">Colaboradores</div></div>
+        <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-label">Completaron todo</div></div>
+        <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-label">Promedio global</div></div>
+        <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-label">Evaluación final</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Resources section -->
+    <div style="margin-bottom:32px;">
+      <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);opacity:0.6;margin-bottom:14px;">
+        Recursos de capacitación
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+        <a href="#" class="export-btn" style="flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px;">
+          <span style="font-size:20px;">📄</span>
+          <span style="font-size:13px;">Manual del Colaborador</span>
+          <span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
+        </a>
+        <a href="#" class="export-btn" style="flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px;">
+          <span style="font-size:20px;">📋</span>
+          <span style="font-size:13px;">Guías de onboarding</span>
+          <span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
+        </a>
+        <a href="#" class="export-btn" style="flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px;">
+          <span style="font-size:20px;">✅</span>
+          <span style="font-size:13px;">Checklists de evaluación</span>
+          <span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
+        </a>
+        <a href="#" class="export-btn" style="flex-direction:column;align-items:flex-start;gap:4px;padding:16px 18px;">
+          <span style="font-size:20px;">📊</span>
+          <span style="font-size:13px;">Presentaciones</span>
+          <span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Table header -->
+    <div class="filters">
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar colaborador…" oninput="filtrar()">
+      <select class="filter-select" id="deptoFilter" onchange="filtrar()">
+        <option value="">Todos los departamentos</option>
+        <option>Recepción</option>
+        <option>Ama de Llaves</option>
+        <option>Alimentos & Bebidas</option>
+        <option>Mantenimiento</option>
+        <option>Spa</option>
+        <option>Administración</option>
+        <option>Dirección</option>
+      </select>
+      <select class="filter-select" id="statusFilter" onchange="filtrar()">
+        <option value="">Todos los estados</option>
+        <option value="completo">Completaron todo</option>
+        <option value="en-progreso">En progreso</option>
+        <option value="sin-iniciar">Sin iniciar</option>
+      </select>
+      <button class="export-btn" onclick="exportarCSV()">📥 Exportar CSV</button>
+    </div>
+
+    <div class="table-wrap" id="tableWrap">
+      <div class="loading-msg">Cargando colaboradores…</div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="cerrarModal(event)">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script type="module">
+import { getTodosColaboradores } from './firebase.js';
+
+const PIN_CORRECTO = '2024'; // ← Cambia este PIN
+let TODOS = [];
+let FILTRADOS = [];
+
+const MODULOS_INFO = [
+  { key:'m1', icon:'🏠', nombre:'Historia' },
+  { key:'m2', icon:'🌊', nombre:'La Marea' },
+  { key:'m3', icon:'⚡', nombre:'Código YUMA' },
+  { key:'m4', icon:'🏨', nombre:'Espacios' },
+  { key:'m5', icon:'✅', nombre:'Conducta' },
+  { key:'m6', icon:'🤝', nombre:'Protocolo' },
+];
+
+// ── PIN ──
+window.verificarPin = function() {
+  const pin = document.getElementById('pinInput').value;
+  if (pin === PIN_CORRECTO) {
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    cargarDatos();
+  } else {
+    document.getElementById('pinError').style.display = 'block';
+    document.getElementById('pinInput').value = '';
+  }
+};
+
+// ── DATA ──
+async function cargarDatos() {
+  try {
+    TODOS = await getTodosColaboradores();
+    TODOS.sort((a,b) => (b.porcentaje_completado||0) - (a.porcentaje_completado||0));
+    FILTRADOS = [...TODOS];
+    renderKPIs();
+    renderTabla();
+    document.getElementById('lastUpdate').textContent = `Última actualización: ${new Date().toLocaleString('es-MX')}`;
+  } catch(e) {
+    document.getElementById('tableWrap').innerHTML = `<div class="loading-msg">Error al cargar datos. Verifica la conexión con Firebase.</div>`;
+    console.error(e);
+  }
+}
+
+function renderKPIs() {
+  const total = TODOS.length;
+  const completos = TODOS.filter(c => c.porcentaje_completado >= 100).length;
+  const promedio = total > 0 ? Math.round(TODOS.reduce((s,c) => s + (c.puntaje_total||0), 0) / total) : 0;
+  const conFinal = TODOS.filter(c => c.evaluacion_final?.completado).length;
+
+  document.getElementById('kpiRow').innerHTML = `
+    <div class="kpi-card"><div class="kpi-num">${total}</div><div class="kpi-label">Colaboradores</div></div>
+    <div class="kpi-card"><div class="kpi-num">${completos}</div><div class="kpi-label">Completaron todo</div></div>
+    <div class="kpi-card"><div class="kpi-num">${promedio}%</div><div class="kpi-label">Promedio global</div></div>
+    <div class="kpi-card"><div class="kpi-num">${conFinal}</div><div class="kpi-label">Eval. final hecha</div></div>
+  `;
+}
+
+function renderTabla() {
+  if (FILTRADOS.length === 0) {
+    document.getElementById('tableWrap').innerHTML = `<div class="loading-msg">No hay colaboradores que coincidan con los filtros.</div>`;
+    return;
+  }
+
+  const rows = FILTRADOS.map(c => {
+    const mods = c.modulos || {};
+    const evalFinal = c.evaluacion_final || {};
+    const pct = c.porcentaje_completado || 0;
+    const puntaje = c.puntaje_total || 0;
+
+    const dotClass = (p) => p >= 80 ? 'done-high' : p >= 60 ? 'done-mid' : 'done-low';
+
+    const dotsHtml = MODULOS_INFO.map(m => {
+      const mod = mods[m.key];
+      if (!mod?.completado) return `<div class="mod-dot" title="${m.nombre}">·</div>`;
+      const cls = dotClass(mod.porcentaje||0);
+      return `<div class="mod-dot ${cls}" title="${m.nombre}: ${mod.porcentaje}%">${mod.porcentaje}%</div>`;
+    }).join('');
+
+    const puntajeClass = puntaje >= 80 ? 'score-high' : puntaje >= 60 ? 'score-mid' : 'score-low';
+    const deptoColor = {
+      'Recepción':'blue','Ama de Llaves':'gold','Alimentos & Bebidas':'gold',
+      'Mantenimiento':'green','Spa':'purple','Administración':'blue','Dirección':'purple'
+    }[c.departamento] || 'blue';
+
+    const barColor = pct >= 80 ? '#27ae60' : pct >= 50 ? '#e67e22' : '#c0392b';
+
+    return `
+      <tr onclick="verDetalle('${c.id}')" style="cursor:pointer;">
+        <td>
+          <div class="col-name">${c.nombre}</div>
+          <div class="col-num">#${c.numero_empleado || '—'}</div>
+        </td>
+        <td class="col-depto"><span class="badge badge-${deptoColor}">${c.departamento}</span></td>
+        <td>
+          <div class="mod-dots">${dotsHtml}</div>
+        </td>
+        <td class="col-final-done">
+          ${evalFinal.completado ? `<span title="${evalFinal.porcentaje}%">✅ ${evalFinal.porcentaje}%</span>` : '<span style="opacity:0.3;">—</span>'}
+        </td>
+        <td>
+          <div style="font-size:11px;color:var(--mid);opacity:0.7;">${pct}%</div>
+          <div class="mini-bar"><div class="mini-fill" style="width:${pct}%;background:${barColor};"></div></div>
+        </td>
+        <td>
+          <span class="col-score-chip score-${puntaje >= 80 ? 'high' : puntaje >= 60 ? 'mid' : 'low'}">
+            ${puntaje > 0 ? puntaje + '%' : '—'}
+          </span>
+        </td>
+        <td style="font-size:11px;color:var(--mid);opacity:0.5;">
+          ${c.fecha_inicio ? new Date(c.fecha_inicio.seconds ? c.fecha_inicio.seconds*1000 : c.fecha_inicio).toLocaleDateString('es-MX') : '—'}
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  document.getElementById('tableWrap').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Colaborador</th>
+          <th>Departamento</th>
+          <th>M1 · M2 · M3 · M4 · M5 · M6</th>
+          <th>Eval. Final</th>
+          <th>% Completado</th>
+          <th>Puntaje Global</th>
+          <th>Inicio</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+// ── FILTERS ──
+window.filtrar = function() {
+  const busqueda = document.getElementById('searchInput').value.toLowerCase();
+  const depto    = document.getElementById('deptoFilter').value;
+  const status   = document.getElementById('statusFilter').value;
+
+  FILTRADOS = TODOS.filter(c => {
+    const matchNombre = c.nombre?.toLowerCase().includes(busqueda) || c.numero_empleado?.includes(busqueda);
+    const matchDepto  = !depto || c.departamento === depto;
+    const pct = c.porcentaje_completado || 0;
+    const matchStatus = !status ||
+      (status === 'completo'    && pct >= 100) ||
+      (status === 'en-progreso' && pct > 0 && pct < 100) ||
+      (status === 'sin-iniciar' && pct === 0);
+
+    return matchNombre && matchDepto && matchStatus;
+  });
+
+  renderTabla();
+};
+
+// ── DETAIL MODAL ──
+window.verDetalle = function(id) {
+  const c = TODOS.find(x => x.id === id);
+  if (!c) return;
+
+  const mods = c.modulos || {};
+  const evalFinal = c.evaluacion_final || {};
+
+  const modRows = MODULOS_INFO.map(m => {
+    const mod = mods[m.key];
+    const done = mod?.completado;
+    const pct  = mod?.porcentaje || 0;
+    const cls  = !done ? 'pending' : pct >= 80 ? 'high' : pct >= 60 ? 'mid' : 'low';
+    const fecha = done && mod.fecha ? new Date(mod.fecha).toLocaleDateString('es-MX') : null;
+
+    return `
+      <div class="mod-row">
+        <div class="mod-row-icon">${m.icon}</div>
+        <div class="mod-row-info">
+          <div class="mod-row-name">${m.nombre}</div>
+          <div class="mod-row-detail">
+            ${done ? `${mod.total_preguntas||5} preguntas · ${mod.intentos||1} intento${(mod.intentos||1)>1?'s':''}${fecha?' · '+fecha:''}` : 'Sin completar'}
+          </div>
+        </div>
+        <div class="mod-row-score ${cls}">${done ? pct+'%' : '—'}</div>
+      </div>
+    `;
+  }).join('');
+
+  const evalRow = `
+    <div class="mod-row" style="background:#faf8f2;border-radius:8px;padding:12px 10px;margin-top:4px;">
+      <div class="mod-row-icon">⭐</div>
+      <div class="mod-row-info">
+        <div class="mod-row-name">Evaluación Final</div>
+        <div class="mod-row-detail">
+          ${evalFinal.completado
+            ? `${evalFinal.total_preguntas||20} preguntas · ${evalFinal.fecha ? new Date(evalFinal.fecha).toLocaleDateString('es-MX') : ''}`
+            : 'Sin completar'}
+        </div>
+      </div>
+      <div class="mod-row-score ${!evalFinal.completado ? 'pending' : evalFinal.porcentaje>=80?'high':evalFinal.porcentaje>=60?'mid':'low'}">
+        ${evalFinal.completado ? (evalFinal.porcentaje+'%') : '—'}
+      </div>
+    </div>
+  `;
+
+  const puntaje = c.puntaje_total || 0;
+
+  document.getElementById('modal').innerHTML = `
+    <div class="modal-header">
+      <div>
+        <div class="modal-name">${c.nombre}</div>
+        <div class="modal-meta">#${c.numero_empleado||'—'} · ${c.departamento} · Inicio: ${c.fecha_inicio ? new Date(c.fecha_inicio.seconds?c.fecha_inicio.seconds*1000:c.fecha_inicio).toLocaleDateString('es-MX') : '—'}</div>
+      </div>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+
+    <!-- Score summary -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;">
+      <div style="text-align:center;background:var(--light);border-radius:10px;padding:14px 8px;">
+        <div style="font-size:24px;font-family:var(--font-mono);color:var(--blue);">${c.porcentaje_completado||0}%</div>
+        <div style="font-size:10px;color:var(--mid);opacity:0.6;text-transform:uppercase;letter-spacing:0.06em;">Completado</div>
+      </div>
+      <div style="text-align:center;background:var(--light);border-radius:10px;padding:14px 8px;">
+        <div style="font-size:24px;font-family:var(--font-mono);color:${puntaje>=80?'#27ae60':puntaje>=60?'#e67e22':'#c0392b'};">${puntaje||'—'}%</div>
+        <div style="font-size:10px;color:var(--mid);opacity:0.6;text-transform:uppercase;letter-spacing:0.06em;">Puntaje global</div>
+      </div>
+      <div style="text-align:center;background:var(--light);border-radius:10px;padding:14px 8px;">
+        <div style="font-size:24px;font-family:var(--font-mono);color:var(--blue);">${evalFinal.completado?'✅':'—'}</div>
+        <div style="font-size:10px;color:var(--mid);opacity:0.6;text-transform:uppercase;letter-spacing:0.06em;">Eval. final</div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mid);opacity:0.6;margin-bottom:8px;">Detalle por módulo</div>
+    ${modRows}
+    ${evalRow}
+  `;
+
+  document.getElementById('modalOverlay').classList.add('show');
+};
+
+window.cerrarModal = function(e) {
+  if (!e || e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('show');
+  }
+};
+
+// ── EXPORT CSV ──
+window.exportarCSV = function() {
+  const headers = ['Nombre','#Empleado','Departamento','M1%','M2%','M3%','M4%','M5%','M6%','Eval.Final%','% Completado','Puntaje Global','Fecha Inicio'];
+  const rows = FILTRADOS.map(c => {
+    const mods = c.modulos || {};
+    const ef = c.evaluacion_final || {};
+    return [
+      c.nombre,
+      c.numero_empleado || '',
+      c.departamento,
+      ...MODULOS_INFO.map(m => mods[m.key]?.porcentaje ?? ''),
+      ef.porcentaje ?? '',
+      c.porcentaje_completado || 0,
+      c.puntaje_total || 0,
+      c.fecha_inicio ? new Date(c.fecha_inicio.seconds ? c.fecha_inicio.seconds*1000 : c.fecha_inicio).toLocaleDateString('es-MX') : ''
+    ].join(',');
+  });
+
+  const csv  = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `academia-casayuma-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+};
+</script>
+</body>
+</html>

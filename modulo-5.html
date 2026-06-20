@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Módulo 5 · Conducta · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="academia.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">Módulo 5 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+
+const MODULO = {
+  key: 'm5',
+  numero: 5,
+  icono: '✅',
+  titulo: 'Cómo nos comportamos',
+  color: '#88285C',
+  siguiente: 'modulo-6.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'Do\'s & Don\'ts',
+      texto: 'La cultura no es un concepto teórico. Es cómo te comportas cuando nadie está mirando.',
+      imagen: '✅'
+    },
+    {
+      tipo: 'dato',
+      titulo: '✅ Lo que SÍ hacemos',
+      items: [
+        { icono: '🤝', texto: 'Ser un <strong>embajador honesto</strong> del hotel y de Puerto Escondido.' },
+        { icono: '💬', texto: 'Comunicarte con claridad, con huéspedes y con tu equipo.' },
+        { icono: '🔍', texto: 'Reconocer cuando algo no salió bien y <strong>buscar la solución</strong>, no la excusa.' },
+        { icono: '🏠', texto: 'Cuidar las instalaciones <strong>como si fueran tuyas</strong>.' },
+        { icono: '📚', texto: 'Dar oportunidad a otros de aprender, así como tú también aprendes.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: '🚫 Lo que NO hacemos',
+      items: [
+        { icono: '❌', texto: '<strong>Ignorar una queja</strong> o pasarle el problema a otro.' },
+        { icono: '❌', texto: '<strong>Faltar al respeto</strong> a un compañero o a un huésped — en ninguna circunstancia.' },
+        { icono: '❌', texto: 'Comprometer la <strong>confidencialidad</strong> de los huéspedes o del hotel.' },
+        { icono: '❌', texto: 'Usar el nombre del hotel o sus recursos <strong>para beneficio personal</strong>.' },
+        { icono: '❌', texto: 'Publicar información interna o fotos de huéspedes en <strong>redes sociales sin permiso</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Presentación personal',
+      items: [
+        { icono: '👕', texto: '<strong>Uniforme</strong>: Limpio, planchado, completo. Solo dentro del hotel.' },
+        { icono: '💇', texto: '<strong>Cabello</strong>: Limpio y ordenado. Si es largo, recogido durante el servicio.' },
+        { icono: '🧼', texto: '<strong>Higiene</strong>: Desodorante siempre. Perfume discreto. Aliento fresco. Uñas cortas y limpias.' },
+        { icono: '👟', texto: '<strong>Calzado</strong>: Limpio, seguro y cómodo para toda la jornada.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Uso del celular',
+      items: [
+        { icono: '📵', texto: 'El teléfono personal <strong>durante el servicio activo no está permitido</strong>.' },
+        { icono: '🔕', texto: 'Debe estar <strong>guardado y en silencio</strong> durante el turno.' },
+        { icono: '📞', texto: 'Para llamadas urgentes personales, <strong>solicítalo a tu líder</strong> — puede facilitarte el teléfono del hotel.' },
+        { icono: '⚠️', texto: 'Quien necesite el celular por su rol debe tener <strong>autorización explícita</strong> de su líder de departamento.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Puntualidad y ausencias',
+      items: [
+        { icono: '⏰', texto: 'Presentarse <strong>15 minutos antes</strong> del inicio del turno es la norma, no la excepción.' },
+        { icono: '🤒', texto: 'Si te enfermas, avisa a tu <strong>líder directamente</strong> — no al grupo de WhatsApp.' },
+        { icono: '📅', texto: 'Los permisos personales se solicitan <strong>con anticipación</strong>.' },
+        { icono: '🆘', texto: 'En emergencias familiares: avisa de inmediato. <strong>Primero la persona, después el proceso.</strong>' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Redes sociales',
+      items: [
+        { icono: '✅', texto: '<strong>SÍ puedes</strong>: Compartir fotos generales del hotel o Puerto Escondido que no muestren huéspedes.' },
+        { icono: '✅', texto: '<strong>SÍ puedes</strong>: Mencionar con orgullo que trabajas en Casa Yuma.' },
+        { icono: '❌', texto: '<strong>NO puedes</strong>: Fotografiar o compartir imágenes de huéspedes sin su consentimiento.' },
+        { icono: '💡', texto: '¿No estás seguro? Pregúntate: ¿<strong>le daría pena al hotel o incomodaría a un huésped</strong>? Si la respuesta es sí, no lo publiques.' }
+      ]
+    }
+  ],
+  preguntas: [
+    {
+      pregunta: '¿Cuántos minutos antes del turno debes presentarte?',
+      opciones: ['5 minutos', '10 minutos', '15 minutos', '30 minutos'],
+      correcta: 2
+    },
+    {
+      pregunta: 'Si te enfermas y no puedes ir a trabajar, ¿qué debes hacer?',
+      opciones: [
+        'Avisar al grupo de WhatsApp del departamento',
+        'Avisar directamente a tu líder antes de que empiece tu turno',
+        'Mandar un mensaje a Recepción',
+        'Aparecer y avisar al llegar'
+      ],
+      correcta: 1
+    },
+    {
+      pregunta: '¿El uso del celular personal está permitido durante el servicio activo?',
+      opciones: [
+        'Sí, siempre que sea en silencio',
+        'Sí, en los tiempos muertos',
+        'No, debe estar guardado y en silencio',
+        'Sí, para temas de trabajo'
+      ],
+      correcta: 2
+    },
+    {
+      pregunta: '¿Puedes publicar en redes sociales una foto de un huésped en la alberca?',
+      opciones: [
+        'Sí, si la foto se ve bonita',
+        'Sí, si no aparece su cara',
+        'No, sin su consentimiento explícito',
+        'Sí, si el huésped parece contento'
+      ],
+      correcta: 2
+    },
+    {
+      pregunta: '¿Cuál de estas conductas SÍ es parte de la cultura de Casa Yuma?',
+      opciones: [
+        'Pasar una queja a otro compañero si no es de tu área',
+        'Cuidar las instalaciones como si fueran tuyas',
+        'Opinar sobre el hotel en redes sociales sin restricciones',
+        'Usar el teléfono del hotel para llamadas personales sin permiso'
+      ],
+      correcta: 1
+    }
+  ]
+};
+
+renderModulo(MODULO);
+</script>
+</body>
+</html>

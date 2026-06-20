@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body {
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ocean wave background */
+  .ocean-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 18px,
+      var(--blue) 18px,
+      var(--blue) 20px
+    );
+  }
+
+  .logo-mark {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-family: var(--font-mono);
+    font-size: clamp(32px, 6vw, 56px);
+    color: var(--white);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .hero-title span {
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--white);
+    opacity: 0.5;
+    letter-spacing: 0.06em;
+    margin-bottom: 52px;
+  }
+
+  /* Role cards */
+  .role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 580px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .role-card {
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 32px 24px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .role-card:hover {
+    background: rgba(255,255,255,0.09);
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(225,208,130,0.15);
+  }
+
+  .role-card .icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  .role-card.lider .icon   { background: rgba(44,110,115,0.3); }
+  .role-card.equipo .icon  { background: rgba(225,208,130,0.2); }
+
+  .role-card .role-name {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    color: var(--white);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .role-card .role-desc {
+    font-size: 12px;
+    color: var(--white);
+    opacity: 0.45;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* La Marea badge */
+  .marea-badge {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.35;
+    position: relative;
+    z-index: 1;
+  }
+
+  .marea-badge .line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .marea-badge span {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 480px) {
+    .role-grid { grid-template-columns: 1fr; max-width: 320px; }
+    .hero-title { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="ocean-bg"></div>
+
+  <div class="logo-mark">Casa Yuma · Puerto Escondido</div>
+
+  <h1 class="hero-title">
+    Academia<br><span>La Marea</span>
+  </h1>
+  <p class="hero-sub">Plataforma de capacitación interna</p>
+
+  <div class="role-grid">
+    <a href="lideres.html" class="role-card lider">
+      <div class="icon">🧭</div>
+      <div class="role-name">Líder</div>
+      <div class="role-desc">Recursos de capacitación y seguimiento del equipo</div>
+    </a>
+
+    <a href="colaborador-login.html" class="role-card equipo">
+      <div class="icon">🌊</div>
+      <div class="role-name">La Marea</div>
+      <div class="role-desc">Módulos de aprendizaje y certificación</div>
+    </a>
+  </div>
+
+  <div class="marea-badge">
+    <div class="line"></div>
+    <span>La Marea · Spirit of Oaxaca</span>
+    <div class="line"></div>
+  </div>
+</div>
+</body>
+</html>

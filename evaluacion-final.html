@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación Final · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+<style>
+  .eval-intro {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 20px 100px;
+    text-align: center;
+  }
+  .eval-icon { font-size: 64px; margin-bottom: 24px; display: block; }
+  .eval-title { font-size: 28px; font-family: var(--font-mono); margin-bottom: 12px; }
+  .eval-desc { font-size: 15px; color: var(--mid); line-height: 1.7; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .eval-stats {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 32px;
+  }
+  .eval-stat {
+    background: white; border-radius: 12px; padding: 18px 12px;
+    border: 1px solid #ede9db;
+  }
+  .eval-stat-num { font-size: 28px; font-family: var(--font-mono); color: var(--blue); }
+  .eval-stat-label { font-size: 11px; color: var(--mid); opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Certificate */
+  .certificate {
+    background: var(--dark);
+    border-radius: 20px;
+    padding: 48px 32px;
+    text-align: center;
+    border: 2px solid rgba(225,208,130,0.3);
+    position: relative;
+    overflow: hidden;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .certificate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(225,208,130,0.015) 20px, rgba(225,208,130,0.015) 40px);
+  }
+  .cert-label { font-size: 11px; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; opacity: 0.7; }
+  .cert-title { font-size: 28px; color: var(--white); font-family: var(--font-mono); margin-bottom: 8px; }
+  .cert-name { font-size: 22px; color: var(--gold); margin: 16px 0; }
+  .cert-score { font-size: 56px; color: var(--white); font-family: var(--font-mono); }
+  .cert-score-label { font-size: 13px; color: var(--white); opacity: 0.5; margin-bottom: 24px; }
+  .cert-badge { font-size: 48px; margin: 16px 0; }
+  .cert-depto { font-size: 13px; color: var(--white); opacity: 0.4; letter-spacing: 0.08em; }
+  .cert-date { font-size: 12px; color: var(--white); opacity: 0.3; margin-top: 16px; }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="academia.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">Evaluación Final</span>
+</nav>
+
+<div id="app">
+  <!-- Intro screen -->
+  <div id="introScreen" class="eval-intro">
+    <span class="eval-icon">⭐</span>
+    <h1 class="eval-title">Evaluación Final</h1>
+    <p class="eval-desc">Este es el último paso para completar tu certificación. Cubre los 6 módulos que ya estudiaste.</p>
+
+    <div class="eval-stats">
+      <div class="eval-stat">
+        <div class="eval-stat-num">20</div>
+        <div class="eval-stat-label">Preguntas</div>
+      </div>
+      <div class="eval-stat">
+        <div class="eval-stat-num">40%</div>
+        <div class="eval-stat-label">Del puntaje total</div>
+      </div>
+      <div class="eval-stat">
+        <div class="eval-stat-num">Sin límite</div>
+        <div class="eval-stat-label">De tiempo</div>
+      </div>
+    </div>
+
+    <div class="alert alert-info mb-24" style="text-align:left;">
+      💡 Lee cada pregunta con calma. Puedes repetir la evaluación — se guarda tu mejor puntaje.
+    </div>
+
+    <button class="btn btn-primary w-full" style="justify-content:center;font-size:15px;padding:18px;" onclick="iniciarEval()">
+      Comenzar evaluación →
+    </button>
+    <a href="academia.html" style="display:block;text-align:center;margin-top:16px;font-size:12px;color:var(--mid);opacity:0.4;text-decoration:none;">
+      Volver a mis módulos
+    </a>
+  </div>
+</div>
+
+<script type="module">
+import { guardarEvaluacionFinal, getColaborador, getSession } from './firebase.js';
+
+const session = getSession();
+if (!session.id) window.location.href = 'colaborador-login.html';
+
+const PREGUNTAS = [
+  // Módulo 1 — Historia
+  { pregunta: '¿Qué significa el nombre "Yuma"?', opciones: ['Mar del Pacífico','Hijo del Líder','Casa del Sol','Tierra Oaxaqueña'], correcta: 1, modulo: 'Módulo 1' },
+  { pregunta: 'Casa Yuma abrió sus puertas en:', opciones: ['Enero 2023','Marzo 2024','Diciembre 2022','Junio 2024'], correcta: 1, modulo: 'Módulo 1' },
+  { pregunta: '¿Qué evaluó la Guía Michelin para reconocer a Casa Yuma?', opciones: ['El precio de las habitaciones','El número de empleados','Carácter, consistencia y experiencias memorables','La ubicación del hotel'], correcta: 2, modulo: 'Módulo 1' },
+  // Módulo 2 — La Marea / CASA
+  { pregunta: '¿Por qué el equipo se llama "La Marea"?', opciones: ['Porque todos saben surfear','Porque el mar no para y da forma al lugar','Porque el hotel tiene vista al mar','Por el nombre del dueño'], correcta: 1, modulo: 'Módulo 2' },
+  { pregunta: 'El valor "S" de CASA significa:', opciones: ['Sonrisa','Seriedad','Sentido de lugar','Servicio rápido'], correcta: 2, modulo: 'Módulo 2' },
+  { pregunta: 'El color Pacific Blue (#2C6E73) representa:', opciones: ['La arena de Zicatela','El mar del Pacífico','La vegetación de la sierra','El caracol de la costa'], correcta: 1, modulo: 'Módulo 2' },
+  // Módulo 3 — Código YUMA
+  { pregunta: 'La "Y" del código YUMA significa:', opciones: ['Yo mando','Ya estoy aquí — presencia total','Yo decido','Yelp y reseñas'], correcta: 1, modulo: 'Módulo 3' },
+  { pregunta: '"Únete a su historia" significa que debes:', opciones: ['Contarle la historia del hotel al huésped','Notar el contexto y adaptar el trato','Ser amable con todos por igual','Preguntar sobre su familia'], correcta: 1, modulo: 'Módulo 3' },
+  { pregunta: 'Si recibes una queja que no es de tu área directa, ¿qué haces?', opciones: ['La pasas al departamento correcto y te olvidas','Eres dueño de ella hasta que esté resuelta','Avisas al gerente y esperas','La anotas para la reunión mensual'], correcta: 1, modulo: 'Módulo 3' },
+  // Módulo 4 — Espacios
+  { pregunta: '¿Cuántas habitaciones Ocean King tiene el hotel?', opciones: ['2','3','4','6'], correcta: 1, modulo: 'Módulo 4' },
+  { pregunta: 'El Restaurante Casa Yuma tiene capacidad de cóctel para:', opciones: ['50','70','100','120'], correcta: 2, modulo: 'Módulo 4' },
+  { pregunta: '¿Qué tipo de habitación tiene terrazas privadas con vista panorámica?', opciones: ['Garden King','Standard King','Yuma King Terrace','Ocean King'], correcta: 2, modulo: 'Módulo 4' },
+  // Módulo 5 — Conducta
+  { pregunta: '¿Cuántos minutos antes del turno debes presentarte?', opciones: ['5 minutos','10 minutos','15 minutos','30 minutos'], correcta: 2, modulo: 'Módulo 5' },
+  { pregunta: '¿Puedes usar tu celular personal durante el servicio activo?', opciones: ['Sí, en silencio','Sí en tiempos muertos','No, está guardado y en silencio','Sí, para WhatsApp de trabajo'], correcta: 2, modulo: 'Módulo 5' },
+  { pregunta: '¿Cuál de estos SÍ está permitido en redes sociales?', opciones: ['Foto de un huésped sin su permiso','Información sobre tarifas del hotel','Mencionar con orgullo que trabajas aquí','Opinar sobre incidentes internos'], correcta: 2, modulo: 'Módulo 5' },
+  // Módulo 6 — Protocolo
+  { pregunta: 'En el check-in, ¿cuál es el primer paso?', opciones: ['Verificar la reserva en Cloudbeds','Cobrar el depósito','Saludar con el nombre del huésped, él primero','Asignar la habitación'], correcta: 2, modulo: 'Módulo 6' },
+  { pregunta: '¿Cuál es el sistema que contiene la información de reservas y huéspedes?', opciones: ['Poster','Whistle','Cloudbeds','WhatsApp Business'], correcta: 2, modulo: 'Módulo 6' },
+  { pregunta: 'En el manejo de quejas, ¿cuándo presentas opciones al huésped?', opciones: ['Nunca, tú decides la solución','Siempre que sea posible, para que sienta control','Solo si el gerente lo autoriza','Al final, después de resolver'], correcta: 1, modulo: 'Módulo 6' },
+  { pregunta: '¿Qué haces el día anterior al check-out de un huésped?', opciones: ['Nada, es responsabilidad del turno del día siguiente','Confirmas que tiene resuelto su transporte o próximo destino','Imprimes la cuenta','Preguntas si necesita extensión del cuarto'], correcta: 1, modulo: 'Módulo 6' },
+  { pregunta: 'Un accidente o incidente de seguridad con un huésped: ¿qué haces?', opciones: ['Lo resuelves solo para no alarmar','Lo registras para el reporte semanal','Escala al líder de inmediato, sin excepción','Esperas a que el huésped pida ayuda'], correcta: 2, modulo: 'Módulo 6' }
+];
+
+let qIndex = 0;
+let respuestas = [];
+let yaGuardado = false;
+const letras = ['A','B','C','D'];
+
+window.iniciarEval = function() {
+  document.getElementById('introScreen').style.display = 'none';
+  renderPregunta();
+};
+
+function renderPregunta() {
+  if (qIndex >= PREGUNTAS.length) { renderResultado(); return; }
+  const q = PREGUNTAS[qIndex];
+  let respondido = false;
+
+  document.getElementById('app').innerHTML = `
+    ${header()}
+    <div class="slide-container">
+      <div class="quiz-section">
+        <div class="quiz-header">
+          <div class="quiz-num">Pregunta ${qIndex + 1} de ${PREGUNTAS.length} · ${q.modulo}</div>
+          <div class="quiz-progress-row">
+            ${PREGUNTAS.map((_,i) => `<div class="quiz-dot ${i < qIndex ? (respuestas[i]?.correcta ? 'done-ok' : 'done-fail') : i===qIndex ? 'active' : ''}"></div>`).join('')}
+          </div>
+          <div class="quiz-question">${q.pregunta}</div>
+        </div>
+        <div class="quiz-options" id="opts">
+          ${q.opciones.map((op,i) => `
+            <button class="quiz-option" onclick="window.responder(${i})" data-index="${i}">
+              <span class="option-letter">${letras[i]}</span>${op}
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback" id="feedback"></div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="bottom-nav-inner">
+        <span></span>
+        <button class="btn-nav-next" id="btnSig" disabled onclick="window.siguiente()">
+          ${qIndex < PREGUNTAS.length - 1 ? 'Siguiente →' : 'Ver resultado →'}
+        </button>
+      </div>
+    </div>
+  `;
+
+  window.responder = function(idx) {
+    if (respondido) return;
+    respondido = true;
+    const correcta = idx === q.correcta;
+    respuestas.push({ correcta });
+
+    document.querySelectorAll('.quiz-option').forEach((btn, i) => {
+      btn.disabled = true;
+      if (i === q.correcta) btn.classList.add('correct');
+      else if (i === idx && !correcta) btn.classList.add('wrong');
+    });
+
+    const fb = document.getElementById('feedback');
+    fb.classList.add('show', correcta ? 'correct' : 'wrong');
+    fb.innerHTML = correcta
+      ? `✅ <span>¡Correcto!</span>`
+      : `❌ <span>La respuesta correcta es: <strong>${q.opciones[q.correcta]}</strong></span>`;
+
+    document.getElementById('btnSig').disabled = false;
+  };
+
+  window.siguiente = function() {
+    qIndex++;
+    renderPregunta();
+    window.scrollTo(0,0);
+  };
+}
+
+async function renderResultado() {
+  const correctas = respuestas.filter(r => r.correcta).length;
+  const total = PREGUNTAS.length;
+  const pct = Math.round((correctas / total) * 100);
+
+  if (!yaGuardado) {
+    yaGuardado = true;
+    try { await guardarEvaluacionFinal(session.id, correctas, total); } catch(e) { console.error(e); }
+  }
+
+  let emoji, nivel, msg;
+  if (pct >= 80) {
+    emoji = '⭐'; nivel = 'La Marea';
+    msg = '¡Certificación completada! Demostraste que conoces Casa Yuma de principio a fin. Eso se nota en cada turno.';
+  } else if (pct >= 60) {
+    emoji = '🌊'; nivel = 'Marea Activa';
+    msg = 'Muy buen esfuerzo. Hay algunos temas que vale la pena repasar. Puedes volver a intentarlo cuando quieras.';
+  } else {
+    emoji = '🐚'; nivel = 'Ola Nueva';
+    msg = 'Todavía hay camino por recorrer. Te recomendamos revisar los módulos y volver a intentar la evaluación.';
+  }
+
+  // Por módulo breakdown
+  const porModulo = {};
+  PREGUNTAS.forEach((q, i) => {
+    if (!porModulo[q.modulo]) porModulo[q.modulo] = { total: 0, correctas: 0 };
+    porModulo[q.modulo].total++;
+    if (respuestas[i]?.correcta) porModulo[q.modulo].correctas++;
+  });
+
+  const hoy = new Date().toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' });
+
+  document.getElementById('app').innerHTML = `
+    ${header(pct)}
+    <div class="slide-container">
+
+      <!-- Certificate -->
+      <div class="certificate mb-24">
+        <div class="cert-label">Certificado de Capacitación</div>
+        <div class="cert-badge">${emoji}</div>
+        <div class="cert-title">${nivel}</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.4);margin:8px 0 4px;">Otorgado a</div>
+        <div class="cert-name">${session.nombre}</div>
+        <div class="cert-depto">${session.departamento}</div>
+        <div class="cert-score">${pct}%</div>
+        <div class="cert-score-label">Puntaje evaluación final</div>
+        <div style="height:1px;background:rgba(225,208,130,0.15);margin:20px 0;"></div>
+        <div class="cert-date">Academia La Marea · ${hoy}</div>
+      </div>
+
+      <!-- Mensaje -->
+      <div class="quiz-section" style="margin-bottom:20px;">
+        <p style="font-size:15px;line-height:1.7;color:var(--mid);">${msg}</p>
+
+        <div style="margin-top:20px;">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mid);opacity:0.6;margin-bottom:12px;">Resultado por módulo</div>
+          ${Object.entries(porModulo).map(([mod, data]) => {
+            const modPct = Math.round((data.correctas/data.total)*100);
+            return `
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <span style="font-size:12px;color:var(--mid);min-width:80px;">${mod}</span>
+                <div style="flex:1;height:6px;background:#ede9db;border-radius:3px;overflow:hidden;">
+                  <div style="height:100%;width:${modPct}%;background:${modPct>=80?'#27ae60':modPct>=60?'#e67e22':'#c0392b'};border-radius:3px;"></div>
+                </div>
+                <span style="font-size:12px;color:var(--mid);min-width:36px;text-align:right;">${modPct}%</span>
+              </div>`;
+          }).join('')}
+        </div>
+
+        <div class="result-breakdown" style="margin-top:20px;">
+          <div class="result-stat"><div class="result-stat-num">${correctas}</div><div class="result-stat-label">Correctas</div></div>
+          <div class="result-stat"><div class="result-stat-num">${total-correctas}</div><div class="result-stat-label">A mejorar</div></div>
+          <div class="result-stat"><div class="result-stat-num">${total}</div><div class="result-stat-label">Total</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <a href="academia.html" class="btn btn-primary" style="justify-content:center;">
+          Ver mi progreso completo
+        </a>
+        <button onclick="reintentar()" class="btn btn-outline" style="justify-content:center;">
+          Repetir evaluación
+        </button>
+      </div>
+      <p class="retry-note" style="text-align:center;margin-top:12px;">Se conserva siempre tu mejor puntaje.</p>
+    </div>
+  `;
+
+  window.reintentar = function() {
+    qIndex = 0;
+    respuestas = [];
+    yaGuardado = false;
+    renderPregunta();
+    window.scrollTo(0,0);
+  };
+}
+
+function header(pct) {
+  const progress = pct !== undefined ? pct : Math.round((qIndex / PREGUNTAS.length) * 100);
+  return `
+    <div class="mod-header">
+      <div class="mod-header-inner">
+        <div class="mod-header-icon" style="background:#faf6dc;">⭐</div>
+        <div class="mod-header-info">
+          <div class="mod-header-steps">Evaluación Final · ${PREGUNTAS.length} preguntas</div>
+          <div class="mod-header-title">Repaso completo · Los 6 módulos</div>
+          <div class="mod-progress-bar">
+            <div class="mod-progress-fill" style="width:${progress}%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
