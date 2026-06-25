@@ -10,12 +10,12 @@ import { getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, serv
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey:            "TU_API_KEY",
-  authDomain:        "TU_PROJECT.firebaseapp.com",
-  projectId:         "TU_PROJECT_ID",
-  storageBucket:     "TU_PROJECT.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId:             "TU_APP_ID"
+  apiKey:            "AIzaSyDw6hf9ZN3KAZZGkkMjjXUpLZjsD34FXgc",
+  authDomain:        "academia-461d6.firebaseapp.com",
+  projectId:         "academia-461d6",
+  storageBucket:     "academia-461d6.firebasestorage.app",
+  messagingSenderId: "90812153114",
+  appId:             "1:90812153114:web:77c220ef8ceb46e96580a3"
 };
 
 const app = initializeApp(firebaseConfig);
