@@ -4,321 +4,445 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Academia La Marea · Casa Yuma</title>
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=PT+Mono&display=swap" rel="stylesheet">
 <style>
-/* ── SPA shell ── */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ══ RESET & TOKENS ══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue:   #2C6E73;
+  --gold:   #E1D082;
+  --white:  #EAE3CD;
+  --green:  #72785E;
+  --purple: #88285C;
+  --dark:   #1A1A18;
+  --mid:    #3D3D38;
+  --light:  #F5F0E4;
+  --mono:   'PT Mono', 'Courier New', monospace;
+}
 html, body { height: 100%; }
-body { background: var(--dark); font-family: var(--font-body); color: var(--dark); }
+body { font-family: var(--mono); background: var(--dark); color: var(--dark); overflow-x: hidden; }
 
-/* Views */
+/* ══ SPA VIEWS ══ */
 .view { display: none; min-height: 100vh; }
 .view.active { display: block; }
+#view-home.active { display: flex; }
 
-/* ── HOME ── */
+/* ══════════════════════════════════════════
+   HOME
+══════════════════════════════════════════ */
 #view-home {
   background: var(--dark);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  flex-direction: column; align-items: center; justify-content: center;
   padding: 48px 24px; text-align: center;
   position: relative; overflow: hidden;
+  min-height: 100vh;
 }
-#view-home.active { display: flex; }
 .ocean-bg {
-  position: absolute; inset: 0; opacity: 0.06;
-  background: repeating-linear-gradient(0deg, transparent, transparent 18px, #2C6E73 18px, #2C6E73 20px);
-  pointer-events: none;
+  position: absolute; inset: 0; opacity: 0.06; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 18px, var(--blue) 18px, var(--blue) 20px);
 }
-.home-logo { font-size: 11px; color: #E1D082; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; margin-bottom: 20px; position: relative; z-index: 1; }
-.home-title { font-family: var(--font-mono); font-size: clamp(32px, 6vw, 56px); color: #EAE3CD; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 8px; position: relative; z-index: 1; }
-.home-title span { color: #E1D082; }
-.home-sub { font-size: 14px; color: #EAE3CD; opacity: 0.5; letter-spacing: 0.06em; margin-bottom: 52px; position: relative; z-index: 1; }
+.home-logo { font-size: 11px; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; margin-bottom: 20px; position: relative; z-index: 1; }
+.home-title { font-family: var(--mono); font-size: clamp(32px, 6vw, 52px); color: var(--white); line-height: 1.1; margin-bottom: 8px; position: relative; z-index: 1; }
+.home-title span { color: var(--gold); }
+.home-sub { font-size: 13px; color: var(--white); opacity: 0.45; letter-spacing: 0.06em; margin-bottom: 48px; position: relative; z-index: 1; }
 
-/* Card grid */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  width: 100%; max-width: 720px;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; width: 100%; max-width: 700px;
   position: relative; z-index: 1;
 }
-.home-card {
+.hcard {
   background: rgba(255,255,255,0.05);
   border: 1.5px solid rgba(255,255,255,0.1);
-  border-radius: 20px; padding: 32px 20px;
-  cursor: pointer; transition: all 0.25s ease;
-  display: flex; flex-direction: column; align-items: center; gap: 16px;
-  text-decoration: none;
+  border-radius: 18px; padding: 28px 18px;
+  cursor: pointer; transition: all 0.22s;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  text-decoration: none; color: inherit;
 }
-.home-card:hover { background: rgba(255,255,255,0.09); border-color: #E1D082; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(225,208,130,0.15); }
-.home-card .hc-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; }
-.home-card .hc-name { font-family: var(--font-mono); font-size: 13px; color: #EAE3CD; letter-spacing: 0.08em; text-transform: uppercase; }
-.home-card .hc-desc { font-size: 12px; color: #EAE3CD; opacity: 0.4; text-align: center; line-height: 1.5; }
-.home-card.wide { grid-column: 1 / -1; flex-direction: row; gap: 20px; padding: 24px 28px; }
-.home-card.wide .hc-desc { text-align: left; }
+.hcard:hover { background: rgba(255,255,255,0.09); border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 10px 36px rgba(225,208,130,0.14); }
+.hcard-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+.hcard-name { font-family: var(--mono); font-size: 12px; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; }
+.hcard-desc { font-size: 12px; color: var(--white); opacity: 0.38; text-align: center; line-height: 1.5; }
+.hcard.wide { grid-column: 1 / -1; flex-direction: row; gap: 18px; padding: 20px 24px; }
+.hcard.wide .hcard-desc { text-align: left; flex: 1; }
+.marea-tag { margin-top: 44px; display: flex; align-items: center; gap: 10px; opacity: 0.28; position: relative; z-index: 1; }
+.marea-tag .line { width: 36px; height: 1px; background: var(--gold); }
+.marea-tag span { font-size: 11px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; }
 
-.marea-tag { margin-top: 44px; display: flex; align-items: center; gap: 10px; opacity: 0.3; position: relative; z-index: 1; }
-.marea-tag .line { width: 40px; height: 1px; background: #E1D082; }
-.marea-tag span { font-size: 11px; color: #E1D082; letter-spacing: 0.14em; text-transform: uppercase; }
-
-/* ── TOP BAR (for inner views) ── */
-.inner-topbar {
+/* ══════════════════════════════════════════
+   SHARED INNER STYLES
+══════════════════════════════════════════ */
+.topbar {
   background: var(--dark); padding: 14px 24px;
   display: flex; align-items: center; justify-content: space-between;
   position: sticky; top: 0; z-index: 100;
 }
-.inner-topbar .it-logo { font-family: var(--font-mono); font-size: 13px; color: #E1D082; letter-spacing: 0.12em; text-transform: uppercase; }
+.topbar-logo { font-family: var(--mono); font-size: 12px; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; }
 .back-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 16px; border-radius: 8px;
-  font-family: var(--font-mono); font-size: 12px;
-  border: 1.5px solid rgba(255,255,255,0.2);
-  color: #EAE3CD; background: transparent; cursor: pointer;
-  transition: all 0.18s; letter-spacing: 0.06em;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em;
+  border: 1.5px solid rgba(255,255,255,0.18); color: var(--white);
+  background: transparent; cursor: pointer; transition: 0.18s;
 }
-.back-btn:hover { border-color: #E1D082; color: #E1D082; }
+.back-btn:hover { border-color: var(--gold); color: var(--gold); }
+.inner-bg { background: var(--light); min-height: calc(100vh - 52px); }
 
-/* ── INNER VIEWS background ── */
-#view-lideres, #view-lamarea, #view-biblioteca { background: var(--light); }
+/* ══ Buttons ══ */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.07em; text-transform: uppercase; border: none; cursor: pointer; transition: 0.2s; }
+.btn-gold { background: var(--gold); color: var(--dark); }
+.btn-gold:hover { background: #d4c36e; }
+.btn-blue { background: var(--blue); color: var(--white); }
+.btn-blue:hover { background: #245a5e; }
+.badge-blue   { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 10px; letter-spacing: 0.05em; background: #e0f0f1; color: var(--blue); }
+.badge-gold   { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 10px; letter-spacing: 0.05em; background: #faf6dc; color: #7a6e1a; }
+.badge-green  { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 10px; letter-spacing: 0.05em; background: #e8ead5; color: var(--green); }
+.badge-purple { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 10px; letter-spacing: 0.05em; background: #f5e0ec; color: var(--purple); }
 
-/* ── IFRAME VIEWS ── */
-#view-dashboard, #view-organigrama { background: #fff; }
-.iframe-wrap { width: 100%; height: calc(100vh - 52px); }
-.iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+/* ══════════════════════════════════════════
+   PIN / LOGIN SCREENS
+══════════════════════════════════════════ */
+.auth-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 52px); background: var(--dark); padding: 24px; }
+.auth-box { background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 44px 40px; width: 100%; max-width: 420px; }
+.auth-icon { font-size: 48px; display: block; text-align: center; margin-bottom: 20px; }
+.auth-title { font-family: var(--mono); font-size: 22px; color: var(--white); text-align: center; margin-bottom: 8px; }
+.auth-sub { font-size: 13px; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 32px; line-height: 1.5; }
+.auth-field { margin-bottom: 18px; }
+.auth-field label { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+.auth-input { width: 100%; padding: 13px 15px; border: 1.5px solid rgba(255,255,255,0.14); border-radius: 8px; font-family: var(--mono); font-size: 14px; background: rgba(255,255,255,0.08); color: var(--white); transition: 0.18s; }
+.auth-input::placeholder { color: rgba(255,255,255,0.22); }
+.auth-input:focus { outline: none; border-color: var(--gold); }
+.auth-input option { background: #2a2a24; color: var(--white); }
+.pin-input { font-size: 28px; letter-spacing: 0.4em; text-align: center; }
+.auth-error { margin-top: 14px; padding: 11px 15px; background: rgba(192,57,43,0.18); border: 1px solid rgba(192,57,43,0.35); border-radius: 8px; color: #ffb3b3; font-size: 13px; display: none; }
+.loading-msg { margin-top: 14px; padding: 11px 15px; background: rgba(44,110,115,0.18); border-radius: 8px; color: var(--gold); font-size: 13px; display: none; text-align: center; }
 
-/* ── PIN SCREEN ── */
-.pin-screen { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; background: var(--dark); padding: 20px; }
-.pin-box { background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 44px 40px; width: 100%; max-width: 380px; text-align: center; }
-.pin-icon { font-size: 48px; margin-bottom: 20px; display: block; }
-.pin-title { font-size: 22px; color: #EAE3CD; font-family: var(--font-mono); margin-bottom: 8px; }
-.pin-sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
-.pin-input { width: 100%; padding: 18px; font-size: 28px; letter-spacing: 0.4em; text-align: center; border-radius: 12px; border: 1.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.08); color: #EAE3CD; font-family: var(--font-mono); margin-bottom: 16px; }
-.pin-input:focus { outline: none; border-color: #E1D082; }
-
-/* ── COLABORADOR LOGIN ── */
-.col-login-wrap { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; background: var(--dark); padding: 40px 20px; }
-.col-login-box { background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 44px 40px; width: 100%; max-width: 420px; }
-.col-login-icon { width: 60px; height: 60px; background: rgba(44,110,115,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 24px; }
-.col-login-title { font-family: var(--font-mono); font-size: 22px; color: #EAE3CD; text-align: center; margin-bottom: 6px; }
-.col-login-sub { font-size: 13px; color: rgba(255,255,255,0.45); text-align: center; margin-bottom: 36px; line-height: 1.5; }
-.col-field { margin-bottom: 20px; }
-.col-field label { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
-.col-input { width: 100%; padding: 14px 16px; border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; font-family: var(--font-mono); font-size: 14px; background: rgba(255,255,255,0.08); color: #EAE3CD; transition: 0.2s; }
-.col-input::placeholder { color: rgba(255,255,255,0.25); }
-.col-input:focus { outline: none; border-color: #E1D082; box-shadow: 0 0 0 3px rgba(225,208,130,0.15); }
-.col-input option { background: #2a2a25; color: #EAE3CD; }
-.btn-col-enter { width: 100%; padding: 16px; background: #E1D082; color: var(--dark); border: none; border-radius: 10px; font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.08em; cursor: pointer; margin-top: 8px; transition: 0.2s; }
-.btn-col-enter:hover { background: #d4c36e; }
-.col-error { margin-top: 16px; padding: 12px 16px; background: rgba(192,57,43,0.2); border: 1px solid rgba(192,57,43,0.4); border-radius: 8px; color: #ffb3b3; font-size: 13px; display: none; }
-
-/* ── COLABORADOR HUB ── */
+/* ══════════════════════════════════════════
+   COLABORADOR HUB
+══════════════════════════════════════════ */
 .hub-hero { background: var(--dark); padding: 40px 24px 60px; text-align: center; position: relative; overflow: hidden; }
 .hub-hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 40px; background: var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
-.hub-wave { position: absolute; inset: 0; opacity: 0.05; background: repeating-linear-gradient(0deg, transparent, transparent 16px, #2C6E73 16px, #2C6E73 18px); }
-.hub-greeting { font-size: 12px; color: #E1D082; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; position: relative; z-index: 1; }
-.hub-name { font-size: clamp(22px, 4vw, 32px); color: #EAE3CD; font-family: var(--font-mono); position: relative; z-index: 1; margin-bottom: 20px; }
-.ring-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 1; margin-bottom: 8px; }
+.hub-wave { position: absolute; inset: 0; opacity: 0.04; background: repeating-linear-gradient(0deg, transparent, transparent 16px, var(--blue) 16px, var(--blue) 18px); pointer-events: none; }
+.hub-greeting { font-size: 11px; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; position: relative; z-index: 1; }
+.hub-name { font-size: clamp(20px,4vw,30px); color: var(--white); font-family: var(--mono); position: relative; z-index: 1; margin-bottom: 20px; }
+.ring-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 1; margin-bottom: 10px; }
 .ring-wrap svg { transform: rotate(-90deg); }
-.ring-bg { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
-.ring-fill { fill: none; stroke: #E1D082; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
-.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 22px; color: #EAE3CD; font-family: var(--font-mono); }
-.ring-sub { font-size: 11px; color: #EAE3CD; opacity: 0.45; letter-spacing: 0.08em; }
-.level-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(225,208,130,0.12); border: 1px solid rgba(225,208,130,0.25); border-radius: 20px; padding: 8px 18px; color: #E1D082; font-size: 12px; letter-spacing: 0.08em; position: relative; z-index: 1; }
+.ring-bg   { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 6; }
+.ring-fill { fill: none; stroke: var(--gold); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+.ring-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 20px; color: var(--white); font-family: var(--mono); }
+.ring-sub { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; }
+.level-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(225,208,130,0.12); border: 1px solid rgba(225,208,130,0.22); border-radius: 20px; padding: 7px 16px; color: var(--gold); font-size: 12px; letter-spacing: 0.07em; position: relative; z-index: 1; }
 
-.hub-content { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
-.hub-section-title { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); margin-bottom: 16px; opacity: 0.7; }
-.mod-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
-.mod-card { background: white; border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; gap: 18px; cursor: pointer; color: var(--dark); transition: all 0.2s; box-shadow: 0 2px 12px rgba(0,0,0,0.05); border: 1.5px solid transparent; position: relative; overflow: hidden; }
-.mod-card:hover { box-shadow: 0 4px 20px rgba(44,110,115,0.12); border-color: var(--blue); transform: translateX(3px); }
-.mod-card.locked { opacity: 0.5; pointer-events: none; }
-.mod-card.done { border-color: #e8f5e9; }
-.mod-card.done::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #27ae60; border-radius: 14px 0 0 14px; }
-.mod-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+.hub-content { max-width: 700px; margin: 0 auto; padding: 32px 20px 60px; background: var(--light); }
+.hub-section { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); opacity: 0.65; margin-bottom: 14px; margin-top: 28px; }
+.score-box { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin-bottom: 22px; display: none; }
+.score-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 14px; }
+.score-item { text-align: center; }
+.score-num { font-size: 26px; color: var(--blue); font-family: var(--mono); }
+.score-lbl { font-size: 10px; color: var(--mid); opacity: 0.6; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.mod-list { display: flex; flex-direction: column; gap: 10px; }
+.mod-card { background: white; border-radius: 13px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; cursor: pointer; border: 1.5px solid transparent; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.18s; position: relative; overflow: hidden; }
+.mod-card:hover { border-color: var(--blue); transform: translateX(2px); }
+.mod-card.locked { opacity: 0.48; pointer-events: none; }
+.mod-card.done::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #27ae60; }
+.mod-icon { width: 48px; height: 48px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
 .mod-info { flex: 1; }
-.mod-num { font-size: 11px; color: var(--mid); opacity: 0.5; letter-spacing: 0.06em; margin-bottom: 2px; }
-.mod-title { font-size: 15px; color: var(--dark); margin-bottom: 4px; }
-.mod-desc { font-size: 12px; color: var(--mid); opacity: 0.65; line-height: 1.4; }
-.mod-status { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-.mod-score { font-size: 20px; font-family: var(--font-mono); color: var(--blue); }
+.mod-num { font-size: 10px; color: var(--mid); opacity: 0.5; letter-spacing: 0.06em; margin-bottom: 2px; }
+.mod-title { font-size: 14px; color: var(--dark); margin-bottom: 3px; }
+.mod-desc { font-size: 11px; color: var(--mid); opacity: 0.6; line-height: 1.4; }
+.mod-score { font-size: 18px; font-family: var(--mono); color: var(--blue); flex-shrink: 0; }
 .mod-score.done { color: #27ae60; }
 
-.final-card { background: var(--dark); border-radius: 14px; padding: 28px 24px; display: flex; align-items: center; gap: 18px; cursor: pointer; color: #EAE3CD; transition: all 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.2); border: 1.5px solid rgba(225,208,130,0.2); margin-bottom: 32px; position: relative; overflow: hidden; }
-.final-card.locked { opacity: 0.4; pointer-events: none; }
-.final-card:hover:not(.locked) { border-color: #E1D082; box-shadow: 0 8px 30px rgba(225,208,130,0.15); }
-.final-card .lock-msg { font-size: 11px; color: #E1D082; opacity: 0.6; letter-spacing: 0.06em; }
-.score-summary { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); display: none; margin-bottom: 24px; }
-.score-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 16px; }
-.score-item { text-align: center; }
-.score-num { font-size: 28px; color: var(--blue); font-family: var(--font-mono); }
-.score-label { font-size: 11px; color: var(--mid); opacity: 0.6; letter-spacing: 0.06em; text-transform: uppercase; }
-.logout-link { display: block; text-align: center; margin-top: 32px; font-size: 12px; color: var(--mid); opacity: 0.4; cursor: pointer; letter-spacing: 0.06em; }
-.logout-link:hover { opacity: 0.7; }
+.final-card { background: var(--dark); border-radius: 13px; padding: 22px; display: flex; align-items: center; gap: 16px; cursor: pointer; border: 1.5px solid rgba(225,208,130,0.18); box-shadow: 0 4px 18px rgba(0,0,0,0.18); transition: all 0.18s; position: relative; margin-top: 10px; overflow: hidden; }
+.final-card.locked { opacity: 0.38; pointer-events: none; }
+.final-card:not(.locked):hover { border-color: var(--gold); }
+.final-card .f-title { font-size: 15px; color: var(--white); margin-bottom: 4px; }
+.final-card .f-desc { font-size: 12px; color: rgba(255,255,255,0.45); }
+.final-card .f-lock { font-size: 11px; color: rgba(225,208,130,0.55); letter-spacing: 0.05em; }
+.final-card .f-score { font-size: 18px; font-family: var(--mono); color: var(--gold); flex-shrink: 0; }
+.logout-link { display: block; text-align: center; margin-top: 28px; font-size: 12px; color: var(--mid); opacity: 0.4; cursor: pointer; }
+.logout-link:hover { opacity: 0.65; }
 
-/* ── MODULE PLAYER ── */
+/* ══════════════════════════════════════════
+   MÓDULO PLAYER
+══════════════════════════════════════════ */
 #view-modulo { background: var(--light); }
+#moduloApp { min-height: calc(100vh - 52px); }
 
-/* ── BIBLIOTECA ── */
+/* Modulo progress header */
+.mod-header { background: white; border-bottom: 1px solid #ede9db; padding: 14px 18px; position: sticky; top: 52px; z-index: 50; }
+.mod-header-inner { max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+.mod-hicon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.mod-hinfo { flex: 1; }
+.mod-hstep { font-size: 10px; color: var(--mid); opacity: 0.55; letter-spacing: 0.06em; margin-bottom: 3px; }
+.mod-htitle { font-size: 13px; color: var(--dark); }
+.prog-bar { height: 4px; background: #ede9db; border-radius: 2px; overflow: hidden; margin-top: 4px; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--gold)); border-radius: 2px; transition: width 0.5s ease; }
+
+/* Slides */
+.slide-wrap { max-width: 640px; margin: 0 auto; padding: 28px 18px 100px; }
+.slide-portada { text-align: center; padding: 40px 16px; }
+.slide-portada .big-icon { font-size: 66px; display: block; margin-bottom: 22px; }
+.slide-portada h1 { font-size: clamp(22px,4vw,32px); color: var(--dark); font-family: var(--mono); margin-bottom: 14px; line-height: 1.2; }
+.slide-portada p { font-size: 15px; color: var(--mid); line-height: 1.7; max-width: 380px; margin: 0 auto; }
+.slide-dato h2 { font-size: 20px; color: var(--dark); font-family: var(--mono); margin-bottom: 20px; line-height: 1.3; }
+.dato-items { display: flex; flex-direction: column; gap: 12px; }
+.dato-item { background: white; border-radius: 11px; padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #ede9db; animation: fadeUp 0.3s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.dato-item:nth-child(1){animation-delay:0.05s}.dato-item:nth-child(2){animation-delay:0.1s}.dato-item:nth-child(3){animation-delay:0.15s}.dato-item:nth-child(4){animation-delay:0.2s}.dato-item:nth-child(5){animation-delay:0.25s}
+.dato-icon { font-size: 24px; flex-shrink: 0; }
+.dato-text { font-size: 14px; line-height: 1.6; color: var(--dark); }
+.slide-cita { display: flex; align-items: center; justify-content: center; min-height: 260px; padding: 36px 16px; }
+.cita-box { background: var(--dark); border-radius: 14px; padding: 36px 30px; border-left: 4px solid var(--gold); }
+.cita-mark { font-size: 56px; color: var(--gold); opacity: 0.28; line-height: 0.5; display: block; margin-bottom: 14px; }
+.cita-text { font-size: 17px; color: var(--white); line-height: 1.7; font-style: italic; }
+
+/* Quiz */
+.quiz-wrap { background: white; border-radius: 15px; padding: 26px 22px; box-shadow: 0 4px 18px rgba(0,0,0,0.07); border: 1.5px solid #ede9db; }
+.quiz-num { font-size: 11px; color: var(--blue); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.quiz-dots { display: flex; gap: 6px; margin-bottom: 18px; }
+.quiz-dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; transition: background 0.3s; }
+.quiz-dot.ok   { background: #27ae60; }
+.quiz-dot.fail { background: #c0392b; }
+.quiz-dot.curr { background: var(--blue); }
+.quiz-q { font-size: 17px; color: var(--dark); line-height: 1.5; font-family: var(--mono); margin-bottom: 20px; }
+.quiz-opts { display: flex; flex-direction: column; gap: 9px; }
+.quiz-opt { padding: 14px 18px; border-radius: 9px; border: 1.5px solid #e0dcd0; font-size: 14px; cursor: pointer; transition: all 0.16s; text-align: left; background: var(--light); color: var(--dark); display: flex; align-items: center; gap: 11px; }
+.quiz-opt:hover:not(:disabled) { border-color: var(--blue); background: #e0f0f1; }
+.quiz-opt.correct  { border-color: #27ae60; background: #e8f5e9; color: #1a5c2a; }
+.quiz-opt.wrong    { border-color: #c0392b; background: #fde8e8; color: #7a1a1a; }
+.quiz-opt.revealed { border-color: #27ae60; background: #e8f5e9; opacity: 0.65; }
+.quiz-opt:disabled { cursor: not-allowed; }
+.opt-letter { width: 26px; height: 26px; border-radius: 50%; background: rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; font-family: var(--mono); }
+.quiz-opt.correct .opt-letter { background: #27ae60; color: white; }
+.quiz-opt.wrong   .opt-letter { background: #c0392b; color: white; }
+.quiz-fb { margin-top: 14px; padding: 13px 15px; border-radius: 9px; font-size: 13px; display: none; line-height: 1.5; gap: 8px; }
+.quiz-fb.show { display: flex; align-items: flex-start; }
+.quiz-fb.correct { background: #e8f5e9; color: #1a5c2a; }
+.quiz-fb.wrong   { background: #fde8e8; color: #7a1a1a; }
+
+/* Result card */
+.result-card { text-align: center; padding: 44px 22px; }
+.result-icon { font-size: 66px; margin-bottom: 18px; display: block; animation: pop 0.5s ease; }
+@keyframes pop { 0%{transform:scale(0)} 70%{transform:scale(1.18)} 100%{transform:scale(1)} }
+.result-pct { font-size: 52px; font-family: var(--mono); margin-bottom: 8px; }
+.result-pct.high { color: #27ae60; }
+.result-pct.mid  { color: #e67e22; }
+.result-pct.low  { color: #c0392b; }
+.result-msg { font-size: 15px; color: var(--mid); line-height: 1.6; margin-bottom: 28px; }
+.result-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 28px; }
+.result-stat { background: white; border-radius: 9px; padding: 14px 10px; border: 1px solid #ede9db; }
+.result-stat-num { font-size: 22px; font-family: var(--mono); color: var(--blue); }
+.result-stat-lbl { font-size: 10px; color: var(--mid); opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Bottom nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #ede9db; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; z-index: 50; }
+.bottom-nav-inner { max-width: 640px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.btn-nav-back { background: transparent; border: 1.5px solid #e0dcd0; color: var(--mid); padding: 11px 18px; border-radius: 9px; font-family: var(--mono); font-size: 12px; cursor: pointer; transition: 0.18s; }
+.btn-nav-back:hover { border-color: var(--blue); color: var(--blue); }
+.btn-nav-next { background: var(--blue); color: var(--white); border: none; padding: 11px 24px; border-radius: 9px; font-family: var(--mono); font-size: 12px; cursor: pointer; transition: 0.18s; flex: 1; max-width: 260px; }
+.btn-nav-next:hover { background: #245a5e; }
+.btn-nav-next:disabled { opacity: 0.38; cursor: not-allowed; }
+
+/* ══════════════════════════════════════════
+   EVAL FINAL
+══════════════════════════════════════════ */
+#view-evalfinal { background: var(--light); }
+.eval-intro { max-width: 640px; margin: 0 auto; padding: 40px 18px 100px; text-align: center; }
+.eval-icon { font-size: 60px; margin-bottom: 22px; display: block; }
+.eval-title { font-size: 26px; font-family: var(--mono); margin-bottom: 10px; color: var(--dark); }
+.eval-desc { font-size: 14px; color: var(--mid); line-height: 1.7; margin-bottom: 28px; max-width: 440px; margin-left: auto; margin-right: auto; }
+.eval-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
+.eval-stat { background: white; border-radius: 11px; padding: 16px 10px; border: 1px solid #ede9db; text-align: center; }
+.eval-stat-num { font-size: 26px; font-family: var(--mono); color: var(--blue); }
+.eval-stat-lbl { font-size: 10px; color: var(--mid); opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; }
+.cert-box { background: var(--dark); border-radius: 18px; padding: 44px 28px; text-align: center; border: 1.5px solid rgba(225,208,130,0.26); margin-bottom: 20px; position: relative; overflow: hidden; }
+.cert-box::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(225,208,130,0.015) 20px, rgba(225,208,130,0.015) 40px); }
+.cert-lbl { font-size: 10px; color: rgba(225,208,130,0.65); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 14px; }
+.cert-badge { font-size: 44px; margin: 8px 0; }
+.cert-nivel { font-size: 26px; color: var(--white); font-family: var(--mono); margin-bottom: 8px; }
+.cert-a { font-size: 12px; color: rgba(255,255,255,0.38); margin-bottom: 4px; }
+.cert-name { font-size: 20px; color: var(--gold); margin-bottom: 4px; }
+.cert-depto { font-size: 12px; color: rgba(255,255,255,0.38); letter-spacing: 0.07em; }
+.cert-pct { font-size: 50px; color: var(--white); font-family: var(--mono); margin: 14px 0 4px; }
+.cert-pct-lbl { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 18px; }
+.cert-divider { height: 1px; background: rgba(225,208,130,0.14); margin: 18px 0; }
+.cert-date { font-size: 11px; color: rgba(255,255,255,0.28); }
+.mod-breakdown { margin: 18px 0; }
+.mod-row { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.mod-row-name { font-size: 12px; color: var(--mid); min-width: 90px; }
+.mod-row-bar { flex: 1; height: 5px; background: #ede9db; border-radius: 3px; overflow: hidden; }
+.mod-row-fill { height: 100%; border-radius: 3px; }
+.mod-row-pct { font-size: 12px; color: var(--mid); min-width: 36px; text-align: right; }
+
+/* ══════════════════════════════════════════
+   LÍDERES DASHBOARD
+══════════════════════════════════════════ */
+#view-lideres { background: var(--light); }
+.ldr-hero { background: var(--dark); padding: 26px 22px 44px; position: relative; overflow: hidden; }
+.ldr-wave { position: absolute; inset: 0; opacity: 0.04; background: repeating-linear-gradient(0deg, transparent, transparent 16px, var(--blue) 16px, var(--blue) 18px); pointer-events: none; }
+.ldr-hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 32px; background: var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
+.ldr-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+.ldr-title { font-size: 26px; color: var(--white); font-family: var(--mono); margin-bottom: 4px; }
+.ldr-sub { font-size: 12px; color: rgba(255,255,255,0.38); margin-bottom: 24px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.kpi-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 11px; padding: 16px 18px; }
+.kpi-num { font-size: 30px; font-family: var(--mono); color: var(--gold); }
+.kpi-lbl { font-size: 10px; color: rgba(255,255,255,0.38); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.ldr-content { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+.ldr-section { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); opacity: 0.6; margin-bottom: 12px; }
+.resource-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(190px,1fr)); gap: 10px; margin-bottom: 28px; }
+.resource-card { display: flex; flex-direction: column; gap: 4px; padding: 15px 16px; background: white; border: 1.5px solid #e0dcd0; border-radius: 11px; text-decoration: none; color: var(--dark); transition: 0.18s; }
+.resource-card:hover { border-color: var(--blue); }
+.resource-card span:first-child { font-size: 18px; }
+.resource-card .rc-name { font-size: 13px; }
+.resource-card .rc-sub { font-size: 11px; opacity: 0.45; }
+.filter-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+.filter-input, .filter-select { padding: 9px 13px; border-radius: 8px; border: 1.5px solid #e0dcd0; background: white; font-family: var(--mono); font-size: 12px; color: var(--dark); }
+.filter-input { flex: 1; min-width: 180px; }
+.filter-input:focus, .filter-select:focus { outline: none; border-color: var(--blue); }
+.export-btn { display: flex; align-items: center; gap: 7px; padding: 9px 16px; background: white; border: 1.5px solid #e0dcd0; border-radius: 8px; font-family: var(--mono); font-size: 12px; cursor: pointer; transition: 0.18s; }
+.export-btn:hover { border-color: var(--blue); color: var(--blue); }
+.table-wrap { background: white; border-radius: 13px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.05); overflow-x: auto; }
+.table-wrap table { width: 100%; border-collapse: collapse; min-width: 780px; }
+.table-wrap thead { background: var(--dark); }
+.table-wrap thead th { padding: 13px 15px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); text-align: left; white-space: nowrap; font-weight: normal; font-family: var(--mono); }
+.table-wrap tbody tr { border-bottom: 1px solid #f0ece0; transition: background 0.14s; cursor: pointer; }
+.table-wrap tbody tr:hover { background: #faf8f2; }
+.table-wrap tbody tr:last-child { border-bottom: none; }
+.table-wrap tbody td { padding: 13px 15px; font-size: 13px; vertical-align: middle; }
+.mod-dots { display: flex; gap: 4px; }
+.mod-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-family: var(--mono); border: 1.5px solid #e0dcd0; color: #bbb; }
+.mini-bar { height: 5px; background: #ede9db; border-radius: 3px; overflow: hidden; margin-top: 3px; }
+.mini-fill { height: 100%; border-radius: 3px; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,26,24,0.72); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal-box { background: white; border-radius: 18px; width: 100%; max-width: 540px; max-height: 85vh; overflow-y: auto; padding: 30px; }
+
+/* ══════════════════════════════════════════
+   BIBLIOTECA
+══════════════════════════════════════════ */
+#view-biblioteca { background: var(--light); }
 .bib-hero { background: var(--dark); padding: 44px 24px 60px; text-align: center; position: relative; overflow: hidden; }
 .bib-hero::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 40px; background: var(--light); clip-path: ellipse(55% 100% at 50% 100%); }
-.bib-wave { position: absolute; inset: 0; opacity: 0.04; background: repeating-linear-gradient(0deg, transparent, transparent 16px, #2C6E73 16px, #2C6E73 18px); }
-.bib-label { font-size: 11px; color: #E1D082; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; position: relative; z-index: 1; }
-.bib-title { font-size: clamp(24px,5vw,38px); color: #EAE3CD; font-family: var(--font-mono); margin-bottom: 10px; position: relative; z-index: 1; }
-.bib-sub { font-size: 13px; color: #EAE3CD; opacity: 0.45; position: relative; z-index: 1; max-width: 460px; margin: 0 auto; line-height: 1.6; }
-.bib-content { max-width: 900px; margin: 0 auto; padding: 36px 20px 80px; }
-.bib-section-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); opacity: 0.6; margin-bottom: 14px; margin-top: 32px; display: flex; align-items: center; gap: 10px; }
-.bib-section-label::after { content: ''; flex: 1; height: 1px; background: #ddd8c8; }
-.doc-grid { display: flex; flex-direction: column; gap: 20px; }
-.doc-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 14px rgba(0,0,0,0.06); border: 1.5px solid #ede9db; transition: box-shadow 0.2s; }
-.doc-card:hover { box-shadow: 0 6px 24px rgba(44,110,115,0.1); }
-.doc-header { padding: 20px 24px; display: flex; align-items: center; gap: 16px; cursor: pointer; user-select: none; border-bottom: 1px solid #ede9db; }
+.bib-wave { position: absolute; inset: 0; opacity: 0.04; background: repeating-linear-gradient(0deg, transparent, transparent 16px, var(--blue) 16px, var(--blue) 18px); pointer-events: none; }
+.bib-content { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+.bib-section { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); opacity: 0.6; margin-bottom: 12px; margin-top: 28px; display: flex; align-items: center; gap: 8px; }
+.bib-section::after { content: ''; flex: 1; height: 1px; background: #ddd8c8; }
+.doc-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1.5px solid #ede9db; margin-bottom: 14px; transition: box-shadow 0.18s; }
+.doc-card:hover { box-shadow: 0 5px 20px rgba(44,110,115,0.1); }
+.doc-header { padding: 18px 22px; display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none; }
 .doc-header:hover { background: #faf8f2; }
-.doc-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.doc-dicon { width: 46px; height: 46px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 .doc-info { flex: 1; }
-.doc-title { font-size: 15px; color: var(--dark); margin-bottom: 3px; }
-.doc-desc { font-size: 12px; color: var(--mid); opacity: 0.6; line-height: 1.4; }
-.doc-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
-.doc-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-.btn-doc-open { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-family: var(--font-mono); background: var(--blue); color: white; border: none; cursor: pointer; transition: 0.18s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-.btn-doc-open:hover { background: #245a5e; }
-.expand-arrow { font-size: 16px; color: var(--mid); opacity: 0.4; transition: transform 0.25s; flex-shrink: 0; }
-.doc-card.open .expand-arrow { transform: rotate(180deg); }
-.doc-embed { display: none; background: #f5f2ea; border-top: 1px solid #ede9db; }
-.doc-card.open .doc-embed { display: block; }
-.embed-frame { width: 100%; height: 600px; border: none; display: block; }
-.embed-note { padding: 10px 24px; font-size: 11px; color: var(--mid); opacity: 0.5; text-align: center; letter-spacing: 0.04em; border-top: 1px solid #ede9db; }
-.org-featured { background: var(--dark); border-radius: 16px; padding: 24px; display: flex; align-items: center; gap: 18px; cursor: pointer; border: 1.5px solid rgba(225,208,130,0.2); transition: all 0.2s; margin-bottom: 20px; }
-.org-featured:hover { border-color: #E1D082; box-shadow: 0 6px 24px rgba(225,208,130,0.12); }
+.doc-title { font-size: 14px; color: var(--dark); margin-bottom: 3px; }
+.doc-desc { font-size: 12px; color: var(--mid); opacity: 0.58; line-height: 1.4; }
+.doc-meta { display: flex; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+.doc-open { padding: 7px 14px; border-radius: 8px; font-size: 11px; font-family: var(--mono); background: var(--blue); color: white; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: 0.16s; flex-shrink: 0; }
+.doc-open:hover { background: #245a5e; }
+.expand-arr { font-size: 15px; color: var(--mid); opacity: 0.38; transition: transform 0.22s; flex-shrink: 0; }
+.doc-card.open .expand-arr { transform: rotate(180deg); }
+.doc-embed-wrap { display: none; }
+.doc-card.open .doc-embed-wrap { display: block; }
+.doc-embed { width: 100%; height: 580px; border: none; display: block; }
+.embed-note { padding: 9px 22px; font-size: 11px; color: var(--mid); opacity: 0.45; text-align: center; letter-spacing: 0.04em; background: #f5f2ea; border-top: 1px solid #ede9db; }
+.org-card { background: var(--dark); border-radius: 14px; padding: 22px; display: flex; align-items: center; gap: 16px; cursor: pointer; border: 1.5px solid rgba(225,208,130,0.2); transition: all 0.18s; margin-bottom: 14px; }
+.org-card:hover { border-color: var(--gold); box-shadow: 0 5px 20px rgba(225,208,130,0.12); }
+.go-modulos { background: white; border-radius: 14px; padding: 20px 22px; display: flex; align-items: center; gap: 14px; cursor: pointer; border: 1.5px solid #ede9db; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all 0.18s; }
+.go-modulos:hover { border-color: var(--blue); }
 
-/* ── EVAL FINAL inline ── */
-#view-evalfinal { background: var(--light); }
-
-/* Responsive */
+/* ══ Responsive ══ */
 @media (max-width: 640px) {
-  .card-grid { grid-template-columns: 1fr; max-width: 360px; }
-  .home-card.wide { flex-direction: column; align-items: flex-start; }
-  .hub-content, .bib-content { padding: 20px 16px 60px; }
+  .card-grid { grid-template-columns: 1fr; max-width: 340px; }
+  .hcard.wide { flex-direction: column; align-items: flex-start; }
+  .kpi-grid { grid-template-columns: repeat(2,1fr); }
+  .hub-content, .bib-content, .ldr-content { padding-left: 14px; padding-right: 14px; }
+  .doc-embed { height: 400px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════ HOME ═══════════════════════════════ -->
+<!-- ══════════════ HOME ══════════════ -->
 <div id="view-home" class="view active">
   <div class="ocean-bg"></div>
   <div class="home-logo">Casa Yuma · Puerto Escondido</div>
   <h1 class="home-title">Academia<br><span>La Marea</span></h1>
   <p class="home-sub">Plataforma de capacitación interna</p>
-
   <div class="card-grid">
-    <div class="home-card" onclick="showView('view-lideres')">
-      <div class="hc-icon" style="background:rgba(44,110,115,0.3)">🧭</div>
-      <div class="hc-name">Líderes</div>
-      <div class="hc-desc">Dashboard de seguimiento del equipo</div>
+    <div class="hcard" onclick="ir('view-lideres')">
+      <div class="hcard-icon" style="background:rgba(44,110,115,0.3)">🧭</div>
+      <div class="hcard-name">Líderes</div>
+      <div class="hcard-desc">Dashboard de seguimiento del equipo</div>
     </div>
-
-    <div class="home-card" onclick="showView('view-lamarea')">
-      <div class="hc-icon" style="background:rgba(225,208,130,0.2)">🌊</div>
-      <div class="hc-name">La Marea</div>
-      <div class="hc-desc">Módulos de aprendizaje y certificación</div>
+    <div class="hcard" onclick="ir('view-lamarea')">
+      <div class="hcard-icon" style="background:rgba(225,208,130,0.2)">🌊</div>
+      <div class="hcard-name">La Marea</div>
+      <div class="hcard-desc">Módulos de aprendizaje y certificación</div>
     </div>
-
-    <div class="home-card" onclick="showView('view-biblioteca')">
-      <div class="hc-icon" style="background:rgba(114,120,94,0.3)">📚</div>
-      <div class="hc-name">Biblioteca</div>
-      <div class="hc-desc">Documentos, protocolos y materiales</div>
+    <div class="hcard" onclick="ir('view-biblioteca')">
+      <div class="hcard-icon" style="background:rgba(114,120,94,0.3)">📚</div>
+      <div class="hcard-name">Biblioteca</div>
+      <div class="hcard-desc">Documentos, protocolos y materiales</div>
     </div>
-
-    <div class="home-card wide" onclick="showIframe('view-dashboard','https://casayuma.github.io/Dashboard/')">
-      <div class="hc-icon" style="background:rgba(136,40,92,0.3);flex-shrink:0">📊</div>
-      <div style="flex:1">
-        <div class="hc-name">Dashboard operativo</div>
-        <div class="hc-desc">Ocupación, ADR, revenue y KPIs en tiempo real</div>
-      </div>
-      <span style="color:#E1D082;font-size:20px;opacity:0.5">→</span>
+    <div class="hcard wide" onclick="window.open('https://casayuma.github.io/Dashboard/','_blank')">
+      <div class="hcard-icon" style="background:rgba(136,40,92,0.3);flex-shrink:0">📊</div>
+      <div class="hcard-desc"><strong style="color:var(--white);text-transform:uppercase;letter-spacing:0.08em;font-size:12px;">Dashboard operativo</strong><br>Ocupación, ADR, revenue y KPIs en tiempo real</div>
+      <span style="color:var(--gold);font-size:18px;opacity:0.5;flex-shrink:0">↗</span>
     </div>
-
-    <div class="home-card wide" onclick="showIframe('view-organigrama','https://casayuma.github.io/Organigrama/')">
-      <div class="hc-icon" style="background:rgba(113,119,93,0.3);flex-shrink:0">🏗️</div>
-      <div style="flex:1">
-        <div class="hc-name">Organigrama</div>
-        <div class="hc-desc">Estructura del equipo, departamentos y colaboradores</div>
-      </div>
-      <span style="color:#E1D082;font-size:20px;opacity:0.5">→</span>
+    <div class="hcard wide" onclick="window.open('https://casayuma.github.io/Organigrama/','_blank')">
+      <div class="hcard-icon" style="background:rgba(113,119,93,0.3);flex-shrink:0">🏗️</div>
+      <div class="hcard-desc"><strong style="color:var(--white);text-transform:uppercase;letter-spacing:0.08em;font-size:12px;">Organigrama</strong><br>Estructura del equipo, departamentos y colaboradores</div>
+      <span style="color:var(--gold);font-size:18px;opacity:0.5;flex-shrink:0">↗</span>
     </div>
   </div>
-
-  <div class="marea-tag">
-    <div class="line"></div>
-    <span>Spirit of Oaxaca</span>
-    <div class="line"></div>
-  </div>
+  <div class="marea-tag"><div class="line"></div><span>Spirit of Oaxaca</span><div class="line"></div></div>
 </div>
 
-<!-- ═══════════════════════════════ LÍDERES ═══════════════════════════════ -->
+<!-- ══════════════ LÍDERES ══════════════ -->
 <div id="view-lideres" class="view">
-  <!-- PIN screen -->
-  <div id="lideres-pin-screen">
-    <nav class="inner-topbar">
-      <span class="it-logo">Casa Yuma · Academia</span>
-      <button class="back-btn" onclick="goHome()">← Inicio</button>
-    </nav>
-    <div class="pin-screen">
-      <div class="pin-box">
-        <span class="pin-icon">🧭</span>
-        <div class="pin-title">Portal Líderes</div>
-        <p class="pin-sub">Ingresa el PIN para acceder al dashboard de seguimiento.</p>
-        <input type="password" class="pin-input" id="pinInput" placeholder="····" maxlength="6" onkeydown="if(event.key==='Enter') verificarPin()">
-        <button class="btn btn-gold w-full" style="justify-content:center;padding:16px;" onclick="verificarPin()">Ingresar →</button>
-        <div id="pinError" style="color:#ffb3b3;font-size:13px;margin-top:12px;display:none;">PIN incorrecto.</div>
+  <!-- PIN -->
+  <div id="ldr-pin">
+    <nav class="topbar"><span class="topbar-logo">Casa Yuma · Academia</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
+    <div class="auth-wrap">
+      <div class="auth-box">
+        <span class="auth-icon">🧭</span>
+        <div class="auth-title">Portal Líderes</div>
+        <p class="auth-sub">Ingresa el PIN para acceder al dashboard de seguimiento.</p>
+        <input type="password" class="auth-input pin-input" id="pinInput" placeholder="····" maxlength="6" onkeydown="if(event.key==='Enter')verificarPin()">
+        <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:8px;" onclick="verificarPin()">Ingresar →</button>
+        <div class="auth-error" id="pinError">PIN incorrecto. Inténtalo de nuevo.</div>
       </div>
     </div>
   </div>
-
-  <!-- Dashboard content (injected after PIN) -->
-  <div id="lideres-dashboard" style="display:none;">
-    <nav class="inner-topbar">
-      <span class="it-logo">Casa Yuma · Panel de Líderes</span>
-      <button class="back-btn" onclick="goHome()">← Inicio</button>
-    </nav>
-
-    <div style="background:var(--dark);padding:28px 24px 48px;position:relative;overflow:hidden;">
-      <div style="position:absolute;inset:0;opacity:0.04;background:repeating-linear-gradient(0deg,transparent,transparent 16px,#2C6E73 16px,#2C6E73 18px);"></div>
-      <div style="max-width:960px;margin:0 auto;position:relative;z-index:1;">
-        <div style="font-size:28px;color:#EAE3CD;font-family:var(--font-mono);margin-bottom:4px;">Dashboard de capacitación</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:28px;" id="lastUpdate">Cargando datos…</div>
-        <div id="kpiRow" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
-          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;"><div style="font-size:32px;font-family:var(--font-mono);color:#E1D082;">—</div><div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;">Colaboradores</div></div>
-          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;"><div style="font-size:32px;font-family:var(--font-mono);color:#E1D082;">—</div><div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;">Completaron todo</div></div>
-          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;"><div style="font-size:32px;font-family:var(--font-mono);color:#E1D082;">—</div><div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;">Promedio global</div></div>
-          <div style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 20px;"><div style="font-size:32px;font-family:var(--font-mono);color:#E1D082;">—</div><div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.08em;text-transform:uppercase;">Eval. final hecha</div></div>
+  <!-- Dashboard -->
+  <div id="ldr-dash" style="display:none">
+    <nav class="topbar"><span class="topbar-logo">Casa Yuma · Panel de Líderes</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
+    <div class="ldr-hero">
+      <div class="ldr-wave"></div>
+      <div class="ldr-inner">
+        <div class="ldr-title">Dashboard de capacitación</div>
+        <div class="ldr-sub" id="ldrUpdate">Cargando datos…</div>
+        <div class="kpi-grid" id="kpiGrid">
+          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Colaboradores</div></div>
+          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Completaron todo</div></div>
+          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Promedio global</div></div>
+          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Eval. final hecha</div></div>
         </div>
       </div>
     </div>
-
-    <div style="max-width:960px;margin:0 auto;padding:32px 20px 60px;">
-      <!-- Resources -->
-      <div style="margin-bottom:32px;">
-        <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);opacity:0.6;margin-bottom:14px;">Recursos de capacitación</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
-          <a href="#" id="ldr-manual" target="_blank" style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;background:white;border:1.5px solid #e0dcd0;border-radius:12px;text-decoration:none;color:var(--dark);transition:0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='#e0dcd0'">
-            <span style="font-size:20px;">📄</span><span style="font-size:13px;">Manual del Colaborador</span><span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
-          </a>
-          <a href="#" target="_blank" style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;background:white;border:1.5px solid #e0dcd0;border-radius:12px;text-decoration:none;color:var(--dark);transition:0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='#e0dcd0'">
-            <span style="font-size:20px;">📋</span><span style="font-size:13px;">Guías de onboarding</span><span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
-          </a>
-          <a href="#" target="_blank" style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;background:white;border:1.5px solid #e0dcd0;border-radius:12px;text-decoration:none;color:var(--dark);transition:0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='#e0dcd0'">
-            <span style="font-size:20px;">✅</span><span style="font-size:13px;">Checklists de evaluación</span><span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
-          </a>
-          <a href="#" target="_blank" style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;background:white;border:1.5px solid #e0dcd0;border-radius:12px;text-decoration:none;color:var(--dark);transition:0.2s;" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='#e0dcd0'">
-            <span style="font-size:20px;">📊</span><span style="font-size:13px;">Presentaciones</span><span style="font-size:11px;opacity:0.5;">→ Google Drive</span>
-          </a>
-        </div>
+    <div class="ldr-content">
+      <div class="ldr-section">Recursos de capacitación</div>
+      <div class="resource-grid">
+        <a href="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/view" target="_blank" class="resource-card"><span>📄</span><span class="rc-name">Manual del Colaborador</span><span class="rc-sub">→ Google Drive</span></a>
+        <a href="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/edit" target="_blank" class="resource-card"><span>🎓</span><span class="rc-name">Presentación de inducción</span><span class="rc-sub">→ Google Drive</span></a>
+        <a href="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/view" target="_blank" class="resource-card"><span>🚨</span><span class="rc-name">Protocolo de emergencias</span><span class="rc-sub">→ Google Drive</span></a>
+        <a href="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/view" target="_blank" class="resource-card"><span>🚌</span><span class="rc-name">Transporte</span><span class="rc-sub">→ Google Drive</span></a>
       </div>
-
-      <!-- Filters -->
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;align-items:center;">
-        <input type="text" id="searchInput" placeholder="Buscar colaborador…" oninput="filtrar()" style="padding:10px 14px;border-radius:8px;border:1.5px solid #e0dcd0;background:white;font-family:var(--font-mono);font-size:13px;flex:1;min-width:200px;">
-        <select id="deptoFilter" onchange="filtrar()" style="padding:10px 14px;border-radius:8px;border:1.5px solid #e0dcd0;background:white;font-family:var(--font-mono);font-size:13px;">
+      <div class="filter-row">
+        <input type="text" class="filter-input" id="searchInput" placeholder="Buscar colaborador…" oninput="filtrar()">
+        <select class="filter-select" id="deptoFilter" onchange="filtrar()">
           <option value="">Todos los departamentos</option>
           <option>Administración</option>
           <option>Alimentos &amp; Bebidas</option>
@@ -326,75 +450,61 @@ body { background: var(--dark); font-family: var(--font-body); color: var(--dark
           <option>Housekeeping / Ama de Llaves</option>
           <option>Recepción &amp; Servicios</option>
         </select>
-        <select id="statusFilter" onchange="filtrar()" style="padding:10px 14px;border-radius:8px;border:1.5px solid #e0dcd0;background:white;font-family:var(--font-mono);font-size:13px;">
+        <select class="filter-select" id="statusFilter" onchange="filtrar()">
           <option value="">Todos los estados</option>
           <option value="completo">Completaron todo</option>
           <option value="en-progreso">En progreso</option>
           <option value="sin-iniciar">Sin iniciar</option>
         </select>
-        <button onclick="exportarCSV()" style="display:flex;align-items:center;gap:8px;padding:10px 18px;background:white;border:1.5px solid #e0dcd0;border-radius:8px;font-family:var(--font-mono);font-size:12px;cursor:pointer;">📥 Exportar CSV</button>
+        <button class="export-btn" onclick="exportarCSV()">📥 Exportar CSV</button>
       </div>
-
-      <div id="tableWrap" style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);overflow-x:auto;">
-        <div style="text-align:center;padding:60px 20px;color:var(--mid);opacity:0.5;font-size:14px;">Cargando colaboradores…</div>
-      </div>
+      <div class="table-wrap" id="tableWrap"><div style="text-align:center;padding:50px;color:var(--mid);opacity:0.5;">Cargando colaboradores…</div></div>
     </div>
   </div>
-
-  <!-- Detail modal -->
-  <div id="modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(26,26,24,0.7);z-index:200;align-items:center;justify-content:center;padding:20px;" onclick="cerrarModal(event)">
-    <div id="modal" style="background:white;border-radius:20px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;padding:32px;"></div>
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal-box" id="modalBox"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ LA MAREA ═══════════════════════════════ -->
+<!-- ══════════════ LA MAREA ══════════════ -->
 <div id="view-lamarea" class="view">
-  <!-- Login screen -->
-  <div id="lamarea-login">
-    <nav class="inner-topbar">
-      <span class="it-logo">Casa Yuma · Academia</span>
-      <button class="back-btn" onclick="goHome()">← Inicio</button>
-    </nav>
-    <div class="col-login-wrap">
-      <div class="col-login-box">
-        <div class="col-login-icon">🌊</div>
-        <div class="col-login-title">¡Bienvenido!</div>
-        <p class="col-login-sub">Ingresa tus datos para acceder a tus módulos de capacitación.</p>
-        <div class="col-field"><label>Tu nombre completo</label><input id="colNombre" class="col-input" type="text" placeholder="Ej. María González López"></div>
-        <div class="col-field"><label>Número de empleado</label><input id="colNumero" class="col-input" type="text" placeholder="Ej. CY001" maxlength="10"></div>
-        <div class="col-field">
+  <!-- Login -->
+  <div id="col-login">
+    <nav class="topbar"><span class="topbar-logo">Casa Yuma · Academia</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
+    <div class="auth-wrap">
+      <div class="auth-box">
+        <span class="auth-icon">🌊</span>
+        <div class="auth-title">¡Bienvenido!</div>
+        <p class="auth-sub">Ingresa tus datos para acceder a tus módulos de capacitación.</p>
+        <div class="auth-field"><label>Tu nombre completo</label><input id="colNombre" class="auth-input" type="text" placeholder="Ej. María González López"></div>
+        <div class="auth-field"><label>Número de empleado</label><input id="colNumero" class="auth-input" type="text" placeholder="Ej. CY001" maxlength="10"></div>
+        <div class="auth-field">
           <label>Departamento</label>
-          <select id="colDepto" class="col-input">
+          <select id="colDepto" class="auth-input">
             <option value="">Selecciona tu departamento</option>
-            <option value="Administración">Administración</option>
-            <option value="Alimentos & Bebidas">Alimentos &amp; Bebidas</option>
-            <option value="Mantenimiento & Seguridad">Mantenimiento &amp; Seguridad</option>
-            <option value="Housekeeping / Ama de Llaves">Housekeeping / Ama de Llaves</option>
-            <option value="Recepción & Servicios">Recepción &amp; Servicios</option>
+            <option>Administración</option>
+            <option>Alimentos &amp; Bebidas</option>
+            <option>Mantenimiento &amp; Seguridad</option>
+            <option>Housekeeping / Ama de Llaves</option>
+            <option>Recepción &amp; Servicios</option>
           </select>
         </div>
-        <button class="btn-col-enter" onclick="colLogin()">Entrar →</button>
-        <div class="col-error" id="colError"></div>
+        <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:8px;" onclick="colLogin()">Entrar →</button>
+        <div class="loading-msg" id="colLoading">Cargando tu progreso…</div>
+        <div class="auth-error" id="colError"></div>
       </div>
     </div>
   </div>
-
-  <!-- Hub de módulos -->
-  <div id="lamarea-hub" style="display:none;">
-    <nav class="inner-topbar">
-      <span class="it-logo">Casa Yuma · La Marea</span>
-      <button class="back-btn" onclick="goHome()">← Inicio</button>
-    </nav>
+  <!-- Hub -->
+  <div id="col-hub" style="display:none">
+    <nav class="topbar"><span class="topbar-logo" id="hubDepto">La Marea</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
     <div class="hub-hero">
       <div class="hub-wave"></div>
       <div class="hub-greeting">Hola,</div>
       <div class="hub-name" id="hubName">…</div>
       <div class="ring-wrap">
-        <div style="position:relative;width:100px;height:100px;">
-          <svg width="100" height="100" viewBox="0 0 100 100">
-            <circle class="ring-bg" cx="50" cy="50" r="42"/>
-            <circle class="ring-fill" id="ringFill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/>
-          </svg>
+        <div style="position:relative;width:96px;height:96px;">
+          <svg width="96" height="96" viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fill" id="ringFill" cx="50" cy="50" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"/></svg>
           <div class="ring-label" id="ringPct">0%</div>
         </div>
         <div class="ring-sub">Completado</div>
@@ -402,411 +512,422 @@ body { background: var(--dark); font-family: var(--font-body); color: var(--dark
       <div class="level-tag" id="levelTag">🐚 Ola Nueva</div>
     </div>
     <div class="hub-content">
-      <div class="score-summary" id="scoreSummary">
-        <div class="hub-section-title">Tu puntaje</div>
+      <div class="score-box" id="scoreBox">
+        <div class="hub-section">Tu puntaje</div>
         <div class="score-grid">
-          <div class="score-item"><div class="score-num" id="scoreModulos">—</div><div class="score-label">Módulos</div></div>
-          <div class="score-item"><div class="score-num" id="scoreFinal">—</div><div class="score-label">Evaluación Final</div></div>
-          <div class="score-item"><div class="score-num" id="scoreTotal">—</div><div class="score-label">Puntaje Global</div></div>
+          <div class="score-item"><div class="score-num" id="sMods">—</div><div class="score-lbl">Módulos</div></div>
+          <div class="score-item"><div class="score-num" id="sFinal">—</div><div class="score-lbl">Eval. final</div></div>
+          <div class="score-item"><div class="score-num" id="sTotal">—</div><div class="score-lbl">Global</div></div>
         </div>
       </div>
-      <div class="hub-section-title">Módulos de aprendizaje</div>
+      <div class="hub-section">Módulos de aprendizaje</div>
       <div class="mod-list" id="modList"></div>
-      <div class="hub-section-title">Evaluación final</div>
-      <div class="final-card locked" id="finalCard" onclick="if(!this.classList.contains('locked')) showView('view-evalfinal')">
-        <div class="mod-icon" style="background:rgba(225,208,130,0.15);width:52px;height:52px;border-radius:12px;font-size:28px;flex-shrink:0;">⭐</div>
-        <div class="mod-info"><div class="mod-title" style="color:#EAE3CD;">Evaluación Final</div><div class="mod-desc" style="color:rgba(255,255,255,0.5);">Repaso completo · 20 preguntas</div><div class="lock-msg" id="lockMsg">🔒 Completa todos los módulos primero</div></div>
-        <div class="mod-status"><div class="mod-score" id="finalScore" style="color:#E1D082;">—</div></div>
+      <div class="hub-section" style="margin-top:28px;">Evaluación final</div>
+      <div class="final-card locked" id="finalCard" onclick="if(!this.classList.contains('locked'))ir('view-evalfinal')">
+        <div class="mod-icon" style="background:rgba(225,208,130,0.15);width:48px;height:48px;border-radius:11px;font-size:24px;flex-shrink:0;">⭐</div>
+        <div style="flex:1"><div class="f-title">Evaluación Final</div><div class="f-desc">Repaso completo · 20 preguntas</div><div class="f-lock" id="lockMsg" style="margin-top:4px">🔒 Completa todos los módulos primero</div></div>
+        <div class="f-score" id="fScore">—</div>
       </div>
       <div class="logout-link" onclick="colLogout()">Cerrar sesión →</div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ MÓDULO PLAYER ═══════════════════════════════ -->
+<!-- ══════════════ MÓDULO PLAYER ══════════════ -->
 <div id="view-modulo" class="view">
-  <nav class="inner-topbar">
-    <span class="it-logo" id="moduloTopbarTitle">Módulo</span>
-    <button class="back-btn" onclick="showView('view-lamarea');initHub()">← Mis módulos</button>
-  </nav>
+  <nav class="topbar"><span class="topbar-logo" id="modTopTitle">Módulo</span><button class="back-btn" onclick="ir('view-lamarea');initHub()">← Mis módulos</button></nav>
   <div id="moduloApp"></div>
 </div>
 
-<!-- ═══════════════════════════════ EVAL FINAL ═══════════════════════════════ -->
+<!-- ══════════════ EVAL FINAL ══════════════ -->
 <div id="view-evalfinal" class="view">
-  <nav class="inner-topbar">
-    <span class="it-logo">Evaluación Final</span>
-    <button class="back-btn" onclick="showView('view-lamarea');initHub()">← Mis módulos</button>
-  </nav>
-  <div id="evalFinalApp"></div>
+  <nav class="topbar"><span class="topbar-logo">Evaluación Final</span><button class="back-btn" onclick="ir('view-lamarea');initHub()">← Mis módulos</button></nav>
+  <div id="evalApp"></div>
 </div>
 
-<!-- ═══════════════════════════════ BIBLIOTECA ═══════════════════════════════ -->
+<!-- ══════════════ BIBLIOTECA ══════════════ -->
 <div id="view-biblioteca" class="view">
-  <nav class="inner-topbar">
-    <span class="it-logo">Casa Yuma · Biblioteca Yuma</span>
-    <button class="back-btn" onclick="goHome()">← Inicio</button>
-  </nav>
+  <nav class="topbar"><span class="topbar-logo">Biblioteca Yuma</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
   <div class="bib-hero">
     <div class="bib-wave"></div>
-    <div class="bib-label">Material de apoyo · La Marea</div>
-    <h1 class="bib-title">Biblioteca Yuma</h1>
-    <p class="bib-sub">Todos los documentos que necesitas para trabajar bien en Casa Yuma.</p>
+    <div style="font-size:11px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;position:relative;z-index:1;">Material de apoyo · La Marea</div>
+    <h1 style="font-size:clamp(24px,5vw,36px);color:var(--white);font-family:var(--mono);margin-bottom:10px;position:relative;z-index:1;">Biblioteca Yuma</h1>
+    <p style="font-size:13px;color:var(--white);opacity:0.42;position:relative;z-index:1;max-width:440px;margin:0 auto;line-height:1.6;">Todos los documentos que necesitas para trabajar bien en Casa Yuma.</p>
   </div>
   <div class="bib-content">
-    <div class="bib-section-label">Estructura del equipo</div>
-    <div class="org-featured" onclick="showIframe('view-organigrama','https://casayuma.github.io/Organigrama/')">
-      <div class="mod-icon" style="background:rgba(225,208,130,0.15);width:52px;height:52px;border-radius:12px;font-size:24px;flex-shrink:0;">🏗️</div>
-      <div style="flex:1;"><div class="doc-title" style="color:#EAE3CD;font-size:16px;">Organigrama de Personal</div><div class="doc-desc" style="color:rgba(255,255,255,0.45);">Estructura completa del equipo. Interactivo y actualizado.</div></div>
-      <span style="color:#E1D082;font-size:18px;opacity:0.7;">→</span>
+    <div class="bib-section">Estructura del equipo</div>
+    <div class="org-card" onclick="window.open('https://casayuma.github.io/Organigrama/','_blank')">
+      <div class="mod-icon" style="background:rgba(225,208,130,0.15);width:48px;height:48px;border-radius:11px;font-size:22px;flex-shrink:0;">🏗️</div>
+      <div style="flex:1"><div style="font-size:15px;color:var(--white);margin-bottom:3px;">Organigrama de Personal</div><div style="font-size:12px;color:rgba(255,255,255,0.42);">Estructura completa del equipo. Interactivo y actualizado.</div></div>
+      <span style="color:var(--gold);font-size:18px;opacity:0.6;">↗</span>
     </div>
-
-    <div class="bib-section-label">Documentos esenciales</div>
-    <div class="doc-grid">
-      <div class="doc-card" id="dc-manual">
-        <div class="doc-header" onclick="toggleDoc('dc-manual')">
-          <div class="doc-icon" style="background:#e0f0f1;">📋</div>
-          <div class="doc-info"><div class="doc-title">Manual del Colaborador</div><div class="doc-desc">Valores, protocolos, prestaciones y todo lo que necesitas saber.</div><div class="doc-meta"><span class="badge badge-blue">Esencial</span></div></div>
-          <div class="doc-actions"><a href="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/view" target="_blank" class="btn-doc-open">Abrir ↗</a></div>
-          <div class="expand-arrow">▼</div>
-        </div>
-        <div class="doc-embed"><iframe class="embed-frame" src="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/preview" loading="lazy"></iframe><div class="embed-note">Si no carga, haz click en "Abrir ↗"</div></div>
+    <div class="bib-section">Documentos esenciales</div>
+    <div class="doc-card" id="dc1">
+      <div class="doc-header" onclick="toggleDoc('dc1')">
+        <div class="doc-dicon" style="background:#e0f0f1">📋</div>
+        <div class="doc-info"><div class="doc-title">Manual del Colaborador</div><div class="doc-desc">Valores, protocolos, prestaciones y todo lo que necesitas saber.</div><div class="doc-meta"><span class="badge-blue">Esencial</span></div></div>
+        <a href="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/view" target="_blank" class="doc-open" onclick="event.stopPropagation()">Abrir ↗</a>
+        <div class="expand-arr">▼</div>
       </div>
-      <div class="doc-card" id="dc-induccion">
-        <div class="doc-header" onclick="toggleDoc('dc-induccion')">
-          <div class="doc-icon" style="background:#faf6dc;">🎓</div>
-          <div class="doc-info"><div class="doc-title">Presentación de Inducción</div><div class="doc-desc">Historia, valores, espacios y lo que significa ser parte de La Marea.</div><div class="doc-meta"><span class="badge badge-gold">Inducción</span></div></div>
-          <div class="doc-actions"><a href="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/edit" target="_blank" class="btn-doc-open">Abrir ↗</a></div>
-          <div class="expand-arrow">▼</div>
-        </div>
-        <div class="doc-embed"><iframe class="embed-frame" src="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/embed?start=false&loop=false" loading="lazy"></iframe><div class="embed-note">Usa las flechas para navegar la presentación</div></div>
-      </div>
-      <div class="doc-card" id="dc-emergencias">
-        <div class="doc-header" onclick="toggleDoc('dc-emergencias')">
-          <div class="doc-icon" style="background:#fde8e8;">🚨</div>
-          <div class="doc-info"><div class="doc-title">Protocolo de Emergencias</div><div class="doc-desc">Qué hacer en incendio, accidente o evacuación. Conocerlo puede salvar vidas.</div><div class="doc-meta"><span class="badge badge-purple">Obligatorio</span></div></div>
-          <div class="doc-actions"><a href="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/view" target="_blank" class="btn-doc-open">Abrir ↗</a></div>
-          <div class="expand-arrow">▼</div>
-        </div>
-        <div class="doc-embed"><iframe class="embed-frame" src="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/preview" loading="lazy"></iframe><div class="embed-note">Si no carga, haz click en "Abrir ↗"</div></div>
-      </div>
-      <div class="doc-card" id="dc-transporte">
-        <div class="doc-header" onclick="toggleDoc('dc-transporte')">
-          <div class="doc-icon" style="background:#e8ead5;">🚌</div>
-          <div class="doc-info"><div class="doc-title">Transporte de Colaboradores</div><div class="doc-desc">Rutas, horarios y puntos de encuentro del transporte del equipo.</div><div class="doc-meta"><span class="badge badge-green">Operativo</span></div></div>
-          <div class="doc-actions"><a href="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/view" target="_blank" class="btn-doc-open">Abrir ↗</a></div>
-          <div class="expand-arrow">▼</div>
-        </div>
-        <div class="doc-embed"><iframe class="embed-frame" src="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/preview" loading="lazy"></iframe><div class="embed-note">Si no carga, haz click en "Abrir ↗"</div></div>
-      </div>
+      <div class="doc-embed-wrap"><iframe class="doc-embed" src="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/preview" loading="lazy"></iframe><div class="embed-note">Si no carga, usa "Abrir ↗"</div></div>
     </div>
-
-    <div class="bib-section-label">Capacitación</div>
-    <div style="background:white;border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:16px;cursor:pointer;border:1.5px solid #ede9db;box-shadow:0 2px 14px rgba(0,0,0,0.06);transition:all 0.2s;" onclick="showView('view-lamarea')" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='#ede9db'">
-      <div style="width:48px;height:48px;border-radius:12px;background:#e0f0f1;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🌊</div>
-      <div style="flex:1;"><div style="font-size:15px;color:var(--dark);margin-bottom:3px;">Módulos de capacitación — La Marea</div><div style="font-size:12px;color:var(--mid);opacity:0.6;">6 módulos interactivos: historia, valores, espacios, conducta y protocolo al huésped.</div></div>
+    <div class="doc-card" id="dc2">
+      <div class="doc-header" onclick="toggleDoc('dc2')">
+        <div class="doc-dicon" style="background:#faf6dc">🎓</div>
+        <div class="doc-info"><div class="doc-title">Presentación de Inducción</div><div class="doc-desc">Historia, valores, espacios y lo que significa ser parte de La Marea.</div><div class="doc-meta"><span class="badge-gold">Inducción</span></div></div>
+        <a href="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/edit" target="_blank" class="doc-open" onclick="event.stopPropagation()">Abrir ↗</a>
+        <div class="expand-arr">▼</div>
+      </div>
+      <div class="doc-embed-wrap"><iframe class="doc-embed" src="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/embed?start=false&loop=false" loading="lazy"></iframe><div class="embed-note">Usa las flechas para navegar</div></div>
+    </div>
+    <div class="doc-card" id="dc3">
+      <div class="doc-header" onclick="toggleDoc('dc3')">
+        <div class="doc-dicon" style="background:#fde8e8">🚨</div>
+        <div class="doc-info"><div class="doc-title">Protocolo de Emergencias</div><div class="doc-desc">Qué hacer en incendio, accidente o evacuación. Conocerlo puede salvar vidas.</div><div class="doc-meta"><span class="badge-purple">Obligatorio</span></div></div>
+        <a href="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/view" target="_blank" class="doc-open" onclick="event.stopPropagation()">Abrir ↗</a>
+        <div class="expand-arr">▼</div>
+      </div>
+      <div class="doc-embed-wrap"><iframe class="doc-embed" src="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/preview" loading="lazy"></iframe><div class="embed-note">Si no carga, usa "Abrir ↗"</div></div>
+    </div>
+    <div class="doc-card" id="dc4">
+      <div class="doc-header" onclick="toggleDoc('dc4')">
+        <div class="doc-dicon" style="background:#e8ead5">🚌</div>
+        <div class="doc-info"><div class="doc-title">Transporte de Colaboradores</div><div class="doc-desc">Rutas, horarios y puntos de encuentro del transporte del equipo.</div><div class="doc-meta"><span class="badge-green">Operativo</span></div></div>
+        <a href="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/view" target="_blank" class="doc-open" onclick="event.stopPropagation()">Abrir ↗</a>
+        <div class="expand-arr">▼</div>
+      </div>
+      <div class="doc-embed-wrap"><iframe class="doc-embed" src="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/preview" loading="lazy"></iframe><div class="embed-note">Si no carga, usa "Abrir ↗"</div></div>
+    </div>
+    <div class="bib-section">Capacitación</div>
+    <div class="go-modulos" onclick="ir('view-lamarea')">
+      <div class="doc-dicon" style="background:#e0f0f1;width:46px;height:46px;border-radius:11px;font-size:20px;flex-shrink:0;">🌊</div>
+      <div style="flex:1"><div style="font-size:14px;color:var(--dark);margin-bottom:3px;">Módulos de capacitación — La Marea</div><div style="font-size:12px;color:var(--mid);opacity:0.58;">6 módulos interactivos con quiz. Historia, valores, espacios, conducta y protocolo.</div></div>
       <span style="font-size:13px;color:var(--blue);">Entrar →</span>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ DASHBOARD IFRAME ═══════════════════════════════ -->
-<div id="view-dashboard" class="view">
-  <nav class="inner-topbar">
-    <span class="it-logo">Casa Yuma · Dashboard</span>
-    <button class="back-btn" onclick="goHome()">← Inicio</button>
-  </nav>
-  <div class="iframe-wrap"><iframe id="iframe-dashboard" src="" title="Dashboard operativo"></iframe></div>
-</div>
-
-<!-- ═══════════════════════════════ ORGANIGRAMA IFRAME ═══════════════════════════════ -->
-<div id="view-organigrama" class="view">
-  <nav class="inner-topbar">
-    <span class="it-logo">Casa Yuma · Organigrama</span>
-    <button class="back-btn" onclick="goHome()">← Inicio</button>
-  </nav>
-  <div class="iframe-wrap"><iframe id="iframe-organigrama" src="" title="Organigrama de personal"></iframe></div>
-</div>
-
-<!-- ═══════════════════════════════ SCRIPTS ═══════════════════════════════ -->
+<!-- ══════════════ SCRIPTS ══════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, serverTimestamp }
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey:            "AIzaSyDw6hf9ZN3KAZZGkkMjjXUpLZjsD34FXgc",
-  authDomain:        "academia-461d6.firebaseapp.com",
-  projectId:         "academia-461d6",
-  storageBucket:     "academia-461d6.firebasestorage.app",
-  messagingSenderId: "90812153114",
-  appId:             "1:90812153114:web:77c220ef8ceb46e96580a3"
-};
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+const db = getFirestore(initializeApp({
+  apiKey:"AIzaSyDw6hf9ZN3KAZZGkkMjjXUpLZjsD34FXgc",
+  authDomain:"academia-461d6.firebaseapp.com",
+  projectId:"academia-461d6",
+  storageBucket:"academia-461d6.firebasestorage.app",
+  messagingSenderId:"90812153114",
+  appId:"1:90812153114:web:77c220ef8ceb46e96580a3"
+}));
 
 const PIN = '2024';
-
-const MODULOS_DEF = [
-  { key:'m1', icon:'🏠', color:'#e0f0f1', titulo:'Historia y el nombre Yuma',   desc:'El origen, el significado y Puerto Escondido', file:'modulo-1.html' },
-  { key:'m2', icon:'🌊', color:'#e0f0f1', titulo:'La Marea — Nuestra identidad', desc:'Quiénes somos y los valores CASA',               file:'modulo-2.html' },
-  { key:'m3', icon:'⚡', color:'#faf6dc', titulo:'El código YUMA',               desc:'Los 4 principios de servicio',                   file:'modulo-3.html' },
-  { key:'m4', icon:'🏨', color:'#e8ead5', titulo:'Los espacios del hotel',        desc:'Habitaciones, restaurante, spa y experiencias',  file:'modulo-4.html' },
-  { key:'m5', icon:'✅', color:'#f5e0ec', titulo:'Cómo nos comportamos',          desc:"Do's & don'ts y código de conducta",            file:'modulo-5.html' },
-  { key:'m6', icon:'🤝', color:'#faf6dc', titulo:'Protocolo al huésped',          desc:'Check-in, quejas, check-out y sistemas',         file:'modulo-6.html' },
+const MODS = [
+  {key:'m1',icon:'🏠',bg:'#e0f0f1',title:'Historia y el nombre Yuma',   desc:'El origen, el significado y Puerto Escondido',  file:'modulo-1.html'},
+  {key:'m2',icon:'🌊',bg:'#e0f0f1',title:'La Marea — Nuestra identidad',desc:'Quiénes somos y los valores CASA',                file:'modulo-2.html'},
+  {key:'m3',icon:'⚡',bg:'#faf6dc',title:'El código YUMA',               desc:'Los 4 principios de servicio',                  file:'modulo-3.html'},
+  {key:'m4',icon:'🏨',bg:'#e8ead5',title:'Los espacios del hotel',       desc:'Habitaciones, restaurante, spa y experiencias', file:'modulo-4.html'},
+  {key:'m5',icon:'✅',bg:'#f5e0ec',title:'Cómo nos comportamos',         desc:"Do's & don'ts y código de conducta",           file:'modulo-5.html'},
+  {key:'m6',icon:'🤝',bg:'#faf6dc',title:'Protocolo al huésped',         desc:'Check-in, quejas, check-out y sistemas',        file:'modulo-6.html'},
 ];
+const MINFO = [{key:'m1',n:'Historia'},{key:'m2',n:'La Marea'},{key:'m3',n:'Código YUMA'},{key:'m4',n:'Espacios'},{key:'m5',n:'Conducta'},{key:'m6',n:'Protocolo'}];
 
 // ── Helpers ──
-function getEmpleadoId(n,num){ return `emp_${num}_${n.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')}`; }
-function setSession(id,nombre,depto){ sessionStorage.setItem('cy_id',id); sessionStorage.setItem('cy_nombre',nombre); sessionStorage.setItem('cy_depto',depto); }
-function getSession(){ return { id: sessionStorage.getItem('cy_id'), nombre: sessionStorage.getItem('cy_nombre'), departamento: sessionStorage.getItem('cy_depto') }; }
-function clearSession(){ sessionStorage.removeItem('cy_id'); sessionStorage.removeItem('cy_nombre'); sessionStorage.removeItem('cy_depto'); }
+const $ = id => document.getElementById(id);
+const empId = (n,num) => `emp_${num}_${n.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')}`;
+const ss = { set:(k,v)=>sessionStorage.setItem(k,v), get:k=>sessionStorage.getItem(k), del:k=>sessionStorage.removeItem(k) };
+const session = {
+  save:(id,n,d)=>{ss.set('cy_id',id);ss.set('cy_n',n);ss.set('cy_d',d);},
+  load:()=>({id:ss.get('cy_id'),nombre:ss.get('cy_n'),depto:ss.get('cy_d')}),
+  clear:()=>{ss.del('cy_id');ss.del('cy_n');ss.del('cy_d');}
+};
 
 // ── Navigation ──
-window.showView = function(id) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+window.ir = function(viewId) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $(viewId).classList.add('active');
   window.scrollTo(0,0);
+  if (viewId==='view-lideres') {
+    $('ldr-pin').style.display='block';
+    $('ldr-dash').style.display='none';
+    $('pinInput').value='';
+    $('pinError').style.display='none';
+  }
 };
+window.toggleDoc = id => $(id).classList.toggle('open');
 
-window.goHome = function() { showView('view-home'); };
-
-window.showIframe = function(viewId, url) {
-  const iframeId = viewId === 'view-dashboard' ? 'iframe-dashboard' : 'iframe-organigrama';
-  const iframe = document.getElementById(iframeId);
-  if (iframe.src !== url) iframe.src = url;
-  showView(viewId);
-};
-
-// ── Biblioteca toggles ──
-window.toggleDoc = function(id) { document.getElementById(id).classList.toggle('open'); };
-
-// ── PIN Líderes ──
-window.verificarPin = function() {
-  const pin = document.getElementById('pinInput').value;
-  if (pin === PIN) {
-    document.getElementById('lideres-pin-screen').style.display = 'none';
-    document.getElementById('lideres-dashboard').style.display = 'block';
-    cargarDashboardLideres();
+// ── PIN ──
+window.verificarPin = () => {
+  if ($('pinInput').value === PIN) {
+    $('ldr-pin').style.display='none';
+    $('ldr-dash').style.display='block';
+    cargarLideres();
   } else {
-    document.getElementById('pinError').style.display = 'block';
-    document.getElementById('pinInput').value = '';
+    $('pinError').style.display='block';
+    $('pinInput').value='';
   }
 };
 
-// Reset PIN when leaving líderes
-const origShowView = window.showView;
-window.showView = function(id) {
-  if (id !== 'view-lideres') {
-    document.getElementById('lideres-pin-screen').style.display = 'block';
-    document.getElementById('lideres-dashboard').style.display = 'none';
-    document.getElementById('pinInput').value = '';
-    document.getElementById('pinError').style.display = 'none';
-  }
-  origShowView(id);
-};
-
-// ── Colaborador login ──
-window.colLogin = async function() {
-  const nombre = document.getElementById('colNombre').value.trim();
-  const numero = document.getElementById('colNumero').value.trim();
-  const depto  = document.getElementById('colDepto').value;
-  const errEl  = document.getElementById('colError');
-  errEl.style.display = 'none';
-  if (!nombre) return showColError('Por favor escribe tu nombre completo.');
-  if (!numero) return showColError('Por favor ingresa tu número de empleado.');
-  if (!depto)  return showColError('Por favor selecciona tu departamento.');
+// ── Col login ──
+window.colLogin = async () => {
+  const n=$('colNombre').value.trim(), num=$('colNumero').value.trim(), d=$('colDepto').value;
+  $('colError').style.display='none';
+  if (!n) return showErr('colError','Por favor escribe tu nombre completo.');
+  if (!num) return showErr('colError','Por favor ingresa tu número de empleado.');
+  if (!d) return showErr('colError','Por favor selecciona tu departamento.');
+  $('colLoading').style.display='block';
   try {
-    const id = getEmpleadoId(nombre, numero);
-    const ref = doc(db,'academia_colaboradores',id);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) {
-      await setDoc(ref,{ nombre, numero_empleado: numero, departamento: depto, fecha_inicio: serverTimestamp(), modulos:{}, evaluacion_final:{completado:false,puntaje:0}, puntaje_total:0, porcentaje_completado:0 });
-    }
-    setSession(id, nombre, depto);
-    document.getElementById('lamarea-login').style.display = 'none';
-    document.getElementById('lamarea-hub').style.display = 'block';
+    const id=empId(n,num), ref=doc(db,'academia_colaboradores',id), snap=await getDoc(ref);
+    if (!snap.exists()) await setDoc(ref,{nombre:n,numero_empleado:num,departamento:d,fecha_inicio:serverTimestamp(),modulos:{},evaluacion_final:{completado:false,puntaje:0},puntaje_total:0,porcentaje_completado:0});
+    session.save(id,n,d);
+    $('col-login').style.display='none';
+    $('col-hub').style.display='block';
+    $('colLoading').style.display='none';
     initHub();
-  } catch(e) {
-    showColError('Error al conectar. Verifica tu internet.');
-    console.error(e);
-  }
+  } catch(e) { $('colLoading').style.display='none'; showErr('colError','Error al conectar. Verifica tu internet.'); }
 };
-function showColError(msg){ const el=document.getElementById('colError'); el.textContent=msg; el.style.display='block'; }
+function showErr(id,msg){const el=$(id);el.textContent=msg;el.style.display='block';}
 
-window.colLogout = function() {
-  clearSession();
-  document.getElementById('lamarea-login').style.display = 'block';
-  document.getElementById('lamarea-hub').style.display = 'none';
-  document.getElementById('colNombre').value='';
-  document.getElementById('colNumero').value='';
-  document.getElementById('colDepto').value='';
-  goHome();
+window.colLogout = () => {
+  session.clear();
+  $('col-login').style.display='block'; $('col-hub').style.display='none';
+  ['colNombre','colNumero','colDepto'].forEach(id=>$(id).value='');
+  ir('view-home');
 };
 
 // ── Hub ──
-window.initHub = async function() {
-  const session = getSession();
-  if (!session.id) return;
-  document.getElementById('hubName').textContent = session.nombre;
-
-  let data = null;
-  try { const col = await getDoc(doc(db,'academia_colaboradores',session.id)); data = col.exists() ? col.data() : null; } catch(e){}
-
-  const mods = data?.modulos || {};
-  const ef   = data?.evaluacion_final || {};
-  const pct  = data?.porcentaje_completado || 0;
-  const pts  = data?.puntaje_total || 0;
-
-  // Ring
-  const offset = 263.9 - (pct/100)*263.9;
-  document.getElementById('ringFill').style.strokeDashoffset = offset;
-  document.getElementById('ringPct').textContent = pct+'%';
-  document.getElementById('levelTag').textContent = pct>=100?'⭐ La Marea':pct>=57?'🌊 Marea Activa':'🐚 Ola Nueva';
-
-  // Score summary
-  const completados = MODULOS_DEF.filter(m=>mods[m.key]?.completado).length;
-  if (completados>0||ef.completado) {
-    document.getElementById('scoreSummary').style.display='block';
-    let suma=0; MODULOS_DEF.forEach(m=>{ if(mods[m.key]?.completado) suma+=mods[m.key].porcentaje||0; });
-    const prom = completados>0?Math.round(suma/completados):0;
-    document.getElementById('scoreModulos').textContent = completados>0?prom+'%':'—';
-    document.getElementById('scoreFinal').textContent = ef.completado?(ef.porcentaje+'%'):'—';
-    document.getElementById('scoreTotal').textContent = pts>0?pts+'%':'—';
+window.initHub = async () => {
+  const {id,nombre,depto} = session.load();
+  if (!id) return;
+  $('hubName').textContent = nombre;
+  $('hubDepto').textContent = depto;
+  let data=null;
+  try { const s=await getDoc(doc(db,'academia_colaboradores',id)); data=s.exists()?s.data():null; } catch(e){}
+  const mods=data?.modulos||{}, ef=data?.evaluacion_final||{}, pct=data?.porcentaje_completado||0, pts=data?.puntaje_total||0;
+  $('ringFill').style.strokeDashoffset=263.9-(pct/100)*263.9;
+  $('ringPct').textContent=pct+'%';
+  $('levelTag').textContent=pct>=100?'⭐ La Marea':pct>=57?'🌊 Marea Activa':'🐚 Ola Nueva';
+  const done=MODS.filter(m=>mods[m.key]?.completado).length;
+  if (done>0||ef.completado) {
+    $('scoreBox').style.display='block';
+    let s=0; MODS.forEach(m=>{if(mods[m.key]?.completado)s+=mods[m.key].porcentaje||0;});
+    $('sMods').textContent=done>0?Math.round(s/done)+'%':'—';
+    $('sFinal').textContent=ef.completado?ef.porcentaje+'%':'—';
+    $('sTotal').textContent=pts>0?pts+'%':'—';
   }
-
-  // Module list
-  const list = document.getElementById('modList');
-  list.innerHTML = '';
-  MODULOS_DEF.forEach((m,i)=>{
-    const mod = mods[m.key];
-    const done = mod?.completado;
-    const unlocked = i===0||mods[MODULOS_DEF[i-1].key]?.completado;
-    const card = document.createElement('div');
-    card.className = `mod-card ${done?'done':''} ${!unlocked?'locked':''}`;
-    card.innerHTML = `
-      <div class="mod-icon" style="background:${m.color}">${m.icon}</div>
-      <div class="mod-info">
-        <div class="mod-num">Módulo ${i+1} de 6</div>
-        <div class="mod-title">${m.titulo}</div>
-        <div class="mod-desc">${m.desc}</div>
-      </div>
-      <div class="mod-status">
-        ${done?`<div class="mod-score done">${mod.porcentaje}%</div><div>✅</div>`:unlocked?`<div style="color:var(--blue);font-size:18px;">→</div>`:`<div style="font-size:18px;opacity:0.4;">🔒</div>`}
-      </div>`;
-    if (unlocked) card.onclick = () => abrirModulo(m, session.id);
+  const list=$('modList'); list.innerHTML='';
+  MODS.forEach((m,i)=>{
+    const md=mods[m.key], d2=md?.completado, unlocked=i===0||mods[MODS[i-1].key]?.completado;
+    const card=document.createElement('div');
+    card.className=`mod-card${d2?' done':''}${!unlocked?' locked':''}`;
+    card.innerHTML=`<div class="mod-icon" style="background:${m.bg}">${m.icon}</div><div class="mod-info"><div class="mod-num">Módulo ${i+1} de 6</div><div class="mod-title">${m.title}</div><div class="mod-desc">${m.desc}</div></div><div class="${d2?'mod-score done':'mod-score'}">${d2?md.porcentaje+'%':unlocked?'→':'🔒'}</div>`;
+    if (unlocked) card.onclick=()=>abrirModulo(m);
     list.appendChild(card);
   });
-
-  // Final eval
-  const allDone = MODULOS_DEF.every(m=>mods[m.key]?.completado);
-  const fc = document.getElementById('finalCard');
-  if (allDone) { fc.classList.remove('locked'); document.getElementById('lockMsg').style.display='none'; }
-  if (ef.completado) document.getElementById('finalScore').textContent = ef.porcentaje+'%';
+  const allDone=MODS.every(m=>mods[m.key]?.completado);
+  if (allDone){$('finalCard').classList.remove('locked');$('lockMsg').style.display='none';}
+  if (ef.completado) $('fScore').textContent=ef.porcentaje+'%';
 };
 
-// ── Module player (loads external HTML into iframe-style container) ──
-window.abrirModulo = function(modDef, empleadoId) {
-  document.getElementById('moduloTopbarTitle').textContent = modDef.titulo;
-  showView('view-modulo');
-  loadModuloContent(modDef, empleadoId);
-};
-
-async function loadModuloContent(modDef, empleadoId) {
-  const container = document.getElementById('moduloApp');
-  container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--mid);opacity:0.5;">Cargando módulo…</div>';
+// ── Module loader ──
+window.abrirModulo = async (modDef) => {
+  $('modTopTitle').textContent=modDef.title;
+  ir('view-modulo');
+  const app=$('moduloApp');
+  app.innerHTML='<div style="text-align:center;padding:60px 20px;color:var(--mid);opacity:0.5;">Cargando módulo…</div>';
   try {
-    const res = await fetch(modDef.file);
-    const html = await res.text();
-    const parser = new DOMParser();
-    const doc2 = parser.parseFromString(html, 'text/html');
-    // Extract the script content
-    const scripts = doc2.querySelectorAll('script[type="module"]');
-    const bodyContent = doc2.body.innerHTML;
-    // Remove nav and inject content
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = bodyContent;
-    const nav = tempDiv.querySelector('nav');
-    if (nav) nav.remove();
-    container.innerHTML = tempDiv.innerHTML;
-    // Re-run scripts
-    scripts.forEach(s => {
-      const newScript = document.createElement('script');
-      newScript.type = 'module';
-      newScript.textContent = s.textContent;
-      container.appendChild(newScript);
+    const html=await(await fetch(modDef.file)).text();
+    const parsed=new DOMParser().parseFromString(html,'text/html');
+    const body=parsed.body; const nav=body.querySelector('nav'); if(nav)nav.remove();
+    app.innerHTML=body.innerHTML;
+    parsed.querySelectorAll('script[type="module"]').forEach(s=>{
+      const ns=document.createElement('script'); ns.type='module'; ns.textContent=s.textContent; app.appendChild(ns);
     });
-  } catch(e) {
-    container.innerHTML = `<div style="text-align:center;padding:60px 20px;"><p style="color:var(--mid);">Error al cargar el módulo.</p><p style="margin-top:12px;font-size:13px;opacity:0.6;">Intenta de nuevo o verifica tu conexión.</p></div>`;
-  }
+  } catch(e){app.innerHTML='<div style="text-align:center;padding:60px;color:var(--mid);">Error al cargar el módulo. Intenta de nuevo.</div>';}
+};
+
+// Check session on load
+const ses=session.load();
+if(ses.id){$('col-login').style.display='none';$('col-hub').style.display='block';}
+
+// ── Eval Final ──
+window.ir_orig = window.ir;
+const PREGUNTAS=[
+  {p:'¿Qué significa el nombre "Yuma"?',o:['Mar del Pacífico','Hijo del Líder','Casa del Sol','Tierra Oaxaqueña'],c:1,mod:'Módulo 1'},
+  {p:'Casa Yuma abrió sus puertas en:',o:['Enero 2023','Marzo 2024','Diciembre 2022','Junio 2024'],c:1,mod:'Módulo 1'},
+  {p:'¿Qué evaluó la Guía Michelin?',o:['El precio de las habitaciones','El número de empleados','Carácter, consistencia y experiencias memorables','La ubicación del hotel'],c:2,mod:'Módulo 1'},
+  {p:'¿Por qué el equipo se llama "La Marea"?',o:['Porque todos saben surfear','Porque el mar no para y da forma al lugar','Porque el hotel tiene vista al mar','Por el nombre del dueño'],c:1,mod:'Módulo 2'},
+  {p:'El valor "S" de CASA significa:',o:['Sonrisa','Seriedad','Sentido de lugar','Servicio rápido'],c:2,mod:'Módulo 2'},
+  {p:'El color Pacific Blue representa:',o:['La arena de Zicatela','El mar del Pacífico','La vegetación de la sierra','El caracol de la costa'],c:1,mod:'Módulo 2'},
+  {p:'La "Y" del código YUMA significa:',o:['Yo mando','Ya estoy aquí — presencia total','Yo decido','Yelp y reseñas'],c:1,mod:'Módulo 3'},
+  {p:'"Únete a su historia" significa:',o:['Contarle la historia del hotel','Notar el contexto y adaptar el trato','Ser amable con todos por igual','Preguntar sobre su familia'],c:1,mod:'Módulo 3'},
+  {p:'Si recibes una queja que no es de tu área directa:',o:['La pasas al depto correcto y te olvidas','Eres dueño de ella hasta que esté resuelta','Avisas al gerente y esperas','La anotas para la reunión mensual'],c:1,mod:'Módulo 3'},
+  {p:'¿Cuántas habitaciones Ocean King tiene el hotel?',o:['2','3','4','6'],c:1,mod:'Módulo 4'},
+  {p:'El Restaurante Casa Yuma tiene capacidad para:',o:['30 personas','50 personas','70 personas','100 personas'],c:1,mod:'Módulo 4'},
+  {p:'¿Cuántos departamentos opera el hotel?',o:['3','4','5','6'],c:2,mod:'Módulo 4'},
+  {p:'¿Cuántos minutos antes del turno debes presentarte?',o:['5 minutos','10 minutos','15 minutos','30 minutos'],c:2,mod:'Módulo 5'},
+  {p:'¿Puedes usar tu celular personal durante el servicio activo?',o:['Sí, en silencio','Sí en tiempos muertos','No, está guardado y en silencio','Sí, para WhatsApp de trabajo'],c:2,mod:'Módulo 5'},
+  {p:'¿Cuál SÍ está permitido en redes sociales?',o:['Foto de un huésped sin permiso','Info sobre tarifas del hotel','Mencionar con orgullo que trabajas aquí','Opinar sobre incidentes internos'],c:2,mod:'Módulo 5'},
+  {p:'En el check-in, ¿qué va primero?',o:['Los trámites, para no cometer errores','El huésped siempre va primero','Depende del día y la ocupación','Los dos al mismo tiempo'],c:1,mod:'Módulo 6'},
+  {p:'¿Cuál es el sistema para ver reservas?',o:['Poster','Whistle','Cloudbeds','WhatsApp Business'],c:2,mod:'Módulo 6'},
+  {p:'En quejas, ¿cuándo presentas opciones al huésped?',o:['Nunca, tú decides','Siempre que sea posible, para que sienta control','Solo si el gerente lo autoriza','Al final, después de resolver'],c:1,mod:'Módulo 6'},
+  {p:'¿Qué confirmas el día anterior al check-out?',o:['Que la habitación esté limpia','Que tenga resuelto su transporte','Que la cuenta esté impresa','Que haya dejado buena reseña'],c:1,mod:'Módulo 6'},
+  {p:'Un accidente de seguridad con un huésped: ¿qué haces?',o:['Lo resuelves solo para no alarmar','Lo registras para el reporte semanal','Escalas al líder de inmediato, sin excepción','Esperas a que el huésped pida ayuda'],c:2,mod:'Módulo 6'},
+];
+let qi=0, respuestas=[], yaGuardado=false;
+
+window.iniciarEval=()=>{qi=0;respuestas=[];yaGuardado=false;renderEvalPregunta();};
+
+function renderEvalPregunta(){
+  if(qi>=PREGUNTAS.length){renderEvalResultado();return;}
+  const q=PREGUNTAS[qi],letras=['A','B','C','D'];let res=false;
+  const app=$('evalApp');
+  app.innerHTML=`
+    <div class="mod-header"><div class="mod-header-inner">
+      <div class="mod-hicon" style="background:#faf6dc;">⭐</div>
+      <div class="mod-hinfo">
+        <div class="mod-hstep">Pregunta ${qi+1} de ${PREGUNTAS.length} · ${q.mod}</div>
+        <div class="mod-htitle">Evaluación Final</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${Math.round(qi/PREGUNTAS.length*100)}%"></div></div>
+      </div>
+    </div></div>
+    <div class="slide-wrap">
+      <div class="quiz-wrap">
+        <div class="quiz-num">Pregunta ${qi+1} de ${PREGUNTAS.length}</div>
+        <div class="quiz-dots">${PREGUNTAS.map((_,i)=>`<div class="quiz-dot${i<qi?respuestas[i]?.c?' ok':' fail':i===qi?' curr':''}"></div>`).join('')}</div>
+        <div class="quiz-q">${q.p}</div>
+        <div class="quiz-opts" id="eopts">${q.o.map((o,i)=>`<button class="quiz-opt" onclick="evalResponder(${i})" data-i="${i}"><span class="opt-letter">${letras[i]}</span>${o}</button>`).join('')}</div>
+        <div class="quiz-fb" id="efb"></div>
+      </div>
+    </div>
+    <div class="bottom-nav"><div class="bottom-nav-inner"><span></span><button class="btn-nav-next" id="esig" disabled onclick="evalSig()">Siguiente →</button></div></div>`;
+  window.evalResponder=idx=>{
+    if(res)return; res=true;
+    const ok=idx===q.c; respuestas.push({c:ok});
+    document.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add('correct');else if(i===idx&&!ok)b.classList.add('wrong');});
+    const fb=$('efb'); fb.className=`quiz-fb show ${ok?'correct':'wrong'}`; fb.innerHTML=ok?'✅ ¡Correcto!':'❌ La respuesta correcta es: <strong>'+q.o[q.c]+'</strong>';
+    $('esig').disabled=false;
+  };
+  window.evalSig=()=>{qi++;renderEvalPregunta();window.scrollTo(0,0);};
 }
 
-// Check existing session on load
-window.addEventListener('DOMContentLoaded', ()=>{
-  const session = getSession();
-  if (session.id) {
-    document.getElementById('lamarea-login').style.display = 'none';
-    document.getElementById('lamarea-hub').style.display = 'block';
+async function renderEvalResultado(){
+  const ok=respuestas.filter(r=>r.c).length, total=PREGUNTAS.length, pct=Math.round(ok/total*100);
+  const {id,nombre,depto}=session.load();
+  if(!yaGuardado&&id){
+    yaGuardado=true;
+    try {
+      const ref=doc(db,'academia_colaboradores',id), snap=await getDoc(ref);
+      if(snap.exists()){
+        const data=snap.data(), mods=data.modulos||{};
+        const ef={completado:true,puntaje:ok,total_preguntas:total,porcentaje:pct,fecha:new Date().toISOString()};
+        let s2=0,cnt=0; MODS.forEach(m=>{if(mods[m.key]?.completado){s2+=mods[m.key].porcentaje||0;cnt++;}});
+        const promMod=cnt>0?s2/cnt:0, pts=Math.round(promMod*0.6+pct*0.4);
+        const pasos=cnt+(1); const pctComp=Math.round(pasos/7*100);
+        const {updateDoc}=await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+        await updateDoc(ref,{evaluacion_final:ef,puntaje_total:pts,porcentaje_completado:pctComp});
+      }
+    } catch(e){console.error(e);}
   }
+  const emoji=pct>=80?'🎉':pct>=60?'👍':'📚';
+  const nivel=pct>=80?'La Marea':pct>=60?'Marea Activa':'Ola Nueva';
+  const msg=pct>=80?'¡Certificación completada! Demostraste que conoces Casa Yuma de principio a fin.':pct>=60?'Buen esfuerzo. Hay algunos temas que vale la pena repasar.':'Todavía hay camino por recorrer. Te recomendamos repasar los módulos.';
+  const hoy=new Date().toLocaleDateString('es-MX',{day:'2-digit',month:'long',year:'numeric'});
+  const byMod={};
+  PREGUNTAS.forEach((q2,i)=>{if(!byMod[q2.mod])byMod[q2.mod]={t:0,c:0};byMod[q2.mod].t++;if(respuestas[i]?.c)byMod[q2.mod].c++;});
+  const modRows=Object.entries(byMod).map(([m,v])=>{const p=Math.round(v.c/v.t*100),col=p>=80?'#27ae60':p>=60?'#e67e22':'#c0392b';return `<div class="mod-row"><span class="mod-row-name">${m}</span><div class="mod-row-bar"><div class="mod-row-fill" style="width:${p}%;background:${col}"></div></div><span class="mod-row-pct">${p}%</span></div>`;}).join('');
+  $('evalApp').innerHTML=`
+    <div class="slide-wrap">
+      <div class="cert-box">
+        <div class="cert-lbl">Certificado de Capacitación</div>
+        <div class="cert-badge">${emoji}</div>
+        <div class="cert-nivel">${nivel}</div>
+        <div class="cert-a">Otorgado a</div>
+        <div class="cert-name">${nombre||'Colaborador'}</div>
+        <div class="cert-depto">${depto||''}</div>
+        <div class="cert-pct">${pct}%</div>
+        <div class="cert-pct-lbl">Puntaje evaluación final</div>
+        <div class="cert-divider"></div>
+        <div class="cert-date">Academia La Marea · ${hoy}</div>
+      </div>
+      <div class="quiz-wrap" style="margin-top:16px;">
+        <p style="font-size:14px;line-height:1.7;color:var(--mid);margin-bottom:18px;">${msg}</p>
+        <div class="mod-breakdown">${modRows}</div>
+        <div class="result-stats">
+          <div class="result-stat"><div class="result-stat-num" style="color:#27ae60">${ok}</div><div class="result-stat-lbl">Correctas</div></div>
+          <div class="result-stat"><div class="result-stat-num" style="color:#c0392b">${total-ok}</div><div class="result-stat-lbl">A mejorar</div></div>
+          <div class="result-stat"><div class="result-stat-num">${total}</div><div class="result-stat-lbl">Total</div></div>
+        </div>
+        <button class="btn btn-blue" style="width:100%;justify-content:center;margin-top:16px;" onclick="ir('view-lamarea');initHub()">Ver mi progreso →</button>
+      </div>
+    </div>`;
+}
+
+// Expose initEval
+window.addEventListener('view-evalfinal-shown', () => {
+  $('evalApp').innerHTML=`
+    <div class="eval-intro">
+      <span class="eval-icon">⭐</span>
+      <h1 class="eval-title">Evaluación Final</h1>
+      <p class="eval-desc">Cubre los 6 módulos que ya estudiaste. Lee cada pregunta con calma.</p>
+      <div class="eval-stats">
+        <div class="eval-stat"><div class="eval-stat-num">20</div><div class="eval-stat-lbl">Preguntas</div></div>
+        <div class="eval-stat"><div class="eval-stat-num">40%</div><div class="eval-stat-lbl">Del puntaje total</div></div>
+        <div class="eval-stat"><div class="eval-stat-num">Sin límite</div><div class="eval-stat-lbl">De tiempo</div></div>
+      </div>
+      <div style="background:#e0f0f1;border-radius:9px;padding:13px 16px;font-size:13px;color:var(--blue);text-align:left;margin-bottom:24px;">💡 Un solo intento. Se registra tu puntaje al finalizar.</div>
+      <button class="btn btn-blue" style="width:100%;justify-content:center;font-size:14px;padding:16px;" onclick="iniciarEval()">Comenzar evaluación →</button>
+      <div style="display:block;text-align:center;margin-top:14px;font-size:12px;color:var(--mid);opacity:0.4;cursor:pointer;" onclick="ir('view-lamarea')">Volver a mis módulos</div>
+    </div>`;
 });
 
-// ── Líderes dashboard data ──
-let TODOS = [], FILTRADOS = [];
-const MODS_INFO = [
-  {key:'m1',nombre:'Historia'},{key:'m2',nombre:'La Marea'},{key:'m3',nombre:'Código YUMA'},
-  {key:'m4',nombre:'Espacios'},{key:'m5',nombre:'Conducta'},{key:'m6',nombre:'Protocolo'}
-];
+// Override ir to dispatch event
+const irBase=window.ir;
+window.ir=function(id){
+  irBase(id);
+  if(id==='view-evalfinal') window.dispatchEvent(new Event('view-evalfinal-shown'));
+};
 
-async function cargarDashboardLideres() {
+// ── Líderes data ──
+let TODOS=[],FILTRADOS=[];
+async function cargarLideres(){
   try {
-    TODOS = (await getDocs(collection(db,'academia_colaboradores'))).docs.map(d=>({id:d.id,...d.data()}));
+    TODOS=(await getDocs(collection(db,'academia_colaboradores'))).docs.map(d=>({id:d.id,...d.data()}));
     TODOS.sort((a,b)=>(b.porcentaje_completado||0)-(a.porcentaje_completado||0));
-    FILTRADOS = [...TODOS];
-    renderKPIs(); renderTabla();
-    document.getElementById('lastUpdate').textContent = `Última actualización: ${new Date().toLocaleString('es-MX')}`;
-  } catch(e) { document.getElementById('tableWrap').innerHTML = '<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Error al cargar datos.</div>'; }
+    FILTRADOS=[...TODOS];
+    const k=$('kpiGrid').children;
+    k[0].querySelector('.kpi-num').textContent=TODOS.length;
+    k[1].querySelector('.kpi-num').textContent=TODOS.filter(c=>c.porcentaje_completado>=100).length;
+    k[2].querySelector('.kpi-num').textContent=(TODOS.length>0?Math.round(TODOS.reduce((s,c)=>s+(c.puntaje_total||0),0)/TODOS.length):0)+'%';
+    k[3].querySelector('.kpi-num').textContent=TODOS.filter(c=>c.evaluacion_final?.completado).length;
+    $('ldrUpdate').textContent=`Última actualización: ${new Date().toLocaleString('es-MX')}`;
+    renderTabla();
+  } catch(e){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Error al cargar datos.</div>';}
 }
 
-function renderKPIs() {
-  const total=TODOS.length, completos=TODOS.filter(c=>c.porcentaje_completado>=100).length;
-  const prom=total>0?Math.round(TODOS.reduce((s,c)=>s+(c.puntaje_total||0),0)/total):0;
-  const conFinal=TODOS.filter(c=>c.evaluacion_final?.completado).length;
-  const cards = document.getElementById('kpiRow').children;
-  cards[0].querySelector('div').textContent=total;
-  cards[1].querySelector('div').textContent=completos;
-  cards[2].querySelector('div').textContent=prom+'%';
-  cards[3].querySelector('div').textContent=conFinal;
-}
-
-function renderTabla() {
-  if (!FILTRADOS.length) { document.getElementById('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">No hay colaboradores que coincidan.</div>'; return; }
-  const rows = FILTRADOS.map(c=>{
-    const mods=c.modulos||{}, ef=c.evaluacion_final||{}, pct=c.porcentaje_completado||0, pts=c.puntaje_total||0;
-    const dots = MODS_INFO.map(m=>{
-      const mod=mods[m.key]; if(!mod?.completado) return `<div style="width:22px;height:22px;border-radius:50%;border:1.5px solid #e0dcd0;display:flex;align-items:center;justify-content:center;font-size:9px;color:#bbb;" title="${m.nombre}">·</div>`;
-      const p=mod.porcentaje||0, c2=p>=80?'#27ae60':p>=60?'#e67e22':'#c0392b';
-      return `<div style="width:22px;height:22px;border-radius:50%;background:${c2}22;border:1.5px solid ${c2};display:flex;align-items:center;justify-content:center;font-size:8px;color:${c2};font-family:var(--font-mono);" title="${m.nombre}: ${p}%">${p}%</div>`;
-    }).join('');
-    const barColor=pct>=80?'#27ae60':pct>=50?'#e67e22':'#c0392b';
-    const ptsColor=pts>=80?'#e8f5e9':pts>=60?'#faf6dc':'#fde8e8';
-    const ptsTxt=pts>=80?'#1a5c2a':pts>=60?'#7a6e1a':'#7a1a1a';
-    return `<tr onclick="verDetalle('${c.id}')" style="cursor:pointer;border-bottom:1px solid #f0ece0;">
-      <td style="padding:14px 16px;"><div style="font-size:13px;font-weight:500;">${c.nombre}</div><div style="font-size:11px;color:var(--mid);opacity:0.6;">#${c.numero_empleado||'—'}</div></td>
-      <td style="padding:14px 16px;"><span style="display:inline-block;padding:4px 10px;border-radius:20px;font-size:10px;letter-spacing:0.06em;background:#e0f0f1;color:var(--blue);">${c.departamento}</span></td>
-      <td style="padding:14px 16px;"><div style="display:flex;gap:5px;">${dots}</div></td>
-      <td style="padding:14px 16px;">${ef.completado?`<span style="font-size:13px;">✅ ${ef.porcentaje}%</span>`:'<span style="opacity:0.3;">—</span>'}</td>
-      <td style="padding:14px 16px;"><div style="font-size:11px;color:var(--mid);opacity:0.7;">${pct}%</div><div style="height:6px;background:#ede9db;border-radius:3px;overflow:hidden;margin-top:4px;width:80px;"><div style="height:100%;width:${pct}%;background:${barColor};border-radius:3px;"></div></div></td>
-      <td style="padding:14px 16px;"><span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:12px;font-size:12px;font-family:var(--font-mono);background:${ptsColor};color:${ptsTxt};">${pts>0?pts+'%':'—'}</span></td>
-      <td style="padding:14px 16px;font-size:11px;color:var(--mid);opacity:0.5;">${c.fecha_inicio?new Date(c.fecha_inicio.seconds?c.fecha_inicio.seconds*1000:c.fecha_inicio).toLocaleDateString('es-MX'):'—'}</td>
+function renderTabla(){
+  if(!FILTRADOS.length){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Sin resultados.</div>';return;}
+  const rows=FILTRADOS.map(c=>{
+    const m=c.modulos||{},ef=c.evaluacion_final||{},pct=c.porcentaje_completado||0,pts=c.puntaje_total||0;
+    const dots=MINFO.map(mi=>{const md=m[mi.key];if(!md?.completado)return `<div class="mod-dot" title="${mi.n}">·</div>`;const p=md.porcentaje||0,col=p>=80?'#27ae60':p>=60?'#e67e22':'#c0392b';return `<div class="mod-dot" style="background:${col}22;border-color:${col};color:${col}" title="${mi.n}: ${p}%">${p}%</div>`;}).join('');
+    const bc=pct>=80?'#27ae60':pct>=50?'#e67e22':'#c0392b';
+    const pc=pts>=80?'#e8f5e9':pts>=60?'#faf6dc':'#fde8e8',pt=pts>=80?'#1a5c2a':pts>=60?'#7a6e1a':'#7a1a1a';
+    return `<tr onclick="verDetalle('${c.id}')">
+      <td><div style="font-size:13px;font-weight:500;">${c.nombre}</div><div style="font-size:11px;opacity:0.5;">#${c.numero_empleado||'—'}</div></td>
+      <td><span style="padding:3px 9px;border-radius:12px;font-size:10px;background:#e0f0f1;color:var(--blue);">${c.departamento||'—'}</span></td>
+      <td><div class="mod-dots">${dots}</div></td>
+      <td>${ef.completado?`✅ ${ef.porcentaje}%`:'<span style="opacity:0.3">—</span>'}</td>
+      <td><div style="font-size:11px;opacity:0.6;">${pct}%</div><div class="mini-bar" style="width:72px"><div class="mini-fill" style="width:${pct}%;background:${bc}"></div></div></td>
+      <td><span style="padding:3px 10px;border-radius:11px;font-size:12px;font-family:var(--mono);background:${pc};color:${pt};">${pts>0?pts+'%':'—'}</span></td>
+      <td style="font-size:11px;opacity:0.5;">${c.fecha_inicio?new Date(c.fecha_inicio.seconds?c.fecha_inicio.seconds*1000:c.fecha_inicio).toLocaleDateString('es-MX'):'—'}</td>
     </tr>`;
   }).join('');
-  document.getElementById('tableWrap').innerHTML=`<table style="width:100%;border-collapse:collapse;min-width:800px;"><thead style="background:var(--dark);"><tr>${['Colaborador','Departamento','M1·M2·M3·M4·M5·M6','Eval. Final','% Completado','Puntaje Global','Inicio'].map(h=>`<th style="padding:14px 16px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);text-align:left;white-space:nowrap;font-weight:normal;font-family:var(--font-mono);">${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+  $('tableWrap').innerHTML=`<table><thead><tr>${['Colaborador','Departamento','M1·M2·M3·M4·M5·M6','Eval. Final','% Completado','Puntaje Global','Inicio'].map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-window.filtrar = function() {
-  const b=document.getElementById('searchInput').value.toLowerCase();
-  const d=document.getElementById('deptoFilter').value;
-  const s=document.getElementById('statusFilter').value;
+window.filtrar=()=>{
+  const b=$('searchInput').value.toLowerCase(),d=$('deptoFilter').value,s=$('statusFilter').value;
   FILTRADOS=TODOS.filter(c=>{
     const mn=c.nombre?.toLowerCase().includes(b)||c.numero_empleado?.includes(b);
     const md=!d||c.departamento===d;
@@ -817,50 +938,34 @@ window.filtrar = function() {
   renderTabla();
 };
 
-window.verDetalle = function(id) {
-  const c=TODOS.find(x=>x.id===id); if(!c) return;
-  const mods=c.modulos||{}, ef=c.evaluacion_final||{};
-  const modRows=MODS_INFO.map(m=>{
-    const mod=mods[m.key], done=mod?.completado, p=mod?.porcentaje||0;
-    const cls=!done?'#bbb':p>=80?'#27ae60':p>=60?'#e67e22':'#c0392b';
-    return `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0ece0;">
-      <div style="font-size:13px;color:var(--dark);flex:1;">${m.nombre}</div>
-      <div style="font-size:16px;font-family:var(--font-mono);color:${cls};">${done?p+'%':'—'}</div>
-    </div>`;
-  }).join('');
+window.verDetalle=id=>{
+  const c=TODOS.find(x=>x.id===id);if(!c)return;
+  const m=c.modulos||{},ef=c.evaluacion_final||{};
+  const rows=MINFO.map(mi=>{const md=m[mi.key],done=md?.completado,p=md?.porcentaje||0,col=!done?'#bbb':p>=80?'#27ae60':p>=60?'#e67e22':'#c0392b';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #f0ece0;"><div style="font-size:13px;flex:1;">${mi.n}</div><div style="font-size:15px;font-family:var(--mono);color:${col};">${done?p+'%':'—'}</div></div>`;}).join('');
   const pts=c.puntaje_total||0;
-  document.getElementById('modal').innerHTML=`
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">
-      <div><div style="font-size:20px;font-family:var(--font-mono);">${c.nombre}</div><div style="font-size:12px;color:var(--mid);opacity:0.6;">#${c.numero_empleado||'—'} · ${c.departamento}</div></div>
-      <button onclick="cerrarModal()" style="font-size:22px;opacity:0.4;background:none;border:none;cursor:pointer;">✕</button>
+  $('modalBox').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;">
+      <div><div style="font-size:19px;font-family:var(--mono);">${c.nombre}</div><div style="font-size:12px;opacity:0.5;">#${c.numero_empleado||'—'} · ${c.departamento}</div></div>
+      <button onclick="$('modalOverlay').classList.remove('open')" style="font-size:20px;opacity:0.38;background:none;border:none;cursor:pointer;">✕</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;">
-      <div style="text-align:center;background:var(--light);border-radius:10px;padding:14px 8px;"><div style="font-size:24px;font-family:var(--font-mono);color:var(--blue);">${c.porcentaje_completado||0}%</div><div style="font-size:10px;color:var(--mid);opacity:0.6;text-transform:uppercase;letter-spacing:0.06em;">Completado</div></div>
-      <div style="text-align:center;background:var(--light);border-radius:10px;padding:14px 8px;"><div style="font-size:24px;font-family:var(--font-mono);color:${pts>=80?'#27ae60':pts>=60?'#e67e22':'#c0392b'};">${pts||'—'}%</div><div style="font-size:10px;color:var(--mid);opacity:0.6;text-transform:uppercase;letter-spacing:0.06em;">Puntaje global</div></div>
-      <div style="text-align:center;background:var(--light);border-radius:10px;padding:14px 8px;"><div style="font-size:24px;font-family:var(--font-mono);color:var(--blue);">${ef.completado?'✅':'—'}</div><div style="font-size:10px;color:var(--mid);opacity:0.6;text-transform:uppercase;letter-spacing:0.06em;">Eval. final</div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;">
+      <div style="text-align:center;background:var(--light);border-radius:9px;padding:13px 8px;"><div style="font-size:22px;font-family:var(--mono);color:var(--blue);">${c.porcentaje_completado||0}%</div><div style="font-size:10px;opacity:0.55;text-transform:uppercase;letter-spacing:0.06em;">Completado</div></div>
+      <div style="text-align:center;background:var(--light);border-radius:9px;padding:13px 8px;"><div style="font-size:22px;font-family:var(--mono);color:${pts>=80?'#27ae60':pts>=60?'#e67e22':'#c0392b'};">${pts||'—'}%</div><div style="font-size:10px;opacity:0.55;text-transform:uppercase;letter-spacing:0.06em;">Puntaje global</div></div>
+      <div style="text-align:center;background:var(--light);border-radius:9px;padding:13px 8px;"><div style="font-size:22px;font-family:var(--mono);color:var(--blue);">${ef.completado?'✅':'—'}</div><div style="font-size:10px;opacity:0.55;text-transform:uppercase;letter-spacing:0.06em;">Eval. final</div></div>
     </div>
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mid);opacity:0.6;margin-bottom:8px;">Detalle por módulo</div>
-    ${modRows}
-    <div style="display:flex;align-items:center;gap:12px;padding:12px 0;background:#faf8f2;border-radius:8px;margin-top:4px;padding:12px 10px;">
-      <div style="font-size:13px;color:var(--dark);flex:1;">⭐ Evaluación Final</div>
-      <div style="font-size:16px;font-family:var(--font-mono);color:${ef.completado?'#27ae60':'#bbb'};">${ef.completado?ef.porcentaje+'%':'—'}</div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.55;margin-bottom:8px;">Detalle por módulo</div>${rows}
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 10px;background:#faf8f2;border-radius:8px;margin-top:4px;">
+      <div style="font-size:13px;flex:1;">⭐ Evaluación Final</div>
+      <div style="font-size:15px;font-family:var(--mono);color:${ef.completado?'#27ae60':'#bbb'};">${ef.completado?ef.porcentaje+'%':'—'}</div>
     </div>`;
-  const overlay=document.getElementById('modalOverlay'); overlay.style.display='flex';
+  $('modalOverlay').classList.add('open');
 };
 
-window.cerrarModal = function(e) {
-  if (!e||e.target===document.getElementById('modalOverlay')) document.getElementById('modalOverlay').style.display='none';
-};
-
-window.exportarCSV = function() {
-  const headers=['Nombre','#Empleado','Departamento','M1%','M2%','M3%','M4%','M5%','M6%','Eval.Final%','% Completado','Puntaje Global'];
-  const rows=FILTRADOS.map(c=>{
-    const mods=c.modulos||{}, ef=c.evaluacion_final||{};
-    return [c.nombre,c.numero_empleado||'',c.departamento,...MODS_INFO.map(m=>mods[m.key]?.porcentaje??''),ef.porcentaje??'',c.porcentaje_completado||0,c.puntaje_total||0].join(',');
-  });
-  const csv=[headers.join(','),...rows].join('\n');
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'})),download:`academia-casayuma-${new Date().toISOString().slice(0,10)}.csv`});
-  a.click();
+window.exportarCSV=()=>{
+  const h=['Nombre','#Empleado','Departamento','M1%','M2%','M3%','M4%','M5%','M6%','Eval.Final%','% Completado','Puntaje Global'];
+  const rows=FILTRADOS.map(c=>{const m=c.modulos||{},ef=c.evaluacion_final||{};return [c.nombre,c.numero_empleado||'',c.departamento,...MINFO.map(mi=>m[mi.key]?.porcentaje??''),ef.porcentaje??'',c.porcentaje_completado||0,c.puntaje_total||0].join(',');});
+  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\ufeff'+[h,...rows].join('\n')],{type:'text/csv;charset=utf-8;'})),download:`academia-${new Date().toISOString().slice(0,10)}.csv`});a.click();
 };
 </script>
 </body>
