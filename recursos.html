@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recursos · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: var(--light); }
+
+  .hero {
+    background: var(--dark);
+    padding: 48px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 40px;
+    background: var(--light);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .hero-wave {
+    position: absolute; inset: 0; opacity: 0.04;
+    background: repeating-linear-gradient(0deg, transparent, transparent 16px, var(--blue) 16px, var(--blue) 18px);
+  }
+  .hero-label {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+  .hero-title {
+    font-size: clamp(26px, 5vw, 40px);
+    color: var(--white);
+    font-family: var(--font-mono);
+    margin-bottom: 12px;
+    position: relative; z-index: 1;
+    line-height: 1.2;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: var(--white);
+    opacity: 0.45;
+    position: relative; z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    opacity: 0.6;
+    margin-bottom: 14px;
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #ddd8c8;
+  }
+
+  /* Resource cards */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .resource-card {
+    background: white;
+    border-radius: 14px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--dark);
+    border: 1.5px solid transparent;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .resource-card:hover {
+    border-color: var(--blue);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(44,110,115,0.12);
+  }
+  .resource-card.coming-soon {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .resource-card.coming-soon::after {
+    content: 'Próximamente';
+    position: absolute;
+    top: 12px; right: 12px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: #f0ece0;
+    color: var(--mid);
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+
+  .rc-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .rc-icon.blue   { background: #e0f0f1; }
+  .rc-icon.gold   { background: #faf6dc; }
+  .rc-icon.green  { background: #e8ead5; }
+  .rc-icon.purple { background: #f5e0ec; }
+  .rc-icon.dark   { background: #f0ece0; }
+
+  .rc-title {
+    font-size: 14px;
+    color: var(--dark);
+    line-height: 1.3;
+  }
+  .rc-desc {
+    font-size: 12px;
+    color: var(--mid);
+    opacity: 0.6;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .rc-link {
+    font-size: 11px;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .rc-link::after { content: '→'; }
+
+  /* Featured card - full width */
+  .resource-card.featured {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    background: var(--dark);
+    border-color: rgba(225,208,130,0.25);
+  }
+  .resource-card.featured:hover {
+    border-color: var(--gold);
+    box-shadow: 0 8px 30px rgba(225,208,130,0.15);
+  }
+  .resource-card.featured .rc-title { font-size: 16px; color: var(--white); }
+  .resource-card.featured .rc-desc  { color: rgba(255,255,255,0.45); }
+  .resource-card.featured .rc-link  { color: var(--gold); }
+  .resource-card.featured .rc-icon  { background: rgba(225,208,130,0.15); flex-shrink: 0; }
+
+  /* Quick links bar */
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .quick-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: white;
+    border: 1.5px solid #e0dcd0;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--dark);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .quick-link:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* Contact strip */
+  .contact-strip {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+  }
+  .contact-info { display: flex; flex-direction: column; gap: 4px; }
+  .contact-label { font-size: 11px; color: var(--mid); opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; }
+  .contact-value { font-size: 14px; color: var(--dark); }
+
+  @media (max-width: 600px) {
+    .resource-card.featured { flex-direction: column; }
+    .contact-strip { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Casa Yuma · Academia</a>
+  <span class="subtitle">Recursos</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-wave"></div>
+  <div class="hero-label">La Marea · Material de apoyo</div>
+  <h1 class="hero-title">Todo lo que necesitas<br>en un solo lugar</h1>
+  <p class="hero-sub">Aquí encuentras los documentos, guías y herramientas para hacer bien tu trabajo en Casa Yuma.</p>
+</div>
+
+<div class="content">
+
+  <!-- Quick links -->
+  <div class="quick-links">
+    <a href="#documentos" class="quick-link">📄 Documentos</a>
+    <a href="#herramientas" class="quick-link">🛠️ Herramientas</a>
+    <a href="#protocolos" class="quick-link">🚨 Protocolos</a>
+    <a href="#induccion" class="quick-link">🎓 Inducción</a>
+    <a href="academia.html" class="quick-link">🌊 Volver a módulos</a>
+  </div>
+
+  <!-- Documentos esenciales -->
+  <div class="section-label" id="documentos">Documentos esenciales</div>
+  <div class="resource-grid">
+
+    <a href="#" class="resource-card featured" id="linkManual">
+      <div class="rc-icon" style="width:56px;height:56px;border-radius:14px;background:rgba(225,208,130,0.15);font-size:26px;display:flex;align-items:center;justify-content:center;">📋</div>
+      <div style="flex:1;">
+        <div class="rc-title">Manual del Colaborador</div>
+        <div class="rc-desc">Todo lo que necesitas saber sobre Casa Yuma: valores, protocolos, prestaciones, derechos y obligaciones.</div>
+        <div class="rc-link" style="color:var(--gold);margin-top:8px;">Ver documento</div>
+      </div>
+    </a>
+
+    <a href="https://casayuma.github.io/Organigrama/" target="_blank" class="resource-card">
+      <div class="rc-icon blue">🏗️</div>
+      <div class="rc-title">Organigrama interactivo</div>
+      <div class="rc-desc">Estructura del equipo, departamentos y quién es quién en Casa Yuma.</div>
+      <div class="rc-link">Ver organigrama</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon" id="linkReglamento">
+      <div class="rc-icon gold">📜</div>
+      <div class="rc-title">Reglamento interno</div>
+      <div class="rc-desc">Normas de conducta, asistencia, uso de instalaciones y código de vestimenta.</div>
+      <div class="rc-link">Ver documento</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon" id="linkPrestaciones">
+      <div class="rc-icon green">💰</div>
+      <div class="rc-title">Prestaciones y beneficios</div>
+      <div class="rc-desc">IMSS, vacaciones, días de descanso, permisos y todo lo que te corresponde como colaborador.</div>
+      <div class="rc-link">Ver documento</div>
+    </a>
+
+  </div>
+
+  <!-- Herramientas -->
+  <div class="section-label" id="herramientas">Herramientas de trabajo</div>
+  <div class="resource-grid">
+
+    <a href="#" class="resource-card coming-soon">
+      <div class="rc-icon blue">🖥️</div>
+      <div class="rc-title">Guía Cloudbeds</div>
+      <div class="rc-desc">Cómo consultar reservas, check-in, check-out y notas de huéspedes.</div>
+      <div class="rc-link">Ver guía</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon">
+      <div class="rc-icon gold">🍽️</div>
+      <div class="rc-title">Guía Poster (Restaurante)</div>
+      <div class="rc-desc">Cómo abrir mesa, tomar orden, aplicar descuentos y cerrar cuenta.</div>
+      <div class="rc-link">Ver guía</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon">
+      <div class="rc-icon green">💬</div>
+      <div class="rc-title">Guía WhatsApp Business</div>
+      <div class="rc-desc">Cómo responder mensajes de huéspedes, tiempos de respuesta y tono de comunicación.</div>
+      <div class="rc-link">Ver guía</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon">
+      <div class="rc-icon purple">📱</div>
+      <div class="rc-title">Guía Whistle</div>
+      <div class="rc-desc">Mensajería integrada con OTAs. Cómo atender solicitudes desde Booking y Airbnb.</div>
+      <div class="rc-link">Ver guía</div>
+    </a>
+
+  </div>
+
+  <!-- Protocolos -->
+  <div class="section-label" id="protocolos">Protocolos y emergencias</div>
+  <div class="resource-grid">
+
+    <a href="#" class="resource-card coming-soon" id="linkEmergencias">
+      <div class="rc-icon" style="background:#fde8e8;">🚨</div>
+      <div class="rc-title">Protocolo de emergencias</div>
+      <div class="rc-desc">Qué hacer en caso de incendio, accidente, evacuación o incidente médico.</div>
+      <div class="rc-link">Ver protocolo</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon">
+      <div class="rc-icon gold">🤝</div>
+      <div class="rc-title">Protocolo de quejas GIR</div>
+      <div class="rc-desc">Los 5 pasos para manejar una queja de huésped y escalar correctamente.</div>
+      <div class="rc-link">Ver protocolo</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon">
+      <div class="rc-icon green">🏥</div>
+      <div class="rc-title">Directorio de emergencias</div>
+      <div class="rc-desc">Números de Cruz Roja, hospital más cercano, bomberos y contactos internos clave.</div>
+      <div class="rc-link">Ver directorio</div>
+    </a>
+
+  </div>
+
+  <!-- Inducción -->
+  <div class="section-label" id="induccion">Material de inducción</div>
+  <div class="resource-grid">
+
+    <a href="#" class="resource-card coming-soon" id="linkPresentacion">
+      <div class="rc-icon blue">🎓</div>
+      <div class="rc-title">Presentación de inducción</div>
+      <div class="rc-desc">La presentación oficial que cubre historia, valores, espacios y lo que significa ser parte de La Marea.</div>
+      <div class="rc-link">Ver presentación</div>
+    </a>
+
+    <a href="#" class="resource-card coming-soon">
+      <div class="rc-icon gold">🌊</div>
+      <div class="rc-title">Experiencias Casa Yuma</div>
+      <div class="rc-desc">Picnic al atardecer, cena romántica, pedida de mano, cumpleaños — lo que ofrecemos y cómo coordinarlo.</div>
+      <div class="rc-link">Ver documento</div>
+    </a>
+
+    <a href="academia.html" class="resource-card">
+      <div class="rc-icon blue">📚</div>
+      <div class="rc-title">Módulos de capacitación</div>
+      <div class="rc-desc">Los 6 módulos interactivos con quiz incluido. Historia, valores, espacios, conducta y protocolo.</div>
+      <div class="rc-link">Ir a módulos</div>
+    </a>
+
+  </div>
+
+  <!-- Contacto -->
+  <div class="section-label" style="margin-top:40px;">¿Necesitas ayuda?</div>
+  <div class="contact-strip">
+    <div class="contact-info">
+      <div class="contact-label">Correo del hotel</div>
+      <div class="contact-value">hello@casayuma.com</div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-label">WhatsApp</div>
+      <div class="contact-value">+52 1 954 138 8516</div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-label">Teléfono VoIP</div>
+      <div class="contact-value">+52 951 442 0442</div>
+    </div>
+    <a href="index.html" class="btn btn-outline btn-sm">← Inicio</a>
+  </div>
+
+</div>
+
+<script>
+  // Cuando tengas los links de Drive, reemplaza los href="#" de cada tarjeta aquí:
+  // document.getElementById('linkManual').href = 'TU_LINK_DE_DRIVE';
+  // document.getElementById('linkEmergencias').href = 'TU_LINK_DE_DRIVE';
+  // document.getElementById('linkPresentacion').href = 'TU_LINK_DE_DRIVE';
+  // Las tarjetas con coming-soon se activan automáticamente al poner el link y quitar la clase.
+</script>
+</body>
+</html>

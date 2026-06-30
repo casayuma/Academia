@@ -233,25 +233,15 @@ export async function renderModulo(MOD) {
             <a href="${MOD.siguiente}" class="btn btn-primary" style="justify-content:center;">
               Siguiente módulo →
             </a>
-            <button onclick="reintentar()" class="btn btn-outline" style="justify-content:center;">
-              Intentar de nuevo
-            </button>
             <a href="academia.html" style="display:block;text-align:center;font-size:12px;color:var(--mid);opacity:0.5;margin-top:4px;text-decoration:none;">
               Volver a mis módulos
             </a>
           </div>
-          <p class="retry-note">Puedes repetir el módulo cuantas veces quieras. Se guarda tu mejor puntaje.</p>
         </div>
       </div>
     `;
 
-    window.reintentar = function() {
-      qIndex = 0;
-      respuestas = [];
-      yaGuardado = false;
-      enQuiz = true;
-      render();
-    };
+
   }
 
   // ── HELPERS ─────────────────────────

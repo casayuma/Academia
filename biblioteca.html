@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biblioteca Yuma · Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body { background: var(--light); }
+
+  .hero {
+    background: var(--dark);
+    padding: 44px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 40px;
+    background: var(--light);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .hero-wave {
+    position: absolute; inset: 0; opacity: 0.04;
+    background: repeating-linear-gradient(0deg, transparent, transparent 16px, var(--blue) 16px, var(--blue) 18px);
+  }
+  .hero-label { font-size: 11px; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; position: relative; z-index: 1; }
+  .hero-title { font-size: clamp(24px, 5vw, 38px); color: var(--white); font-family: var(--font-mono); margin-bottom: 10px; position: relative; z-index: 1; line-height: 1.2; }
+  .hero-sub { font-size: 13px; color: var(--white); opacity: 0.45; position: relative; z-index: 1; max-width: 460px; margin: 0 auto; line-height: 1.6; }
+
+  .content { max-width: 900px; margin: 0 auto; padding: 36px 20px 80px; }
+
+  /* Category tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .tab {
+    padding: 9px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+    border: 1.5px solid #ddd8c8;
+    background: white;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.18s;
+    text-transform: uppercase;
+  }
+  .tab:hover, .tab.active { background: var(--blue); border-color: var(--blue); color: white; }
+
+  /* Document cards */
+  .doc-grid { display: flex; flex-direction: column; gap: 20px; }
+
+  .doc-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.06);
+    border: 1.5px solid #ede9db;
+    transition: box-shadow 0.2s;
+  }
+  .doc-card:hover { box-shadow: 0 6px 24px rgba(44,110,115,0.1); }
+
+  .doc-header {
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #ede9db;
+  }
+  .doc-header:hover { background: #faf8f2; }
+
+  .doc-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .doc-info { flex: 1; }
+  .doc-title { font-size: 15px; color: var(--dark); margin-bottom: 3px; }
+  .doc-desc { font-size: 12px; color: var(--mid); opacity: 0.6; line-height: 1.4; }
+  .doc-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+
+  .doc-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+  .btn-preview {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    border: 1.5px solid var(--blue);
+    color: var(--blue);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.18s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-preview:hover { background: var(--blue); color: white; }
+  .btn-open {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    background: var(--blue);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.18s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-open:hover { background: #245a5e; }
+
+  /* Expand arrow */
+  .expand-arrow {
+    font-size: 16px;
+    color: var(--mid);
+    opacity: 0.4;
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .doc-card.open .expand-arrow { transform: rotate(180deg); }
+
+  /* Embed container */
+  .doc-embed {
+    display: none;
+    background: #f5f2ea;
+    border-top: 1px solid #ede9db;
+  }
+  .doc-card.open .doc-embed { display: block; }
+
+  .embed-frame {
+    width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
+  }
+
+  .embed-note {
+    padding: 10px 24px;
+    font-size: 11px;
+    color: var(--mid);
+    opacity: 0.5;
+    background: #f5f2ea;
+    text-align: center;
+    letter-spacing: 0.04em;
+    border-top: 1px solid #ede9db;
+  }
+
+  /* Organigrama special card */
+  .org-card {
+    background: var(--dark);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-decoration: none;
+    border: 1.5px solid rgba(225,208,130,0.2);
+    transition: all 0.2s;
+    margin-bottom: 20px;
+  }
+  .org-card:hover { border-color: var(--gold); box-shadow: 0 6px 24px rgba(225,208,130,0.12); }
+  .org-card .doc-icon { background: rgba(225,208,130,0.15); }
+  .org-card .doc-title { color: var(--white); font-size: 16px; }
+  .org-card .doc-desc { color: rgba(255,255,255,0.45); }
+  .org-card .btn-open { background: var(--gold); color: var(--dark); }
+  .org-card .btn-open:hover { background: #d4c36e; }
+
+  .section-label {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--mid); opacity: 0.6; margin-bottom: 14px; margin-top: 32px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: #ddd8c8; }
+
+  @media (max-width: 600px) {
+    .doc-actions { flex-direction: column; gap: 6px; }
+    .embed-frame { height: 420px; }
+    .doc-header { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">Casa Yuma · Academia</a>
+  <span class="subtitle">Biblioteca Yuma</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-wave"></div>
+  <div class="hero-label">Material de apoyo · La Marea</div>
+  <h1 class="hero-title">Biblioteca Yuma</h1>
+  <p class="hero-sub">Todos los documentos que necesitas para trabajar bien en Casa Yuma, en un solo lugar.</p>
+</div>
+
+<div class="content">
+
+  <!-- Organigrama destacado -->
+  <div class="section-label">Estructura del equipo</div>
+  <a href="https://casayuma.github.io/Organigrama/" target="_blank" class="org-card">
+    <div class="doc-icon" style="width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;">🏗️</div>
+    <div style="flex:1;">
+      <div class="doc-title">Organigrama de Personal</div>
+      <div class="doc-desc">Estructura completa del equipo, departamentos y quién es quién en Casa Yuma. Interactivo y actualizado.</div>
+    </div>
+    <a href="https://casayuma.github.io/Organigrama/" target="_blank" class="btn-open">Ver organigrama →</a>
+  </a>
+
+  <!-- Documentos principales -->
+  <div class="section-label">Documentos esenciales</div>
+  <div class="doc-grid">
+
+    <!-- Manual del colaborador -->
+    <div class="doc-card" id="card-manual">
+      <div class="doc-header" onclick="toggleCard('card-manual')">
+        <div class="doc-icon" style="background:#e0f0f1;">📋</div>
+        <div class="doc-info">
+          <div class="doc-title">Manual del Colaborador</div>
+          <div class="doc-desc">Valores, protocolos, prestaciones, derechos y todo lo que necesitas saber como parte de La Marea.</div>
+          <div class="doc-meta">
+            <span class="badge badge-blue">Esencial</span>
+            <span class="badge badge-green">Inducción</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <a href="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/view" target="_blank" class="btn-open">Abrir ↗</a>
+        </div>
+        <div class="expand-arrow">▼</div>
+      </div>
+      <div class="doc-embed">
+        <iframe class="embed-frame" src="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/preview" allow="autoplay" loading="lazy"></iframe>
+        <div class="embed-note">Si el documento no carga, haz click en "Abrir ↗" arriba</div>
+      </div>
+    </div>
+
+    <!-- Inducción -->
+    <div class="doc-card" id="card-induccion">
+      <div class="doc-header" onclick="toggleCard('card-induccion')">
+        <div class="doc-icon" style="background:#faf6dc;">🎓</div>
+        <div class="doc-info">
+          <div class="doc-title">Presentación de Inducción</div>
+          <div class="doc-desc">La presentación oficial de bienvenida: historia, valores, espacios y lo que significa ser parte de La Marea.</div>
+          <div class="doc-meta">
+            <span class="badge badge-gold">Inducción</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <a href="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/edit" target="_blank" class="btn-open">Abrir ↗</a>
+        </div>
+        <div class="expand-arrow">▼</div>
+      </div>
+      <div class="doc-embed">
+        <iframe class="embed-frame" src="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/embed?start=false&loop=false&delayms=3000" allow="autoplay" loading="lazy"></iframe>
+        <div class="embed-note">Usa las flechas del teclado o los controles de la presentación para navegar</div>
+      </div>
+    </div>
+
+    <!-- Protocolo de emergencias -->
+    <div class="doc-card" id="card-emergencias">
+      <div class="doc-header" onclick="toggleCard('card-emergencias')">
+        <div class="doc-icon" style="background:#fde8e8;">🚨</div>
+        <div class="doc-info">
+          <div class="doc-title">Protocolo de Emergencias</div>
+          <div class="doc-desc">Qué hacer en caso de incendio, accidente, evacuación o incidente médico. Conocerlo puede salvar vidas.</div>
+          <div class="doc-meta">
+            <span class="badge badge-purple">Obligatorio</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <a href="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/view" target="_blank" class="btn-open">Abrir ↗</a>
+        </div>
+        <div class="expand-arrow">▼</div>
+      </div>
+      <div class="doc-embed">
+        <iframe class="embed-frame" src="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/preview" allow="autoplay" loading="lazy"></iframe>
+        <div class="embed-note">Si el documento no carga, haz click en "Abrir ↗" arriba</div>
+      </div>
+    </div>
+
+    <!-- Transporte -->
+    <div class="doc-card" id="card-transporte">
+      <div class="doc-header" onclick="toggleCard('card-transporte')">
+        <div class="doc-icon" style="background:#e8ead5;">🚌</div>
+        <div class="doc-info">
+          <div class="doc-title">Transporte de Colaboradores</div>
+          <div class="doc-desc">Rutas, horarios y puntos de encuentro del transporte para el equipo. Actualizado con las rutas vigentes.</div>
+          <div class="doc-meta">
+            <span class="badge badge-green">Operativo</span>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <a href="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/view" target="_blank" class="btn-open">Abrir ↗</a>
+        </div>
+        <div class="expand-arrow">▼</div>
+      </div>
+      <div class="doc-embed">
+        <iframe class="embed-frame" src="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/preview" allow="autoplay" loading="lazy"></iframe>
+        <div class="embed-note">Si el documento no carga, haz click en "Abrir ↗" arriba</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Módulos de capacitación -->
+  <div class="section-label">Capacitación</div>
+  <a href="colaborador-login.html" style="
+    display:flex; align-items:center; gap:16px;
+    background:white; border-radius:16px; padding:22px 24px;
+    text-decoration:none; color:var(--dark);
+    border:1.5px solid #ede9db;
+    box-shadow:0 2px 14px rgba(0,0,0,0.06);
+    transition:all 0.2s;
+  " onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='#ede9db'">
+    <div style="width:48px;height:48px;border-radius:12px;background:#e0f0f1;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🌊</div>
+    <div style="flex:1;">
+      <div style="font-size:15px;color:var(--dark);margin-bottom:3px;">Módulos de capacitación — La Marea</div>
+      <div style="font-size:12px;color:var(--mid);opacity:0.6;">6 módulos interactivos: historia, valores, espacios, conducta y protocolo al huésped.</div>
+    </div>
+    <span style="font-size:13px;color:var(--blue);letter-spacing:0.04em;">Entrar →</span>
+  </a>
+
+</div>
+
+<script>
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+</script>
+</body>
+</html>

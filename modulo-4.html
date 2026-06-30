@@ -54,7 +54,7 @@ const MODULO = {
       tipo: 'dato',
       titulo: 'Espacios del hotel',
       items: [
-        { icono: '🍽️', texto: '<strong>Restaurante Casa Yuma</strong> — Al aire libre, de día y de noche. Capacidad: 70 banquete / 100 cóctel. Sabores locales de temporada.' },
+        { icono: '🍽️', texto: '<strong>Restaurante Casa Yuma</strong> — Al aire libre, de día y de noche. Capacidad: 50 personas. Sabores locales de temporada.' },
         { icono: '🔥', texto: '<strong>Fogata</strong> — Área lounge frente al mar. Noches alrededor del fuego con vista al Pacífico. Capacidad: 20 personas.' },
         { icono: '🏖️', texto: '<strong>Playa Yuma</strong> — Espacio frente al mar para eventos. Capacidad: 100 personas.' },
         { icono: '💻', texto: '<strong>Coworking</strong> — Ambiente natural para trabajar. Capacidad: 25 personas.' }
@@ -72,15 +72,13 @@ const MODULO = {
     },
     {
       tipo: 'dato',
-      titulo: 'Los 7 departamentos',
+      titulo: 'Los 5 departamentos',
       items: [
-        { icono: '🏪', texto: '<strong>Recepción</strong> — Primera impresión, check-in/out, comunicación con huéspedes.' },
-        { icono: '🛏️', texto: '<strong>Ama de Llaves</strong> — Limpieza y preparación de habitaciones.' },
-        { icono: '🍳', texto: '<strong>Alimentos & Bebidas</strong> — Restaurante, bar, desayunos, experiencias.' },
-        { icono: '🔧', texto: '<strong>Mantenimiento</strong> — Operación técnica y prevención.' },
-        { icono: '💆', texto: '<strong>Spa</strong> — Tratamientos, reservas y day passes.' },
-        { icono: '📊', texto: '<strong>Administración</strong> — Finanzas, nómina y proveedores.' },
-        { icono: '🧭', texto: '<strong>Dirección</strong> — Estrategia, relaciones externas y Guest Experience.' }
+        { icono: '📊', texto: '<strong>Administración</strong> — Dirección general, compras, ventas y eventos.' },
+        { icono: '🍽️', texto: '<strong>Alimentos & Bebidas</strong> — Restaurante, cocina, bar y pool concierge.' },
+        { icono: '🔧', texto: '<strong>Mantenimiento & Seguridad</strong> — Operación técnica, jardinería y resguardo de instalaciones.' },
+        { icono: '🛏️', texto: '<strong>Housekeeping / Ama de Llaves</strong> — Limpieza de habitaciones y áreas públicas.' },
+        { icono: '🏪', texto: '<strong>Recepción & Servicios</strong> — Check-in/out, house managers, spa y masajes.' }
       ]
     }
   ],
@@ -96,13 +94,13 @@ const MODULO = {
       correcta: 3
     },
     {
-      pregunta: 'El Restaurante Casa Yuma tiene capacidad de banquete para:',
-      opciones: ['50 personas', '70 personas', '100 personas', '120 personas'],
+      pregunta: 'El Restaurante Casa Yuma tiene capacidad para:',
+      opciones: ['30 personas', '50 personas', '70 personas', '100 personas'],
       correcta: 1
     },
     {
       pregunta: '¿Cuántos departamentos opera el hotel?',
-      opciones: ['5', '6', '7', '8'],
+      opciones: ['3', '4', '5', '6'],
       correcta: 2
     },
     {

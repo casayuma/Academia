@@ -2,9 +2,6 @@
 // CASA YUMA — ACADEMIA
 // Firebase config & utilities
 // ===========================
-// INSTRUCCIONES: Reemplaza los valores de firebaseConfig con los de tu proyecto Firebase.
-// Proyecto actual: casayuma-dashboard (o el que uses para academia)
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, updateDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
