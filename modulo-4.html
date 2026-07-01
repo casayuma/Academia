@@ -9,108 +9,80 @@
 </head>
 <body>
 <nav class="topbar">
-  <a href="academia.html" class="logo">← Mis módulos</a>
+  <a href="index.html" class="logo">← Mis módulos</a>
   <span class="subtitle">Módulo 4 de 6</span>
 </nav>
 <div id="app"></div>
 <script type="module">
 import { renderModulo } from './modulo.js';
-
 const MODULO = {
-  key: 'm4',
-  numero: 4,
-  icono: '🏨',
-  titulo: 'Los espacios del hotel',
-  color: '#72785E',
-  siguiente: 'modulo-5.html',
+  key: 'm4', numero: 4, icono: '🏨', titulo: 'Los espacios del hotel',
+  color: '#72785E', siguiente: 'index.html',
   slides: [
-    {
-      tipo: 'portada',
-      titulo: 'Conoce el hotel',
-      texto: 'Para hablar con propiedad del hotel frente a un huésped, primero tienes que conocerlo bien. Esto es tu casa.',
-      imagen: '🏨'
-    },
-    {
-      tipo: 'dato',
-      titulo: 'Las habitaciones — 25 en total',
-      items: [
-        { icono: '🌿', texto: '<strong>Garden King (6)</strong> — Rodeadas de vegetación. Ambiente íntimo y fresco para quienes buscan tranquilidad y naturaleza.' },
-        { icono: '⭐', texto: '<strong>Standard King (4)</strong> — El estándar completo de Casa Yuma. Diseño limpio y cuidado en cada detalle.' },
-        { icono: '🏙️', texto: '<strong>Yuma King Terrace (12)</strong> — Terrazas privadas con vista panorámica. Muy solicitadas al atardecer.' },
-        { icono: '🌊', texto: '<strong>Ocean King (3)</strong> — Vista directa al Pacífico. Las más premium. Alta demanda en temporada alta.' }
-      ]
-    },
-    {
-      tipo: 'dato',
-      titulo: '¿Qué tiene cada habitación?',
-      items: [
-        { icono: '🛏️', texto: '<strong>Cama king-size</strong> en todas las habitaciones.' },
-        { icono: '🚿', texto: '<strong>Ducha tipo lluvia estilo spa</strong>, con piedra local y flora endémica.' },
-        { icono: '🔒', texto: 'Cada habitación es un <strong>retiro privado</strong> con todas las comodidades modernas.' },
-        { icono: '🧑‍🤝‍🧑', texto: 'Solo para adultos — esto es parte de la propuesta del hotel.' }
-      ]
-    },
-    {
-      tipo: 'dato',
-      titulo: 'Espacios del hotel',
-      items: [
-        { icono: '🍽️', texto: '<strong>Restaurante Casa Yuma</strong> — Al aire libre, de día y de noche. Capacidad: 50 personas. Sabores locales de temporada.' },
-        { icono: '🔥', texto: '<strong>Fogata</strong> — Área lounge frente al mar. Noches alrededor del fuego con vista al Pacífico. Capacidad: 20 personas.' },
-        { icono: '🏖️', texto: '<strong>Playa Yuma</strong> — Espacio frente al mar para eventos. Capacidad: 100 personas.' },
-        { icono: '💻', texto: '<strong>Coworking</strong> — Ambiente natural para trabajar. Capacidad: 25 personas.' }
-      ]
-    },
-    {
-      tipo: 'dato',
-      titulo: 'Experiencias que ofrecemos',
-      items: [
-        { icono: '🌅', texto: '<strong>Yuma Sunset Picnic</strong> — Montaje en playa al atardecer. Vino de la casa y fruta de temporada. 90 min.' },
-        { icono: '🕯️', texto: '<strong>Cena romántica</strong> — Mesa privada en playa, 4 tiempos, mesero exclusivo. 2 horas.' },
-        { icono: '💍', texto: '<strong>Pedida de mano</strong> — Montaje con arco de bambú, fotógrafo, bouquet. Coordinación completa.' },
-        { icono: '🎂', texto: '<strong>Cumpleaños</strong> — Espumoso, pastel pequeño y decoración con globos.' }
-      ]
-    },
-    {
-      tipo: 'dato',
-      titulo: 'Los 5 departamentos',
-      items: [
-        { icono: '📊', texto: '<strong>Administración</strong> — Dirección general, compras, ventas y eventos.' },
-        { icono: '🍽️', texto: '<strong>Alimentos & Bebidas</strong> — Restaurante, cocina, bar y pool concierge.' },
-        { icono: '🔧', texto: '<strong>Mantenimiento & Seguridad</strong> — Operación técnica, jardinería y resguardo de instalaciones.' },
-        { icono: '🛏️', texto: '<strong>Housekeeping / Ama de Llaves</strong> — Limpieza de habitaciones y áreas públicas.' },
-        { icono: '🏪', texto: '<strong>Recepción & Servicios</strong> — Check-in/out, house managers, spa y masajes.' }
-      ]
+    { tipo: 'portada', titulo: 'Conoce el hotel', texto: 'Para hablar con propiedad del hotel frente a un huésped, primero tienes que conocerlo bien. Esto es tu casa.', imagen: '🏨' },
+    { tipo: 'dato', titulo: 'Las habitaciones — 25 en total', items: [
+      { icono: '🌿', texto: '<strong>Garden King (6)</strong> — Rodeadas de vegetación. Ambiente íntimo y fresco.' },
+      { icono: '⭐', texto: '<strong>Standard King (4)</strong> — El estándar completo de Casa Yuma. Diseño limpio y cuidado.' },
+      { icono: '🏙️', texto: '<strong>Yuma King Terrace (12)</strong> — Terrazas privadas con vista panorámica. Muy solicitadas al atardecer.' },
+      { icono: '🌊', texto: '<strong>Ocean King (3)</strong> — Vista directa al Pacífico. Las más premium.' }
+    ]},
+    { tipo: 'dato', titulo: '¿Qué tiene cada habitación?', items: [
+      { icono: '🛏️', texto: '<strong>Cama king-size</strong> en todas las habitaciones.' },
+      { icono: '🚿', texto: '<strong>Ducha tipo lluvia estilo spa</strong>, con piedra local y flora endémica.' },
+      { icono: '🔒', texto: 'Cada habitación es un <strong>retiro privado</strong> con todas las comodidades modernas.' },
+      { icono: '🧑‍🤝‍🧑', texto: '<strong>Solo para adultos</strong> — esto es parte de la propuesta del hotel.' }
+    ]},
+    { tipo: 'dato', titulo: 'Mesa del Sol — Nuestro restaurante', items: [
+      { icono: '🌅', texto: 'Restaurante <strong>frente al mar</strong> en la costa oaxaqueña.' },
+      { icono: '🍽️', texto: 'Sabores tradicionales con creatividad contemporánea: <strong>pescado a la parrilla, aguachile, tlayudas, mole negro con pollo, pastas hechas en casa</strong>.' },
+      { icono: '⏰', texto: '<strong>Horarios:</strong> Desayuno 8–12 · Almuerzo 12–18 · Cena 18–22 hrs.' },
+      { icono: '🌿', texto: 'Patio interior exuberante, acceso a playa privada, coctelería artesanal y música.' },
+      { icono: '👥', texto: 'Capacidad: <strong>50 personas</strong>.' }
+    ]},
+    { tipo: 'dato', titulo: 'Otros espacios del hotel', items: [
+      { icono: '🔥', texto: '<strong>Fogata</strong> — Lounge frente al mar. Noches alrededor del fuego. Capacidad: 20 personas.' },
+      { icono: '🏖️', texto: '<strong>Playa Yuma</strong> — Espacio para eventos frente al mar. Capacidad: 100 personas.' },
+      { icono: '💻', texto: '<strong>Coworking</strong> — Ambiente natural para trabajar. Capacidad: 25 personas.' },
+      { icono: '🏊', texto: '<strong>Alberca</strong> — Vista al Pacífico. Disponible para huéspedes y day passes.' }
+    ]},
+    { tipo: 'dato', titulo: 'Day Pass — Acceso de día', items: [
+      { icono: '🌿', texto: '<strong>Escape · $1,500 MXN</strong> — Acceso a alberca e instalaciones. Para quienes solo quieren disfrutar el día.' },
+      { icono: '⚖️', texto: '<strong>Retreat · $2,200 MXN</strong> — Alberca + instalaciones + crédito A&B $700 + masaje 30 min. El equilibrio perfecto.' },
+      { icono: '✨', texto: '<strong>Sanctuary · $3,500 MXN</strong> — Todo lo anterior + masaje profundo 60 min + bebida de bienvenida. La experiencia premium completa.' },
+      { icono: '⚠️', texto: 'Los day passes se <strong>bloquean automáticamente</strong> cuando la ocupación del hotel supera el 80%.' }
+    ]},
+    { tipo: 'dato', titulo: 'Experiencias especiales', items: [
+      { icono: '🌅', texto: '<strong>Sunset Picnic · $4,500 MXN huéspedes / $5,500 externos</strong> — Montaje en playa, vino y fruta. 90 min. Con 48 hrs de anticipación.' },
+      { icono: '🕯️', texto: '<strong>Cena romántica · $6,400 / $7,400</strong> — Mesa privada en playa, 4 tiempos, mesero exclusivo. 2 hrs. Con 48 hrs.' },
+      { icono: '💍', texto: '<strong>Pedida de mano · $26,000</strong> — Arco de bambú, fotógrafo, bouquet. Con 72 hrs.' },
+      { icono: '🎂', texto: '<strong>Cumpleaños · $4,500</strong> — Espumoso, pastel y decoración. Con 48 hrs.' }
+    ]},
+    { tipo: 'dato', titulo: 'Los 5 departamentos', items: [
+      { icono: '📊', texto: '<strong>Administración</strong> — Dirección general, compras, ventas y eventos.' },
+      { icono: '🍽️', texto: '<strong>Alimentos & Bebidas</strong> — Mesa del Sol, cocina, bar y pool concierge.' },
+      { icono: '🔧', texto: '<strong>Mantenimiento & Seguridad</strong> — Operación técnica, jardinería y resguardo.' },
+      { icono: '🛏️', texto: '<strong>Housekeeping / Ama de Llaves</strong> — Limpieza de habitaciones y áreas públicas.' },
+      { icono: '🏪', texto: '<strong>Recepción & Servicios</strong> — Check-in/out, house managers, spa y masajes.' }
+    ]},
+    { tipo: 'relacionar', titulo: 'Relaciona el Day Pass con su precio correcto', instruccion: 'Arrastra el precio al paquete que le corresponde.',
+      columnaA: ['Escape','Retreat','Sanctuary'],
+      columnaB: ['$3,500 MXN — Alberca + A&B + masaje 60 min + bebida','$1,500 MXN — Solo alberca e instalaciones','$2,200 MXN — Alberca + A&B + masaje 30 min'],
+      pares: [1,2,0]
     }
   ],
   preguntas: [
-    {
-      pregunta: '¿Cuántas habitaciones tiene Casa Yuma en total?',
-      opciones: ['20', '25', '30', '35'],
-      correcta: 1
-    },
-    {
-      pregunta: '¿Qué tipo de habitación tiene vista directa al Pacífico?',
-      opciones: ['Garden King', 'Standard King', 'Yuma King Terrace', 'Ocean King'],
-      correcta: 3
-    },
-    {
-      pregunta: 'El Restaurante Casa Yuma tiene capacidad para:',
-      opciones: ['30 personas', '50 personas', '70 personas', '100 personas'],
-      correcta: 1
-    },
-    {
-      pregunta: '¿Cuántos departamentos opera el hotel?',
-      opciones: ['3', '4', '5', '6'],
-      correcta: 2
-    },
-    {
-      pregunta: 'Las habitaciones de Casa Yuma son exclusivamente para:',
-      opciones: ['Familias con niños', 'Adultos', 'Grupos corporativos', 'Surfistas'],
-      correcta: 1
-    }
+    { tipo: 'mc', pregunta: '¿Cuántas habitaciones Ocean King tiene el hotel?', opciones: ['2','3','4','6'], correcta: 1 },
+    { tipo: 'mc', pregunta: 'Mesa del Sol sirve desayuno de:', opciones: ['7 a 11 hrs','8 a 12 hrs','9 a 13 hrs','8 a 11 hrs'], correcta: 1 },
+    { tipo: 'vf', pregunta: 'El Day Pass Retreat incluye un masaje de 60 minutos.', correcta: false, justificacion: 'El Retreat incluye masaje de 30 minutos. El de 60 minutos es el Sanctuary.' },
+    { tipo: 'escenario', pregunta: 'Un visitante externo llega a recepción y quiere un Day Pass. La ocupación hoy es del 85%. ¿Qué le dices?', opciones: [
+      'Lo atiendes normalmente y le vendes el Day Pass.',
+      'Le dices que hoy no hay disponibilidad de Day Pass porque la ocupación supera el 80%, y le ofreces verificar para otro día.',
+      'Lo mandas a hablar con el gerente.',
+      'Le preguntas cuántos son y decides.'
+    ], correcta: 1, explicacion: 'Los Day Passes se bloquean cuando la ocupación supera el 80%. Siempre hay que verificar antes de confirmar disponibilidad.' },
+    { tipo: 'mc', pregunta: '¿Cuántos departamentos opera el hotel?', opciones: ['3','4','5','6'], correcta: 2 }
   ]
 };
-
 renderModulo(MODULO);
 </script>
 </body>

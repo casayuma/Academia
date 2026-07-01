@@ -9,117 +9,62 @@
 </head>
 <body>
 <nav class="topbar">
-  <a href="academia.html" class="logo">← Mis módulos</a>
+  <a href="index.html" class="logo">← Mis módulos</a>
   <span class="subtitle">Módulo 3 de 6</span>
 </nav>
 <div id="app"></div>
 <script type="module">
 import { renderModulo } from './modulo.js';
-
 const MODULO = {
-  key: 'm3',
-  numero: 3,
-  icono: '⚡',
-  titulo: 'El código YUMA',
-  color: '#E1D082',
-  siguiente: 'modulo-4.html',
+  key: 'm3', numero: 3, icono: '⚡', titulo: 'El código YUMA',
+  color: '#E1D082', siguiente: 'index.html',
   slides: [
-    {
-      tipo: 'portada',
-      titulo: 'El código YUMA',
-      texto: 'Son 4 principios. No son un guión — son una actitud. Si los internalizas, sabrás cómo actuar en cualquier situación.',
-      imagen: '⚡'
+    { tipo: 'portada', titulo: 'El código YUMA', texto: 'Son 4 principios. No son un guión — son una actitud. Si los internalizas, sabrás cómo actuar en cualquier situación.', imagen: '⚡' },
+    { tipo: 'dato', titulo: 'Y — Ya estoy aquí', items: [
+      { icono: '👁️', texto: '<strong>Presencia total.</strong> Cuando atiendes a un huésped, él es lo único que existe en ese momento.' },
+      { icono: '📵', texto: 'Sin distracciones. Sin mirar el celular. Sin responder a medias.' },
+      { icono: '🧘', texto: 'La presencia completa es <strong>la base de todo lo demás</strong>.' }
+    ]},
+    { tipo: 'dato', titulo: 'U — Únete a su historia', items: [
+      { icono: '💑', texto: 'Cada huésped trae algo propio: un aniversario, un viaje en solitario, una luna de miel.' },
+      { icono: '👂', texto: '<strong>Nota el contexto. Adapta el trato.</strong> El servicio personalizado no es un lujo — es escuchar bien.' },
+      { icono: '🎂', texto: 'Una pareja en aniversario, un viajero de trabajo y una familia tienen <strong>expectativas distintas</strong>.' }
+    ]},
+    { tipo: 'dato', titulo: 'M — Mueve el problema', items: [
+      { icono: '🚀', texto: 'Si algo no funciona, <strong>tú eres responsable de que se resuelva</strong>.' },
+      { icono: '🔑', texto: 'La queja que recibes es tuya <strong>hasta que esté cerrada</strong>.' },
+      { icono: '⏱️', texto: 'Si prometiste 20 minutos, en 20 minutos regresas — con solución o con una actualización honesta.' }
+    ]},
+    { tipo: 'dato', titulo: 'A — Anticipa', items: [
+      { icono: '🔮', texto: '<strong>No esperes que te pidan.</strong> La diferencia entre buen servicio y excepcional está en lo que pasa antes.' },
+      { icono: '🏖️', texto: 'La toalla antes de que llegue al mar. El menú antes de que pregunte.' },
+      { icono: '🚕', texto: 'El taxi reservado la noche anterior. <strong>Piensa un paso adelante.</strong>' }
+    ]},
+    { tipo: 'relacionar', titulo: 'Relaciona el principio con el ejemplo correcto', instruccion: 'Arrastra el ejemplo al principio YUMA que representa.',
+      columnaA: ['Y — Ya estoy aquí','U — Únete a su historia','M — Mueve el problema','A — Anticipa'],
+      columnaB: ['Dejas el celular, miras al huésped a los ojos y escuchas sin interrumpir','Notas que es luna de miel y preparas un detalle especial sin que te lo pidan','Recibes una queja sobre la habitación y la sigues hasta resolverse','Llevas la toalla al huésped antes de que baje a la playa'],
+      pares: [0,1,2,3]
     },
-    {
-      tipo: 'dato',
-      titulo: 'Y — Ya estoy aquí',
-      items: [
-        { icono: '👁️', texto: '<strong>Presencia total.</strong> Cuando atiendes a un huésped, él es lo único que existe en ese momento.' },
-        { icono: '📵', texto: 'Sin distracciones. Sin mirar el celular. Sin responder a medias.' },
-        { icono: '🧘', texto: 'La presencia completa es <strong>la base de todo lo demás</strong>.' }
-      ]
-    },
-    {
-      tipo: 'dato',
-      titulo: 'U — Únete a su historia',
-      items: [
-        { icono: '💑', texto: 'Cada huésped trae algo propio: un aniversario, un viaje en solitario, una luna de miel.' },
-        { icono: '👂', texto: '<strong>Nota el contexto. Adapta el trato.</strong> El servicio personalizado no es un lujo — es escuchar bien.' },
-        { icono: '🎂', texto: 'Una pareja en aniversario, un viajero de trabajo y una familia tienen <strong>expectativas distintas</strong>.' }
-      ]
-    },
-    {
-      tipo: 'dato',
-      titulo: 'M — Mueve el problema',
-      items: [
-        { icono: '🚀', texto: 'Si algo no funciona, <strong>tú eres responsable de que se resuelva</strong> — no de encontrar a quién culpar.' },
-        { icono: '🔑', texto: 'La queja que recibes es tuya <strong>hasta que esté cerrada</strong>.' },
-        { icono: '⏱️', texto: 'Si prometiste resolver algo en 20 minutos, en 20 minutos regresas — con la solución o con una actualización honesta.' }
-      ]
-    },
-    {
-      tipo: 'dato',
-      titulo: 'A — Anticipa',
-      items: [
-        { icono: '🔮', texto: '<strong>No esperes que te pidan.</strong> La diferencia entre un buen servicio y uno excepcional está en lo que pasa antes.' },
-        { icono: '🏖️', texto: 'La toalla antes de que llegue al mar. El menú antes de que pregunte.' },
-        { icono: '🚕', texto: 'El taxi reservado la noche anterior. <strong>Piensa un paso adelante.</strong>' }
-      ]
-    },
-    {
-      tipo: 'cita',
-      texto: '"Cada huésped llega como visita y se va como parte de la historia del lugar."'
-    }
+    { tipo: 'cita', texto: '"Cada huésped llega como visita y se va como parte de la historia del lugar."' }
   ],
   preguntas: [
-    {
-      pregunta: 'La "Y" del código YUMA significa:',
-      opciones: ['Yo primero', 'Ya estoy aquí — Presencia total', 'Yo decido', 'Yelp y reseñas'],
-      correcta: 1
-    },
-    {
-      pregunta: '¿Qué significa "Únete a su historia"?',
-      opciones: [
-        'Contarle al huésped la historia del hotel',
-        'Notar el contexto del huésped y adaptar el trato',
-        'Pedirle al huésped que cuente su vida',
-        'Ser amable con todos por igual'
-      ],
-      correcta: 1
-    },
-    {
-      pregunta: 'Según el código YUMA, si un huésped tiene una queja:',
-      opciones: [
-        'Hay que buscar al responsable del problema',
-        'Quien la recibe es dueño de ella hasta que esté resuelta',
-        'Hay que avisar al gerente y esperar',
-        'Hay que anotar la queja para la reunión mensual'
-      ],
-      correcta: 1
-    },
-    {
-      pregunta: '"Anticipa" en el código YUMA quiere decir:',
-      opciones: [
-        'Estar listo 15 minutos antes del turno',
-        'Preparar el inventario con anticipación',
-        'Actuar antes de que el huésped tenga que pedir',
-        'Anticipar las temporadas altas'
-      ],
-      correcta: 2
-    },
-    {
-      pregunta: '¿Cuál de estas situaciones aplica mejor el principio de "Anticipa"?',
-      opciones: [
-        'Llevar la toalla al huésped antes de que llegue a la playa',
-        'Responder rápido cuando el huésped llama',
-        'Disculparse cuando algo sale mal',
-        'Preguntar si el huésped necesita algo'
-      ],
-      correcta: 0
-    }
+    { tipo: 'mc', pregunta: 'La "Y" del código YUMA significa:', opciones: ['Yo primero','Ya estoy aquí — Presencia total','Yo decido','Yelp y reseñas'], correcta: 1 },
+    { tipo: 'escenario', pregunta: 'Estás hablando con un compañero cuando un huésped se acerca. ¿Qué haces?', opciones: [
+      'Termino la conversación y luego atiendo al huésped.',
+      'Atiendo al huésped de inmediato con presencia completa y continúo después si es necesario.',
+      'Le pido al huésped que espere un momento.',
+      'Le hago una seña para que espere y sigo platicando.'
+    ], correcta: 1, explicacion: 'Ya estoy aquí significa que cuando el huésped aparece, él es lo único que existe en ese momento.' },
+    { tipo: 'vf', pregunta: '"Mueve el problema" significa encontrar quién tuvo la culpa del error.', correcta: false, justificacion: 'Mueve el problema significa resolver — no buscar culpables. Tú eres dueño de la situación hasta que esté cerrada.' },
+    { tipo: 'escenario', pregunta: 'Un huésped menciona casualmente que mañana es su cumpleaños. ¿Qué principio aplicas?', opciones: [
+      'Ninguno, eso no es información relevante.',
+      'M — Muevo el problema.',
+      'A — Anticipo y coordino algo especial para sorprenderlo.',
+      'U — Me uno a su historia preguntándole más sobre su vida.'
+    ], correcta: 2, explicacion: 'Anticipar significa actuar con esa información antes de que te lo pidan. Un detalle inesperado es lo que crea memorias.' },
+    { tipo: 'mc', pregunta: 'Si prometiste resolver algo en 20 minutos y no pudiste, ¿qué haces?', opciones: ['Espero hasta tener la solución completa','Regresas a los 20 minutos con actualización honesta aunque no esté resuelto','Aviso a otro compañero para que lo maneje','Espero a que el huésped pregunte de nuevo'], correcta: 1 }
   ]
 };
-
 renderModulo(MODULO);
 </script>
 </body>
