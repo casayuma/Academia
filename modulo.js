@@ -116,48 +116,65 @@ export async function renderModulo(MOD) {
     return '';
   }
 
-  // ── ORDENAR (drag) ──────────────────
+  // ── ORDENAR (tap-to-swap — funciona en touch y mouse) ──────────────
   function initOrdenar(slide) {
     const list = document.getElementById('ordenar-list');
     let items = [...slide.items].sort(() => Math.random() - 0.5);
-    let dragSrc = null;
+    let selectedIdx = null;
 
-    function render() {
+    // Instruction hint
+    const hint = document.createElement('div');
+    hint.id = 'ordenar-hint';
+    hint.style.cssText = 'display:none;background:#faf6dc;border-radius:8px;padding:10px 14px;font-size:12px;color:#7a6e1a;margin-bottom:10px;';
+    hint.textContent = '👆 Ahora toca la posición donde quieres colocarlo';
+    list.parentNode.insertBefore(hint, list);
+
+    function renderOrd() {
       list.innerHTML = '';
       items.forEach((item, i) => {
+        const isSelected = selectedIdx === i;
         const div = document.createElement('div');
-        div.draggable = true;
-        div.dataset.id = item.id;
-        div.style.cssText = 'background:white;border:1.5px solid #e0dcd0;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;cursor:grab;user-select:none;transition:all 0.15s;font-size:14px;color:var(--dark);';
-        div.innerHTML = `<span style="font-size:18px;opacity:0.35;cursor:grab;">⠿</span>${item.texto}`;
-        div.addEventListener('dragstart', e => { dragSrc = i; div.style.opacity = '0.4'; });
-        div.addEventListener('dragend', () => { div.style.opacity = '1'; });
-        div.addEventListener('dragover', e => { e.preventDefault(); div.style.borderColor = 'var(--blue)'; });
-        div.addEventListener('dragleave', () => div.style.borderColor = '#e0dcd0');
-        div.addEventListener('drop', e => {
-          e.preventDefault(); div.style.borderColor = '#e0dcd0';
-          if (dragSrc !== null && dragSrc !== i) {
-            [items[dragSrc], items[i]] = [items[i], items[dragSrc]];
-            dragSrc = null; render();
+        div.style.cssText = `background:${isSelected?'#e0f0f1':'white'};border:${isSelected?'2px solid var(--blue)':'1.5px solid #e0dcd0'};border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;transition:all 0.15s;font-size:14px;color:var(--dark);box-shadow:${isSelected?'0 0 0 3px rgba(44,110,115,0.15)':'none'};`;
+        div.innerHTML = `
+          <span style="font-size:16px;min-width:28px;text-align:center;font-weight:bold;font-family:var(--font-mono);color:${isSelected?'var(--blue)':'#ccc'};">${i+1}</span>
+          <span style="flex:1;">${item.texto}</span>
+          ${isSelected ? '<span style="font-size:11px;color:var(--blue);letter-spacing:0.04em;flex-shrink:0;">✓ SELECCIONADO</span>' : ''}
+        `;
+        div.addEventListener('click', () => {
+          if (selectedIdx === null) {
+            selectedIdx = i;
+            hint.style.display = 'block';
+          } else if (selectedIdx === i) {
+            selectedIdx = null;
+            hint.style.display = 'none';
+          } else {
+            [items[selectedIdx], items[i]] = [items[i], items[selectedIdx]];
+            selectedIdx = null;
+            hint.style.display = 'none';
           }
+          renderOrd();
         });
         list.appendChild(div);
       });
       document.getElementById('btn-check-orden').style.display = 'block';
     }
-    render();
+    renderOrd();
 
     window.checkOrden = () => {
       const actual = items.map(it => it.id);
       const correcto = actual.every((id, i) => id === slide.ordenCorrecto[i]);
       const fb = document.getElementById('ordenar-feedback');
       fb.style.display = 'block';
+      selectedIdx = null;
+      hint.style.display = 'none';
       if (correcto) {
+        list.querySelectorAll('div').forEach(d => { d.style.borderColor='#27ae60'; d.style.background='#e8f5e9'; d.style.cursor='default'; d.replaceWith(d.cloneNode(true)); });
         fb.innerHTML = `<div style="background:#e8f5e9;border-radius:9px;padding:13px 16px;color:#1a5c2a;font-size:14px;">✅ ¡Correcto! El orden es el indicado.</div>`;
         document.getElementById('btnNext').disabled = false;
         document.getElementById('btn-check-orden').style.display = 'none';
       } else {
-        fb.innerHTML = `<div style="background:#fde8e8;border-radius:9px;padding:13px 16px;color:#7a1a1a;font-size:14px;">❌ No exactamente. Intenta de nuevo reorganizando los elementos.</div>`;
+        fb.innerHTML = `<div style="background:#fde8e8;border-radius:9px;padding:13px 16px;color:#7a1a1a;font-size:14px;">❌ No exactamente. Toca un elemento para seleccionarlo (se marca en azul), luego toca donde lo quieres colocar.</div>`;
+        setTimeout(() => { fb.style.display = 'none'; }, 3000);
       }
     };
   }
@@ -242,8 +259,10 @@ export async function renderModulo(MOD) {
     }
     if (q.tipo === 'ordenar_mini') {
       let ord = [...q.items].map((t,i)=>({t,i})).sort(()=>Math.random()-0.5);
-      let dragI = null;
-      contenidoQuiz = `<div id="omini" style="display:flex;flex-direction:column;gap:8px;"></div>
+      let selI = null;
+      contenidoQuiz = `
+        <div style="font-size:12px;color:var(--mid);opacity:0.7;margin-bottom:10px;">👆 Toca un elemento para seleccionarlo, luego toca donde quieres colocarlo.</div>
+        <div id="omini" style="display:flex;flex-direction:column;gap:8px;"></div>
         <button id="btn-omini" onclick="window.checkMini()" style="margin-top:14px;padding:12px 20px;background:var(--blue);color:white;border:none;border-radius:9px;font-family:var(--font-mono);font-size:13px;cursor:pointer;">Verificar orden →</button>`;
       setTimeout(() => {
         const container = document.getElementById('omini');
@@ -251,17 +270,15 @@ export async function renderModulo(MOD) {
         function renderMini() {
           container.innerHTML = '';
           ord.forEach((item, i) => {
+            const isSel = selI === i;
             const div = document.createElement('div');
-            div.draggable = true;
-            div.style.cssText = 'background:white;border:1.5px solid #e0dcd0;border-radius:9px;padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:grab;font-size:13px;color:var(--dark);';
-            div.innerHTML = `<span style="opacity:0.3;font-size:16px;">⠿</span>${item.t}`;
-            div.addEventListener('dragstart', () => { dragI = i; div.style.opacity='0.4'; });
-            div.addEventListener('dragend', () => { div.style.opacity='1'; });
-            div.addEventListener('dragover', e => { e.preventDefault(); div.style.borderColor='var(--blue)'; });
-            div.addEventListener('dragleave', () => div.style.borderColor='#e0dcd0');
-            div.addEventListener('drop', e => {
-              e.preventDefault(); div.style.borderColor='#e0dcd0';
-              if (dragI !== null && dragI !== i) { [ord[dragI],ord[i]]=[ord[i],ord[dragI]]; dragI=null; renderMini(); }
+            div.style.cssText = `background:${isSel?'#e0f0f1':'white'};border:${isSel?'2px solid var(--blue)':'1.5px solid #e0dcd0'};border-radius:9px;padding:13px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--dark);transition:all 0.15s;`;
+            div.innerHTML = `<span style="font-size:14px;min-width:24px;text-align:center;font-weight:bold;font-family:var(--font-mono);color:${isSel?'var(--blue)':'#ccc'};">${i+1}</span><span style="flex:1;">${item.t}</span>${isSel?'<span style="font-size:10px;color:var(--blue);">✓</span>':''}`;
+            div.addEventListener('click', () => {
+              if (selI === null) { selI = i; }
+              else if (selI === i) { selI = null; }
+              else { [ord[selI],ord[i]]=[ord[i],ord[selI]]; selI=null; }
+              renderMini();
             });
             container.appendChild(div);
           });
@@ -273,7 +290,7 @@ export async function renderModulo(MOD) {
           if (ok) {
             respuestas.push({correcta:true});
             document.getElementById('btn-omini').style.display='none';
-            document.querySelectorAll('#omini div').forEach(d=>{ d.style.borderColor='#27ae60'; d.style.background='#e8f5e9'; d.draggable=false; });
+            document.querySelectorAll('#omini div').forEach(d=>{ d.style.borderColor='#27ae60'; d.style.background='#e8f5e9'; d.style.cursor='default'; });
             const fb=document.createElement('div');
             fb.style.cssText='margin-top:12px;background:#e8f5e9;border-radius:9px;padding:12px 15px;color:#1a5c2a;font-size:13px;';
             fb.textContent='✅ ¡Orden correcto!';
