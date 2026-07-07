@@ -352,6 +352,22 @@ body { font-family: var(--mono); background: var(--dark); color: var(--dark); ov
 .go-modulos { background: white; border-radius: 14px; padding: 20px 22px; display: flex; align-items: center; gap: 14px; cursor: pointer; border: 1.5px solid #ede9db; box-shadow: 0 2px 12px rgba(0,0,0,0.05); transition: all 0.18s; }
 .go-modulos:hover { border-color: var(--blue); }
 
+.depto-tab {
+  padding: 9px 16px; border-radius: 20px; font-size: 12px;
+  font-family: var(--mono); letter-spacing: 0.05em;
+  border: 1.5px solid #ddd8c8; background: white; color: var(--mid);
+  cursor: pointer; transition: all 0.18s; white-space: nowrap;
+}
+.depto-tab:hover { border-color: var(--blue); color: var(--blue); }
+.depto-tab.active { background: var(--blue); border-color: var(--blue); color: white; }
+.tipo-tab {
+  padding: 8px 16px; border-radius: 20px; font-size: 12px;
+  font-family: var(--mono); letter-spacing: 0.05em;
+  border: 1.5px solid #ddd8c8; background: white; color: var(--mid);
+  cursor: pointer; transition: all 0.18s;
+}
+.tipo-tab.active { background: var(--gold); border-color: var(--gold); color: var(--dark); }
+
 /* ══ Responsive ══ */
 @media (max-width: 640px) {
   .card-grid { grid-template-columns: 1fr; max-width: 340px; }
@@ -419,37 +435,49 @@ body { font-family: var(--mono); background: var(--dark); color: var(--dark); ov
   <!-- Dashboard -->
   <div id="ldr-dash" style="display:none">
     <nav class="topbar"><span class="topbar-logo">Casa Yuma · Panel de Líderes</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
+
     <div class="ldr-hero">
       <div class="ldr-wave"></div>
       <div class="ldr-inner">
-        <div class="ldr-title">Dashboard de capacitación</div>
+        <div class="ldr-title" id="ldrTitle">Dashboard de capacitación</div>
         <div class="ldr-sub" id="ldrUpdate">Cargando datos…</div>
         <div class="kpi-grid" id="kpiGrid">
-          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Colaboradores</div></div>
-          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Completaron todo</div></div>
-          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Promedio global</div></div>
-          <div class="kpi-card"><div class="kpi-num">—</div><div class="kpi-lbl">Eval. final hecha</div></div>
+          <div class="kpi-card"><div class="kpi-num" id="kpi0">—</div><div class="kpi-lbl">Colaboradores</div></div>
+          <div class="kpi-card"><div class="kpi-num" id="kpi1">—</div><div class="kpi-lbl">Completaron todo</div></div>
+          <div class="kpi-card"><div class="kpi-num" id="kpi2">—</div><div class="kpi-lbl">Promedio global</div></div>
+          <div class="kpi-card"><div class="kpi-num" id="kpi3">—</div><div class="kpi-lbl">Eval. final hecha</div></div>
         </div>
       </div>
     </div>
+
     <div class="ldr-content">
-      <div class="ldr-section">Recursos de capacitación</div>
-      <div class="resource-grid">
-        <a href="https://drive.google.com/file/d/1p2Bzln0Rn4ad0S1T0sBcSMY77RZbshuk/view" target="_blank" class="resource-card"><span>📄</span><span class="rc-name">Manual del Colaborador</span><span class="rc-sub">→ Google Drive</span></a>
-        <a href="https://docs.google.com/presentation/d/1udHm3mRQt7T6kDwwgwpjDaebCooZjoaqB8TmsjRwv_4/edit" target="_blank" class="resource-card"><span>🎓</span><span class="rc-name">Presentación de inducción</span><span class="rc-sub">→ Google Drive</span></a>
-        <a href="https://drive.google.com/file/d/1DLo_gDkI8K81oIx4ZPWei1N5GNvl37HS/view" target="_blank" class="resource-card"><span>🚨</span><span class="rc-name">Protocolo de emergencias</span><span class="rc-sub">→ Google Drive</span></a>
-        <a href="https://drive.google.com/file/d/1FLdZFoDD0CMYsK38JE-_Tl6wFQ_qT4QE/view" target="_blank" class="resource-card"><span>🚌</span><span class="rc-name">Transporte</span><span class="rc-sub">→ Google Drive</span></a>
+
+      <!-- Departamento tabs -->
+      <div style="margin-bottom:24px;">
+        <div class="ldr-section">Filtrar por departamento</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="deptoTabs">
+          <button class="depto-tab active" data-depto="" onclick="selectDepto(this,'')">Todos</button>
+          <button class="depto-tab" data-depto="Administración" onclick="selectDepto(this,'Administración')">📊 Administración</button>
+          <button class="depto-tab" data-depto="Alimentos & Bebidas" onclick="selectDepto(this,'Alimentos & Bebidas')">🍽️ Alimentos & Bebidas</button>
+          <button class="depto-tab" data-depto="Mantenimiento & Seguridad" onclick="selectDepto(this,'Mantenimiento & Seguridad')">🔧 Mantenimiento & Seguridad</button>
+          <button class="depto-tab" data-depto="Housekeeping / Ama de Llaves" onclick="selectDepto(this,'Housekeeping / Ama de Llaves')">🛏️ Housekeeping</button>
+          <button class="depto-tab" data-depto="Recepción & Servicios" onclick="selectDepto(this,'Recepción & Servicios')">🏪 Recepción & Servicios</button>
+        </div>
       </div>
+
+      <!-- Tipo de capacitación sub-tabs -->
+      <div style="margin-bottom:24px;" id="tipoWrap">
+        <div class="ldr-section">Tipo de capacitación</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="tipo-tab active" data-tipo="induccion" onclick="selectTipo(this,'induccion')">🌊 Inducción general</button>
+          <button class="tipo-tab disabled" style="opacity:0.4;cursor:not-allowed;" title="Próximamente">📋 SOP departamental</button>
+        </div>
+        <div style="font-size:11px;color:var(--mid);opacity:0.5;margin-top:8px;letter-spacing:0.04em;">Los módulos actuales corresponden a la inducción general. Los SOPs departamentales se activarán próximamente.</div>
+      </div>
+
+      <!-- Filters row -->
       <div class="filter-row">
         <input type="text" class="filter-input" id="searchInput" placeholder="Buscar colaborador…" oninput="filtrar()">
-        <select class="filter-select" id="deptoFilter" onchange="filtrar()">
-          <option value="">Todos los departamentos</option>
-          <option>Administración</option>
-          <option>Alimentos &amp; Bebidas</option>
-          <option>Mantenimiento &amp; Seguridad</option>
-          <option>Housekeeping / Ama de Llaves</option>
-          <option>Recepción &amp; Servicios</option>
-        </select>
         <select class="filter-select" id="statusFilter" onchange="filtrar()">
           <option value="">Todos los estados</option>
           <option value="completo">Completaron todo</option>
@@ -458,6 +486,7 @@ body { font-family: var(--mono); background: var(--dark); color: var(--dark); ov
         </select>
         <button class="export-btn" onclick="exportarCSV()">📥 Exportar CSV</button>
       </div>
+
       <div class="table-wrap" id="tableWrap"><div style="text-align:center;padding:50px;color:var(--mid);opacity:0.5;">Cargando colaboradores…</div></div>
     </div>
   </div>
@@ -622,7 +651,7 @@ const db = getFirestore(initializeApp({
   appId:"1:90812153114:web:77c220ef8ceb46e96580a3"
 }));
 
-const PIN = '2024';
+const PIN = '24052024';
 const MODS = [
   {key:'m1',icon:'🏠',bg:'#e0f0f1',title:'Historia y el nombre Yuma',   desc:'El origen, el significado y Puerto Escondido',  file:'modulo-1.html'},
   {key:'m2',icon:'🌊',bg:'#e0f0f1',title:'La Marea — Nuestra identidad',desc:'Quiénes somos y los valores CASA',                file:'modulo-2.html'},
@@ -917,23 +946,46 @@ window.ir=function(id){
 
 // ── Líderes data ──
 let TODOS=[],FILTRADOS=[];
+let deptoActivo='', tipoActivo='induccion';
+
 async function cargarLideres(){
   try {
     TODOS=(await getDocs(collection(db,'academia_colaboradores'))).docs.map(d=>({id:d.id,...d.data()}));
     TODOS.sort((a,b)=>(b.porcentaje_completado||0)-(a.porcentaje_completado||0));
     FILTRADOS=[...TODOS];
-    const k=$('kpiGrid').children;
-    k[0].querySelector('.kpi-num').textContent=TODOS.length;
-    k[1].querySelector('.kpi-num').textContent=TODOS.filter(c=>c.porcentaje_completado>=100).length;
-    k[2].querySelector('.kpi-num').textContent=(TODOS.length>0?Math.round(TODOS.reduce((s,c)=>s+(c.puntaje_total||0),0)/TODOS.length):0)+'%';
-    k[3].querySelector('.kpi-num').textContent=TODOS.filter(c=>c.evaluacion_final?.completado).length;
-    $('ldrUpdate').textContent=`Última actualización: ${new Date().toLocaleString('es-MX')}`;
+    actualizarKPIs(TODOS);
     renderTabla();
+    $('ldrUpdate').textContent=`Última actualización: ${new Date().toLocaleString('es-MX')}`;
   } catch(e){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Error al cargar datos.</div>';}
 }
 
+function actualizarKPIs(lista){
+  const total=lista.length;
+  const completos=lista.filter(c=>c.porcentaje_completado>=100).length;
+  const prom=total>0?Math.round(lista.reduce((s,c)=>s+(c.puntaje_total||0),0)/total):0;
+  const conFinal=lista.filter(c=>c.evaluacion_final?.completado).length;
+  $('kpi0').textContent=total;
+  $('kpi1').textContent=completos;
+  $('kpi2').textContent=prom+'%';
+  $('kpi3').textContent=conFinal;
+  $('ldrTitle').textContent=deptoActivo?`Capacitación — ${deptoActivo}`:'Dashboard de capacitación';
+}
+
+window.selectDepto=function(btn,depto){
+  deptoActivo=depto;
+  document.querySelectorAll('.depto-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  filtrar();
+};
+
+window.selectTipo=function(btn,tipo){
+  tipoActivo=tipo;
+  document.querySelectorAll('.tipo-tab:not(.disabled)').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+};
+
 function renderTabla(){
-  if(!FILTRADOS.length){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Sin resultados.</div>';return;}
+  if(!FILTRADOS.length){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Sin resultados para este filtro.</div>';return;}
   const rows=FILTRADOS.map(c=>{
     const m=c.modulos||{},ef=c.evaluacion_final||{},pct=c.porcentaje_completado||0,pts=c.puntaje_total||0;
     const dots=MINFO.map(mi=>{const md=m[mi.key];if(!md?.completado)return `<div class="mod-dot" title="${mi.n}">·</div>`;const p=md.porcentaje||0,col=p>=80?'#27ae60':p>=60?'#e67e22':'#c0392b';return `<div class="mod-dot" style="background:${col}22;border-color:${col};color:${col}" title="${mi.n}: ${p}%">${p}%</div>`;}).join('');
@@ -953,14 +1005,16 @@ function renderTabla(){
 }
 
 window.filtrar=()=>{
-  const b=$('searchInput').value.toLowerCase(),d=$('deptoFilter').value,s=$('statusFilter').value;
+  const b=$('searchInput').value.toLowerCase();
+  const s=$('statusFilter').value;
   FILTRADOS=TODOS.filter(c=>{
     const mn=c.nombre?.toLowerCase().includes(b)||c.numero_empleado?.includes(b);
-    const md=!d||c.departamento===d;
+    const md=!deptoActivo||c.departamento===deptoActivo;
     const p=c.porcentaje_completado||0;
     const ms=!s||(s==='completo'&&p>=100)||(s==='en-progreso'&&p>0&&p<100)||(s==='sin-iniciar'&&p===0);
     return mn&&md&&ms;
   });
+  actualizarKPIs(FILTRADOS);
   renderTabla();
 };
 
