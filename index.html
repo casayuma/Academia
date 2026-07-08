@@ -488,6 +488,17 @@ body { font-family: var(--mono); background: var(--dark); color: var(--dark); ov
       </div>
 
       <div class="table-wrap" id="tableWrap"><div style="text-align:center;padding:50px;color:var(--mid);opacity:0.5;">Cargando colaboradores…</div></div>
+
+      <!-- Comentarios de colaboradores -->
+      <div style="margin-top:36px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div class="ldr-section" style="margin:0;">💬 Comentarios de colaboradores</div>
+          <button onclick="cargarComentarios()" style="padding:7px 14px;background:white;border:1.5px solid #e0dcd0;border-radius:8px;font-family:var(--mono);font-size:11px;cursor:pointer;letter-spacing:0.05em;">↻ Actualizar</button>
+        </div>
+        <div id="comentariosWrap" style="background:white;border-radius:13px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+          <div style="text-align:center;padding:30px;color:var(--mid);opacity:0.5;font-size:13px;">Cargando comentarios…</div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)this.classList.remove('open')">
@@ -1083,6 +1094,7 @@ async function cargarLideres(){
     actualizarKPIs(TODOS);
     renderTabla();
     $('ldrUpdate').textContent=`Última actualización: ${new Date().toLocaleString('es-MX')}`;
+    cargarComentarios();
   } catch(e){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Error al cargar datos.</div>';}
 }
 
@@ -1173,6 +1185,44 @@ window.exportarCSV=()=>{
   const h=['Nombre','#Empleado','Departamento','M1%','M2%','M3%','M4%','M5%','M6%','Eval.Final%','% Completado','Puntaje Global'];
   const rows=FILTRADOS.map(c=>{const m=c.modulos||{},ef=c.evaluacion_final||{};return [c.nombre,c.numero_empleado||'',c.departamento,...MINFO.map(mi=>m[mi.key]?.porcentaje??''),ef.porcentaje??'',c.porcentaje_completado||0,c.puntaje_total||0].join(',');});
   const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob(['\ufeff'+[h,...rows].join('\n')],{type:'text/csv;charset=utf-8;'})),download:`academia-${new Date().toISOString().slice(0,10)}.csv`});a.click();
+};
+
+window.cargarComentarios = async function() {
+  const wrap = $('comentariosWrap');
+  if (!wrap) return;
+  wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--mid);opacity:0.5;font-size:13px;">Cargando…</div>';
+  try {
+    const { getDocs: gd2, collection: col2, query, orderBy, limit } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const q = query(col2(db,'academia_comentarios'), orderBy('fecha','desc'), limit(50));
+    const snap = await gd2(q);
+    if (snap.empty) {
+      wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--mid);opacity:0.4;font-size:13px;">Aún no hay comentarios.</div>';
+      return;
+    }
+    const MODS_LABEL = {m1:'Módulo 1',m2:'Módulo 2',m3:'Módulo 3',m4:'Módulo 4',m5:'Módulo 5',m6:'Módulo 6'};
+    const rows = snap.docs.map(d => {
+      const c = d.data();
+      const fecha = c.fecha ? new Date(c.fecha.seconds*1000).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+      const esSinComentario = c.comentario === '(Sin comentario)';
+      return `<div style="padding:16px 20px;border-bottom:1px solid #f0ece0;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px;">
+          <div>
+            <span style="font-size:13px;font-weight:500;color:var(--dark);">${c.nombre||'—'}</span>
+            <span style="font-size:11px;color:var(--mid);opacity:0.55;margin-left:8px;">${c.departamento||''}</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
+            <span style="font-size:10px;padding:3px 8px;border-radius:10px;background:#e0f0f1;color:var(--blue);">${MODS_LABEL[c.modulo_key]||c.modulo_key}</span>
+            <span style="font-size:11px;color:var(--mid);opacity:0.45;">${fecha}</span>
+          </div>
+        </div>
+        ${!esSinComentario ? `<div style="font-size:13px;color:var(--dark);line-height:1.6;background:#faf8f2;border-radius:7px;padding:10px 13px;">"${c.comentario}"</div>` : `<div style="font-size:12px;color:var(--mid);opacity:0.4;font-style:italic;">Sin comentario</div>`}
+      </div>`;
+    }).join('');
+    wrap.innerHTML = `<div style="padding:12px 20px;background:var(--dark);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:0.08em;text-transform:uppercase;">Últimos 50 comentarios</span><span style="font-size:11px;color:var(--gold);">${snap.size} registros</span></div>${rows}`;
+  } catch(e) {
+    wrap.innerHTML = '<div style="text-align:center;padding:30px;color:var(--mid);opacity:0.4;font-size:13px;">Error al cargar comentarios.</div>';
+    console.error(e);
+  }
 };
 </script>
 </body>

@@ -394,9 +394,53 @@ export async function renderModulo(MOD) {
             <div class="result-stat"><div class="result-stat-num">${total-correctas}</div><div class="result-stat-label">A mejorar</div></div>
             <div class="result-stat"><div class="result-stat-num">${total}</div><div class="result-stat-label">Preguntas</div></div>
           </div>
-          <a href="index.html" class="btn btn-primary" style="justify-content:center;width:100%;">Volver a mis módulos →</a>
+
+          <!-- Buzón de comentarios -->
+          <div id="buzon-wrap" style="margin-top:24px;text-align:left;">
+            <div style="font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);opacity:0.6;margin-bottom:8px;">💬 ¿Tienes dudas, comentarios o sugerencias sobre este módulo?</div>
+            <textarea id="buzon-texto" placeholder="Escribe aquí tu comentario (opcional)…" style="width:100%;padding:13px 15px;border:1.5px solid #e0dcd0;border-radius:9px;font-family:var(--font-mono);font-size:13px;resize:vertical;min-height:80px;color:var(--dark);background:white;line-height:1.5;"></textarea>
+            <button id="buzon-btn" onclick="enviarComentario()" style="margin-top:8px;padding:10px 20px;background:var(--blue);color:white;border:none;border-radius:8px;font-family:var(--font-mono);font-size:12px;cursor:pointer;letter-spacing:0.05em;transition:0.18s;">Enviar comentario</button>
+            <div id="buzon-ok" style="display:none;margin-top:8px;background:#e8f5e9;border-radius:8px;padding:10px 14px;font-size:13px;color:#1a5c2a;">✅ Comentario enviado. ¡Gracias!</div>
+          </div>
+
+          <a href="index.html" class="btn btn-primary" style="justify-content:center;width:100%;margin-top:20px;">Volver a mis módulos →</a>
         </div>
       </div>`;
+
+    window.enviarComentario = async function() {
+      const texto = document.getElementById('buzon-texto').value.trim();
+      document.getElementById('buzon-btn').disabled = true;
+      try {
+        const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+        const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+        const apps = getApps();
+        const app2 = apps.length ? apps[0] : initializeApp({
+          apiKey:"AIzaSyDw6hf9ZN3KAZZGkkMjjXUpLZjsD34FXgc",
+          authDomain:"academia-461d6.firebaseapp.com",
+          projectId:"academia-461d6",
+          storageBucket:"academia-461d6.firebasestorage.app",
+          messagingSenderId:"90812153114",
+          appId:"1:90812153114:web:77c220ef8ceb46e96580a3"
+        });
+        const db2 = getFirestore(app2);
+        await addDoc(collection(db2, 'academia_comentarios'), {
+          empleado_id: session.id,
+          nombre: session.nombre,
+          departamento: session.departamento,
+          modulo_key: MOD.key,
+          modulo_titulo: MOD.titulo,
+          comentario: texto || '(Sin comentario)',
+          puntaje: porcentaje,
+          fecha: serverTimestamp()
+        });
+        document.getElementById('buzon-ok').style.display = 'block';
+        document.getElementById('buzon-texto').style.display = 'none';
+        document.getElementById('buzon-btn').style.display = 'none';
+      } catch(e) {
+        document.getElementById('buzon-btn').disabled = false;
+        console.error(e);
+      }
+    };
   }
 
   // ── HEADER ──────────────────────────

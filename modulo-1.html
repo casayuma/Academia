@@ -19,49 +19,131 @@ const MODULO = {
   key: 'm1', numero: 1, icono: '🏠', titulo: 'Historia y el nombre Yuma',
   color: '#2C6E73', siguiente: 'index.html',
   slides: [
-    { tipo: 'portada', titulo: '¿Qué es Casa Yuma?', texto: 'Antes de saber qué hacer, hay que saber dónde estás parado. Esta es tu historia — y la nuestra.', imagen: '🌊' },
-    { tipo: 'dato', titulo: '¿Qué significa "Yuma"?', items: [
-      { icono: '🌎', texto: 'El nombre viene de la cultura nativa americana.' },
-      { icono: '👑', texto: 'Significa: <strong>Hijo del Líder</strong>.' },
-      { icono: '🤝', texto: 'No era un título de privilegio — era una <strong>responsabilidad de servir</strong> a su comunidad.' },
-      { icono: '🌿', texto: 'En el Pacífico mexicano, "yuma" también significa algo que viene de lejos, del norte.' }
-    ]},
-    { tipo: 'cita', texto: '"Casa Yuma es la casa de los que pertenecen a este lugar. Eso incluye a nuestros huéspedes, a la comunidad de Puerto Escondido, y a cada persona del equipo."' },
-    { tipo: 'dato', titulo: '¿Cómo nació el hotel?', items: [
-      { icono: '📅', texto: 'Abrimos en <strong>marzo de 2024</strong> en Puerto Escondido, Oaxaca.' },
-      { icono: '🏗️', texto: 'Fundado por <strong>Tim de Belloy</strong>. Diseñado por Ricardo de La Concha y Sara Skalli.' },
-      { icono: '🏨', texto: 'Tenemos <strong>25 habitaciones</strong> en 4 categorías: Garden, Standard, Terrace y Ocean.' },
-      { icono: '✨', texto: 'Somos intencionalmente pequeños. Cada huésped importa, cada detalle se nota.' }
-    ]},
-    { tipo: 'dato', titulo: 'El reconocimiento Michelin', items: [
-      { icono: '⭐', texto: 'En <strong>menos de un año</strong>, Casa Yuma fue reconocido por la <strong>Guía Michelin</strong>.' },
-      { icono: '🎯', texto: 'Michelin no evalúa lujo. Evalúa <strong>carácter, consistencia</strong> y experiencias memorables.' },
-      { icono: '👤', texto: 'Ese reconocimiento depende de <strong>cada persona del equipo, en cada turno, todos los días</strong>.' }
-    ]},
-    { tipo: 'dato', titulo: '¿Por qué Puerto Escondido?', items: [
-      { icono: '🏄', texto: 'Uno de los mejores breaks de surf del mundo.' },
-      { icono: '🌮', texto: 'Gastronomía que mezcla la cocina oaxaqueña con el Pacífico.' },
-      { icono: '🤝', texto: 'Nuestro equipo es en su mayoría <strong>de la región</strong>.' },
-      { icono: '💬', texto: 'Cuando un huésped pregunta qué hacer, la respuesta viene de alguien que lo vive — <strong>ese eres tú</strong>.' }
-    ]},
-    { tipo: 'ordenar', titulo: 'Ordena la línea de tiempo de Casa Yuma', instruccion: 'Arrastra los eventos en el orden correcto, del primero al último.', items: [
-      { id: 'a', texto: '🏗️ Diseño de Ricardo de La Concha y Sara Skalli' },
-      { id: 'b', texto: '🌅 Apertura oficial en Puerto Escondido' },
-      { id: 'c', texto: '⭐ Reconocimiento de la Guía Michelin' },
-      { id: 'd', texto: '💡 Fundación del proyecto por Tim de Belloy' }
-    ], ordenCorrecto: ['d','a','b','c'] }
+    {
+      tipo: 'portada',
+      titulo: '¿Qué es Casa Yuma?',
+      texto: 'Antes de saber qué hacer, hay que saber dónde estás parado. Esta es tu historia — y la nuestra.',
+      imagen: '🌊'
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Qué significa "Yuma"?',
+      items: [
+        { icono: '🌎', texto: 'El nombre viene de la cultura nativa americana.' },
+        { icono: '👑', texto: 'Significa: <strong>Hijo del Líder</strong>.' },
+        { icono: '🤝', texto: 'No era un título de privilegio — era una <strong>responsabilidad de servir</strong> a su comunidad.' },
+        { icono: '🌿', texto: 'En el Pacífico mexicano, "yuma" también significa algo que viene de lejos, del norte.' }
+      ]
+    },
+    {
+      tipo: 'cita',
+      texto: '"Casa Yuma es la casa de los que pertenecen a este lugar. Eso incluye a nuestros huéspedes, a la comunidad de Puerto Escondido, y a cada persona del equipo."'
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Cómo nació el hotel?',
+      items: [
+        { icono: '📅', texto: 'Abrimos en <strong>marzo de 2024</strong> en Puerto Escondido, Oaxaca.' },
+        { icono: '🏗️', texto: 'Fundado por <strong>Tim de Belloy</strong>. Diseñado por Ricardo de La Concha y Sara Skalli.' },
+        { icono: '🏨', texto: 'Tenemos <strong>25 habitaciones</strong> distribuidas en 4 categorías.' },
+        { icono: '✨', texto: 'Somos intencionalmente pequeños. Cada huésped importa, cada detalle se nota.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Nuestras habitaciones — 25 en total',
+      items: [
+        { icono: '🌿', texto: '<strong>Garden King — 6 habitaciones</strong>: Rodeadas de vegetación. Ambiente íntimo y fresco.' },
+        { icono: '⭐', texto: '<strong>Standard King — 4 habitaciones</strong>: El estándar completo de Casa Yuma. Diseño limpio y cuidado.' },
+        { icono: '🏙️', texto: '<strong>Yuma King Terrace — 12 habitaciones</strong>: Terrazas privadas con vista panorámica. Muy solicitadas.' },
+        { icono: '🌊', texto: '<strong>Ocean King — 3 habitaciones</strong>: Vista directa al Pacífico. Las más premium.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Nuestra Misión y Visión',
+      items: [
+        { icono: '💡', texto: '<strong>¿Qué es la Misión?</strong> Es el <em>por qué</em> existimos hoy. Lo que hacemos y para quién lo hacemos.' },
+        { icono: '🎯', texto: '<strong>Misión:</strong> Ofrecer un retiro exclusivo para adultos en la costa oaxaqueña, fusionando el lujo discreto con la autenticidad cultural de Puerto Escondido.' },
+        { icono: '🔭', texto: '<strong>¿Qué es la Visión?</strong> Es el <em>hacia dónde vamos</em>. El futuro que queremos construir.' },
+        { icono: '🌟', texto: '<strong>Visión:</strong> Ser el referente de hospitalidad auténtica en el Pacífico mexicano, reconocidos por crear experiencias memorables e irrepetibles.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'El reconocimiento Michelin y Tablet Hotels',
+      items: [
+        { icono: '📖', texto: '<strong>¿Qué es la Guía Michelin?</strong> Una de las referencias más reconocidas a nivel mundial en gastronomía y viajes, con más de 100 años de trayectoria.' },
+        { icono: '🏨', texto: '<strong>Tablet Hotels</strong> es la plataforma de hospedaje de Michelin. Hace una selección muy rigurosa de hoteles alrededor del mundo.' },
+        { icono: '⭐', texto: 'Que Casa Yuma forme parte de esta selección es un <strong>reconocimiento importante que nos distingue</strong> — no por precio, sino por carácter y experiencia.' },
+        { icono: '👤', texto: 'Ese reconocimiento depende de <strong>cada persona del equipo, en cada turno, todos los días</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Presentación personal y uniforme',
+      items: [
+        { icono: '👕', texto: '<strong>Uniforme:</strong> Limpio, planchado y completo durante toda tu jornada.' },
+        { icono: '🚌', texto: '<strong>El transporte es una extensión del hotel.</strong> Debes ir con ropa adecuada durante el trayecto — eres la imagen de Casa Yuma desde que sales de casa.' },
+        { icono: '🧼', texto: '<strong>Higiene:</strong> Desodorante siempre. Perfume discreto. Uñas cortas y limpias. Cabello ordenado.' },
+        { icono: '💡', texto: 'La primera impresión no empieza en la recepción — empieza <strong>en el momento en que te ven con el uniforme</strong>.' }
+      ]
+    },
+    {
+      tipo: 'ordenar',
+      titulo: 'Ordena la línea de tiempo de Casa Yuma',
+      instruccion: 'Toca un evento para seleccionarlo, luego toca la posición donde quieres colocarlo.',
+      items: [
+        { id: 'a', texto: '🏗️ Diseño de Ricardo de La Concha y Sara Skalli' },
+        { id: 'b', texto: '🌅 Apertura oficial en Puerto Escondido' },
+        { id: 'c', texto: '⭐ Reconocimiento de Tablet Hotels by Michelin' },
+        { id: 'd', texto: '💡 Fundación del proyecto por Tim de Belloy' }
+      ],
+      ordenCorrecto: ['d','a','b','c']
+    }
   ],
   preguntas: [
-    { tipo: 'mc', pregunta: '¿Qué significa el nombre "Yuma"?', opciones: ['Hijo del Líder','Mar del Pacífico','Casa del Sol','Tierra de Cactus'], correcta: 0 },
-    { tipo: 'vf', pregunta: 'Michelin reconoce a los hoteles que tienen el precio más alto.', correcta: false, justificacion: 'Michelin evalúa carácter, consistencia y experiencias memorables — no el precio.' },
-    { tipo: 'mc', pregunta: '¿En qué año abrió Casa Yuma?', opciones: ['2022','2023','2024','2025'], correcta: 2 },
-    { tipo: 'escenario', pregunta: 'Un huésped te pregunta: "¿Por qué se llama Casa Yuma?" ¿Cuál es la mejor respuesta?', opciones: [
-      'Es el nombre que se le ocurrió al dueño.',
-      '"Yuma" significa Hijo del Líder en la cultura nativa americana — alguien que sirve a su comunidad. Eso es lo que somos aquí.',
-      'No sé exactamente, tendría que preguntarle a mi jefe.',
-      'Es un nombre con mucho significado histórico.'
-    ], correcta: 1, explicacion: 'La segunda opción da una respuesta completa, auténtica y memorable — así se construyen momentos especiales con el huésped.' },
-    { tipo: 'mc', pregunta: '¿Cuántas habitaciones tiene Casa Yuma?', opciones: ['15','20','25','30'], correcta: 2 }
+    {
+      tipo: 'mc',
+      pregunta: '¿Qué significa el nombre "Yuma"?',
+      opciones: ['Hijo del Líder','Mar del Pacífico','Casa del Sol','Tierra de Cactus'],
+      correcta: 0
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'Michelin y Tablet Hotels reconocen a los hoteles que tienen el precio más alto.',
+      correcta: false,
+      justificacion: 'Michelin evalúa carácter, consistencia y experiencias memorables — no el precio. Es un reconocimiento de calidad y autenticidad.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: '¿Cuántas habitaciones Yuma King Terrace tiene el hotel?',
+      opciones: ['4','6','10','12'],
+      correcta: 3
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'Vas en el transporte del hotel con el uniforme puesto. Un vecino te pregunta dónde trabajas. ¿Qué representa ese momento?',
+      opciones: [
+        'Nada especial, el transporte es tiempo personal.',
+        'Una oportunidad de ser embajador de Casa Yuma — el uniforme te representa desde que sales de casa.',
+        'Solo importa la presentación dentro del hotel.',
+        'Depende de si hay huéspedes cerca.'
+      ],
+      correcta: 1,
+      explicacion: 'El transporte es una extensión del hotel. Tu imagen y comportamiento representan a Casa Yuma en todo momento.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: '¿Cuál es la diferencia entre Misión y Visión?',
+      opciones: [
+        'Son lo mismo, solo se usan en contextos diferentes.',
+        'La Misión es el futuro que queremos; la Visión es lo que hacemos hoy.',
+        'La Misión es por qué existimos hoy; la Visión es hacia dónde vamos.',
+        'La Visión la define el dueño y la Misión el equipo.'
+      ],
+      correcta: 2
+    }
   ]
 };
 renderModulo(MODULO);

@@ -19,51 +19,113 @@ const MODULO = {
   key: 'm2', numero: 2, icono: '🌊', titulo: 'La Marea — Nuestra identidad',
   color: '#2C6E73', siguiente: 'index.html',
   slides: [
-    { tipo: 'portada', titulo: '¿Quiénes somos?', texto: 'No somos "el personal" ni "el staff". Somos La Marea — y hay una razón muy específica para ese nombre.', imagen: '🌊' },
-    { tipo: 'dato', titulo: '¿Por qué "La Marea"?', items: [
-      { icono: '🌊', texto: 'El mar <strong>no para</strong>. Siempre está presente, aunque nadie lo esté mirando.' },
-      { icono: '🔄', texto: 'Tiene su <strong>ritmo propio</strong>. Da forma al lugar donde trabajamos.' },
-      { icono: '💪', texto: 'El Pacífico de Puerto Escondido es <strong>exigente y poderoso</strong>. Así es la operación de este hotel.' },
-      { icono: '🤝', texto: 'Una marea no es una ola sola — es <strong>el esfuerzo de todos juntos</strong>.' }
-    ]},
-    { tipo: 'cita', texto: '"La Marea no es para los que buscan lo fácil — es para los que disfrutan el reto de hacerlo bien."' },
-    { tipo: 'dato', titulo: 'Valor C — Carácter', items: [
-      { icono: '✊', texto: 'Ser <strong>auténtico y honesto</strong> en todo lo que hacemos.' },
-      { icono: '🎭', texto: 'El servicio que damos <strong>no es una actuación</strong> — nace de quiénes somos.' },
-      { icono: '💬', texto: 'Cómo tratamos a las personas, <strong>incluso cuando nadie está mirando</strong>.' }
-    ]},
-    { tipo: 'dato', titulo: 'Valor A — Atención genuina', items: [
-      { icono: '👀', texto: 'Notar lo que el huésped necesita <strong>antes de que lo pida</strong>.' },
-      { icono: '🧠', texto: 'Estar presentes — no solo físicamente, sino con la mente también.' },
-      { icono: '🎯', texto: 'El servicio de calidad <strong>no se improvisa</strong> — se practica.' }
-    ]},
-    { tipo: 'dato', titulo: 'Valor S — Sentido de lugar', items: [
-      { icono: '🌎', texto: 'Conocer y <strong>respetar Puerto Escondido</strong>. Somos parte de este lugar.' },
-      { icono: '🗣️', texto: 'Ser embajadores del Pacífico oaxaqueño con <strong>orgullo y conocimiento real</strong>.' },
-      { icono: '💡', texto: 'El huésped viene porque quiere algo auténtico — <strong>tú puedes dárselo</strong>.' }
-    ]},
-    { tipo: 'dato', titulo: 'Valor A — Acompañamiento', items: [
-      { icono: '🤝', texto: 'Hacernos responsables de la <strong>experiencia completa del huésped</strong>.' },
-      { icono: '🚫', texto: 'Si algo sale mal, <strong>no es "problema de otro departamento"</strong> — es nuestro problema.' },
-      { icono: '⭐', texto: 'Mientras el huésped está con nosotros, <strong>nosotros estamos con él</strong>.' }
-    ]},
-    { tipo: 'relacionar', titulo: 'Relaciona cada valor con su descripción', instruccion: 'Arrastra cada descripción al valor CASA que le corresponde.',
+    {
+      tipo: 'portada',
+      titulo: '¿Quiénes somos?',
+      texto: 'No somos "el personal" ni "el staff". Somos La Marea — y hay una razón muy específica para ese nombre.',
+      imagen: '🌊'
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Por qué "La Marea"?',
+      items: [
+        { icono: '🌊', texto: 'El mar <strong>no para</strong>. Siempre está presente, aunque nadie lo esté mirando.' },
+        { icono: '🔄', texto: 'Tiene su <strong>ritmo propio</strong>. Da forma al lugar donde trabajamos.' },
+        { icono: '💪', texto: 'El Pacífico de Puerto Escondido es <strong>exigente y poderoso</strong>. Así es la operación de este hotel.' },
+        { icono: '🤝', texto: 'Una marea no es una ola sola — es <strong>el esfuerzo de todos juntos</strong>.' }
+      ]
+    },
+    {
+      tipo: 'cita',
+      texto: '"La Marea no es para los que buscan lo fácil — es para los que disfrutan el reto de hacerlo bien."'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Los valores CASA',
+      items: [
+        { icono: '✊', texto: '<strong>C — Carácter:</strong> Ser auténtico y honesto. El servicio nace de quiénes somos, no de una actuación.' },
+        { icono: '👀', texto: '<strong>A — Atención genuina:</strong> Notar lo que el huésped necesita antes de que lo pida. Presencia real.' },
+        { icono: '🌎', texto: '<strong>S — Sentido de lugar:</strong> Conocer y respetar Puerto Escondido. Ser embajadores con orgullo.' },
+        { icono: '🤝', texto: '<strong>A — Acompañamiento:</strong> Hacernos responsables de la experiencia completa. La queja que llega es nuestra hasta resolverse.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'El código YUMA — cómo servimos',
+      items: [
+        { icono: '⚡', texto: '<strong>Y — Ya estoy aquí:</strong> Presencia total. Cuando atiendes, el huésped es lo único que existe.' },
+        { icono: '👂', texto: '<strong>U — Únete a su historia:</strong> Nota el contexto. Adapta el trato. Cada huésped es diferente.' },
+        { icono: '🚀', texto: '<strong>M — Mueve el problema:</strong> Tú eres responsable de que se resuelva, no de encontrar a quién culpar.' },
+        { icono: '🔮', texto: '<strong>A — Anticipa:</strong> No esperes que te pidan. La diferencia está en lo que pasa antes.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Nuestros colores — identidad visual',
+      items: [
+        { icono: '🔵', texto: '<strong>Pacific Blue (#2C6E73)</strong> — el mar del Pacífico.' },
+        { icono: '🟡', texto: '<strong>Sand Gold (#E1D082)</strong> — la arena de Zicatela.' },
+        { icono: '⚪', texto: '<strong>Wool White (#EAE3CD)</strong> — la cal y el lino.' },
+        { icono: '🟢', texto: '<strong>Cactus Green (#72785E)</strong> — la vegetación de la sierra costera.' },
+        { icono: '🟣', texto: '<strong>Caracol Purple (#88285C)</strong> — el caracol de la costa oaxaqueña.' }
+      ]
+    },
+    {
+      tipo: 'relacionar',
+      titulo: 'Relaciona cada valor CASA con su descripción',
+      instruccion: 'Toca un elemento de la columna izquierda, luego toca su par en la derecha.',
       columnaA: ['C — Carácter','A — Atención','S — Sentido de lugar','A — Acompañamiento'],
-      columnaB: ['Ser auténtico y honesto aunque nadie mire','Notar lo que el huésped necesita antes de pedirlo','Conocer y respetar Puerto Escondido con orgullo','Hacernos responsables de la experiencia completa'],
-      pares: [0,1,2,3]
+      columnaB: [
+        'Hacernos responsables de la experiencia completa del huésped',
+        'Ser auténtico y honesto aunque nadie esté mirando',
+        'Conocer y respetar Puerto Escondido con orgullo real',
+        'Notar lo que el huésped necesita antes de pedirlo'
+      ],
+      pares: [1,3,2,0]
     }
   ],
   preguntas: [
-    { tipo: 'mc', pregunta: '¿Por qué el equipo se llama "La Marea"?', opciones: ['Porque el hotel está cerca del mar','Porque el mar no para, da forma al lugar y es el esfuerzo de todos','Porque el dueño es surfista','Porque el hotel tiene alberca'], correcta: 1 },
-    { tipo: 'vf', pregunta: 'El valor "Acompañamiento" significa que si una queja no es de tu área, se la puedes pasar a otro departamento.', correcta: false, justificacion: 'Acompañamiento significa hacernos responsables de la experiencia completa. La queja es tuya hasta que se resuelva.' },
-    { tipo: 'escenario', pregunta: 'Ves que una pareja en el restaurante lleva 10 minutos esperando sin que nadie los atienda. No es tu área. ¿Qué haces?', opciones: [
-      'Espero a que llegue alguien de restaurante — no es mi turno.',
-      'Me acerco, los saludo y aviso de inmediato a un compañero de restaurante.',
-      'Los ignoro porque no es mi responsabilidad.',
-      'Los mando con recepción para que ellos ayuden.'
-    ], correcta: 1, explicacion: 'Acompañamiento significa que el huésped nunca se queda solo. No importa el departamento — tú reaccionas primero.' },
-    { tipo: 'mc', pregunta: '¿Qué significa el valor "C" de CASA?', opciones: ['Calidad','Carácter','Cortesía','Compromiso'], correcta: 1 },
-    { tipo: 'vf', pregunta: 'La Atención genuina significa dar buenos días a todos los huéspedes.', correcta: false, justificacion: 'Va más allá: significa notar lo que el huésped necesita antes de que lo pida, y estar presente de verdad.' }
+    {
+      tipo: 'mc',
+      pregunta: '¿Por qué el equipo se llama "La Marea"?',
+      opciones: [
+        'Porque el hotel está cerca del mar',
+        'Porque el mar no para, da forma al lugar y representa el esfuerzo de todos',
+        'Porque el dueño es surfista',
+        'Porque el hotel tiene alberca'
+      ],
+      correcta: 1
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'El valor "Acompañamiento" significa que si una queja no es de tu área, puedes pasársela a otro departamento.',
+      correcta: false,
+      justificacion: 'Acompañamiento significa que la queja que recibes es tuya hasta que esté resuelta, sin importar el departamento.'
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'Ves a una pareja en el lobby esperando sin que nadie los atienda. No es tu área. ¿Qué haces?',
+      opciones: [
+        'Espero a que llegue alguien de su departamento — no es mi turno.',
+        'Me acerco, los saludo y aviso de inmediato a un compañero del área.',
+        'Los ignoro porque no es mi responsabilidad.',
+        'Los mando con recepción para que ellos ayuden.'
+      ],
+      correcta: 1,
+      explicacion: 'Acompañamiento significa que el huésped nunca se queda solo. Tú reaccionas primero, sin importar el departamento.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: 'En el código YUMA, la "M" significa:',
+      opciones: ['Más servicio','Mueve el problema','Mantén la calma','Mejora continua'],
+      correcta: 1
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'La Atención genuina (valor A de CASA) significa dar buenos días a todos los huéspedes.',
+      correcta: false,
+      justificacion: 'Va más allá: es notar lo que el huésped necesita antes de que lo pida, y estar presente de verdad — no solo saludar.'
+    }
   ]
 };
 renderModulo(MODULO);
