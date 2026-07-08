@@ -8,7 +8,8 @@ import { guardarModulo, getColaborador, getSession } from './firebase.js';
 
 export async function renderModulo(MOD) {
   const session = getSession();
-  if (!session.id) { window.location.href = 'index.html'; return; }
+  const goHub = () => { if(window.ir) { window.ir('view-lamarea'); window.initHub?.(); } else { window.location.href='index.html'; } };
+  if (!session.id) { goHub(); return; }
 
   const app = document.getElementById('app');
   let slideIndex = 0;
@@ -31,9 +32,9 @@ export async function renderModulo(MOD) {
         <h2 style="font-size:22px;font-family:var(--font-mono);margin-bottom:10px;">Ya completaste este módulo</h2>
         <p style="font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:8px;">Obtuviste <strong>${modData.porcentaje}%</strong> en tu evaluación.</p>
         <p style="font-size:13px;color:var(--mid);opacity:0.6;margin-bottom:28px;">Cada módulo se completa una sola vez.</p>
-        <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--blue);color:var(--white);border-radius:10px;text-decoration:none;font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;">
+        <button onclick="window.ir?.('view-lamarea');window.initHub?.()" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--blue);color:var(--white);border-radius:10px;border:none;cursor:pointer;font-family:var(--font-mono);font-size:13px;letter-spacing:0.06em;">
           ← Volver a mis módulos
-        </a>
+        </button>
       </div>`;
     return;
   }
@@ -403,7 +404,7 @@ export async function renderModulo(MOD) {
             <div id="buzon-ok" style="display:none;margin-top:8px;background:#e8f5e9;border-radius:8px;padding:10px 14px;font-size:13px;color:#1a5c2a;">✅ Comentario enviado. ¡Gracias!</div>
           </div>
 
-          <a href="index.html" class="btn btn-primary" style="justify-content:center;width:100%;margin-top:20px;">Volver a mis módulos →</a>
+          <button onclick="window.ir?.('view-lamarea');window.initHub?.()" class="btn btn-primary" style="justify-content:center;width:100%;margin-top:20px;border:none;cursor:pointer;">Volver a mis módulos →</button>
         </div>
       </div>`;
 
@@ -469,7 +470,7 @@ export async function renderModulo(MOD) {
   };
   window.navBack = function() {
     if (slideIndex > 0) { slideIndex--; render(); }
-    else window.location.href = 'index.html';
+    else { goHub(); }
     window.scrollTo(0,0);
   };
 

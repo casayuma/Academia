@@ -901,6 +901,18 @@ window.abrirModulo = async (modDef) => {
   try {
     const html=await(await fetch(modDef.file)).text();
     const parsed=new DOMParser().parseFromString(html,'text/html');
+
+    // Inject CSS from module head if not already loaded
+    parsed.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!document.querySelector(`link[href="${href}"]`)) {
+        const newLink = document.createElement('link');
+        newLink.rel = 'stylesheet';
+        newLink.href = href;
+        document.head.appendChild(newLink);
+      }
+    });
+
     const body=parsed.body; const nav=body.querySelector('nav'); if(nav)nav.remove();
     app.innerHTML=body.innerHTML;
     parsed.querySelectorAll('script[type="module"]').forEach(s=>{
@@ -911,7 +923,7 @@ window.abrirModulo = async (modDef) => {
 
 // Check session on load
 const ses=session.load();
-if(ses.id){$('col-login').style.display='none';$('col-hub').style.display='block';}
+if(ses.id){$('col-login').style.display='none';$('col-hub').style.display='block';initHub();}
 
 // ── Eval Final ──
 window.ir_orig = window.ir;
