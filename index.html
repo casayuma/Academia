@@ -778,7 +778,7 @@ window.filtrarRoster = () => {
       style="padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);font-size:14px;color:#EAE3CD;transition:background 0.15s;"
       onmouseover="this.style.background='rgba(44,110,115,0.3)'" onmouseout="this.style.background='transparent'">
       <div>${r.nombre}</div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">${r.departamento} · ${r.clave}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">${r.departamento}</div>
     </div>`).join('');
   list.style.display = 'block';
 };
@@ -789,7 +789,7 @@ window.seleccionarColaborador = (clave, nombre, departamento) => {
   $('rosterList').style.display = 'none';
   $('colSelected').style.display = 'block';
   $('colSelectedName').textContent = nombre;
-  $('colSelectedDepto').textContent = departamento + ' · ' + clave;
+  $('colSelectedDepto').textContent = departamento;
   $('colSearch').style.display = 'none';
   $('colError').style.display = 'none';
 };
