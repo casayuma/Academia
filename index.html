@@ -504,21 +504,35 @@ body { font-family: var(--mono); background: var(--dark); color: var(--dark); ov
       <div class="auth-box">
         <span class="auth-icon">🌊</span>
         <div class="auth-title">¡Bienvenido!</div>
-        <p class="auth-sub">Ingresa tus datos para acceder a tus módulos de capacitación.</p>
-        <div class="auth-field"><label>Tu nombre completo</label><input id="colNombre" class="auth-input" type="text" placeholder="Ej. María González López"></div>
-        <div class="auth-field"><label>Número de empleado</label><input id="colNumero" class="auth-input" type="text" placeholder="Ej. CY001" maxlength="10"></div>
-        <div class="auth-field">
-          <label>Departamento</label>
-          <select id="colDepto" class="auth-input">
-            <option value="">Selecciona tu departamento</option>
-            <option>Administración</option>
-            <option>Alimentos &amp; Bebidas</option>
-            <option>Mantenimiento &amp; Seguridad</option>
-            <option>Housekeeping / Ama de Llaves</option>
-            <option>Recepción &amp; Servicios</option>
-          </select>
+        <p class="auth-sub">Selecciona tu nombre y verifica con tu número de colaborador.</p>
+
+        <!-- Roster loading state -->
+        <div id="rosterLoading" style="text-align:center;padding:20px 0;color:rgba(255,255,255,0.4);font-size:13px;">
+          Cargando lista de colaboradores…
         </div>
-        <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:8px;" onclick="colLogin()">Entrar →</button>
+
+        <!-- Roster loaded state -->
+        <div id="rosterForm" style="display:none;">
+          <div class="auth-field">
+            <label>Busca y selecciona tu nombre</label>
+            <input id="colSearch" class="auth-input" type="text" placeholder="Escribe tu nombre para buscar…" oninput="filtrarRoster()" autocomplete="off">
+            <div id="rosterList" style="background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);border-top:none;border-radius:0 0 8px 8px;max-height:200px;overflow-y:auto;display:none;"></div>
+            <div id="colSelected" style="display:none;margin-top:8px;background:rgba(44,110,115,0.25);border:1.5px solid rgba(44,110,115,0.5);border-radius:8px;padding:12px 14px;">
+              <div style="font-size:12px;color:rgba(255,255,255,0.5);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">Seleccionado</div>
+              <div id="colSelectedName" style="font-size:15px;color:#EAE3CD;"></div>
+              <div id="colSelectedDepto" style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;"></div>
+              <button onclick="limpiarSeleccion()" style="font-size:11px;color:rgba(255,255,255,0.35);background:none;border:none;cursor:pointer;margin-top:4px;padding:0;letter-spacing:0.05em;">✕ Cambiar</button>
+            </div>
+          </div>
+
+          <div class="auth-field">
+            <label>Número de colaborador</label>
+            <input id="colNumero" class="auth-input" type="text" placeholder="Ej. CY001" maxlength="10" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+          </div>
+
+          <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:8px;" onclick="colLogin()">Entrar →</button>
+        </div>
+
         <div class="loading-msg" id="colLoading">Cargando tu progreso…</div>
         <div class="auth-error" id="colError"></div>
       </div>
@@ -576,6 +590,22 @@ body { font-family: var(--mono); background: var(--dark); color: var(--dark); ov
 
 <!-- ══════════════ BIBLIOTECA ══════════════ -->
 <div id="view-biblioteca" class="view">
+  <!-- PIN screen -->
+  <div id="bib-pin">
+    <nav class="topbar"><span class="topbar-logo">Casa Yuma · Academia</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
+    <div class="auth-wrap">
+      <div class="auth-box">
+        <span class="auth-icon">📚</span>
+        <div class="auth-title">Biblioteca Yuma</div>
+        <p class="auth-sub">Ingresa el PIN para acceder a los materiales de apoyo.</p>
+        <input type="password" class="auth-input pin-input" id="bibPinInput" placeholder="····" maxlength="8" onkeydown="if(event.key==='Enter')verificarBibPin()">
+        <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:8px;" onclick="verificarBibPin()">Ingresar →</button>
+        <div class="auth-error" id="bibPinError">PIN incorrecto. Inténtalo de nuevo.</div>
+      </div>
+    </div>
+  </div>
+  <!-- Contenido -->
+  <div id="bib-content" style="display:none;">
   <nav class="topbar"><span class="topbar-logo">Biblioteca Yuma</span><button class="back-btn" onclick="ir('view-home')">← Inicio</button></nav>
   <div class="bib-hero">
     <div class="bib-wave"></div>
@@ -634,6 +664,7 @@ body { font-family: var(--mono); background: var(--dark); color: var(--dark); ov
       <span style="font-size:13px;color:var(--blue);">Entrar →</span>
     </div>
   </div>
+  </div><!-- /bib-content -->
 </div>
 
 <!-- ══════════════ SCRIPTS ══════════════ -->
@@ -686,7 +717,19 @@ window.ir = function(viewId) {
 };
 window.toggleDoc = id => $(id).classList.toggle('open');
 
-// ── PIN ──
+// ── PIN Biblioteca ──
+const PIN_BIB = '8030';
+window.verificarBibPin = () => {
+  if ($('bibPinInput').value === PIN_BIB) {
+    $('bib-pin').style.display = 'none';
+    $('bib-content').style.display = 'block';
+  } else {
+    $('bibPinError').style.display = 'block';
+    $('bibPinInput').value = '';
+  }
+};
+
+// ── PIN Líderes ──
 window.verificarPin = () => {
   if ($('pinInput').value === PIN) {
     $('ldr-pin').style.display='none';
@@ -698,18 +741,96 @@ window.verificarPin = () => {
   }
 };
 
+// ── Roster from Google Sheet ──
+const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ--HI0oGHx9R4pDI27gtboX5NkW0VlCYeNa6kMWxFyAR5P6VQtUwQwnI9h6Rqrw/pub?gid=319886753&single=true&output=csv';
+let roster = []; // [{clave, nombre, puesto, departamento}]
+let selectedColaborador = null;
+
+async function cargarRoster() {
+  try {
+    const res = await fetch(SHEET_CSV);
+    const csv = await res.text();
+    const lines = csv.trim().split('\n').slice(1); // skip header
+    roster = lines
+      .map(line => {
+        // Parse CSV properly handling quoted fields
+        const cols = line.match(/(".*?"|[^,]+)(?=,|$)/g) || line.split(',');
+        const clean = cols.map(c => c.replace(/^"|"$/g,'').trim());
+        return { clave: clean[0], nombre: clean[1], puesto: clean[2], departamento: clean[3] };
+      })
+      .filter(r => r.clave && r.nombre && !r.nombre.toLowerCase().includes('vacante'));
+    $('rosterLoading').style.display = 'none';
+    $('rosterForm').style.display = 'block';
+  } catch(e) {
+    $('rosterLoading').innerHTML = '⚠️ No se pudo cargar la lista. Verifica tu conexión.';
+    console.error(e);
+  }
+}
+
+window.filtrarRoster = () => {
+  const q = $('colSearch').value.toLowerCase().trim();
+  const list = $('rosterList');
+  if (!q || q.length < 2) { list.style.display='none'; return; }
+  const matches = roster.filter(r => r.nombre.toLowerCase().includes(q)).slice(0,8);
+  if (!matches.length) { list.style.display='none'; return; }
+  list.innerHTML = matches.map(r => `
+    <div onclick="seleccionarColaborador('${r.clave}','${r.nombre.replace(/'/g,"\\'")}','${r.departamento}')"
+      style="padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.08);font-size:14px;color:#EAE3CD;transition:background 0.15s;"
+      onmouseover="this.style.background='rgba(44,110,115,0.3)'" onmouseout="this.style.background='transparent'">
+      <div>${r.nombre}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">${r.departamento} · ${r.clave}</div>
+    </div>`).join('');
+  list.style.display = 'block';
+};
+
+window.seleccionarColaborador = (clave, nombre, departamento) => {
+  selectedColaborador = { clave, nombre, departamento };
+  $('colSearch').value = nombre;
+  $('rosterList').style.display = 'none';
+  $('colSelected').style.display = 'block';
+  $('colSelectedName').textContent = nombre;
+  $('colSelectedDepto').textContent = departamento + ' · ' + clave;
+  $('colSearch').style.display = 'none';
+  $('colError').style.display = 'none';
+};
+
+window.limpiarSeleccion = () => {
+  selectedColaborador = null;
+  $('colSearch').value = '';
+  $('colSearch').style.display = 'block';
+  $('colSelected').style.display = 'none';
+  $('colNumero').value = '';
+};
+
+// Close roster list when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('#rosterList') && !e.target.closest('#colSearch')) {
+    const list = $('rosterList');
+    if (list) list.style.display = 'none';
+  }
+});
+
 // ── Col login ──
 window.colLogin = async () => {
-  const n=$('colNombre').value.trim(), num=$('colNumero').value.trim(), d=$('colDepto').value;
-  $('colError').style.display='none';
-  if (!n) return showErr('colError','Por favor escribe tu nombre completo.');
-  if (!num) return showErr('colError','Por favor ingresa tu número de empleado.');
-  if (!d) return showErr('colError','Por favor selecciona tu departamento.');
-  $('colLoading').style.display='block';
+  const num = $('colNumero').value.trim().toUpperCase();
+  $('colError').style.display = 'none';
+  if (!selectedColaborador) return showErr('colError','Por favor selecciona tu nombre de la lista.');
+  if (!num) return showErr('colError','Por favor ingresa tu número de colaborador.');
+  // Validate number matches selected
+  if (num !== selectedColaborador.clave) {
+    return showErr('colError', `El número no coincide con ${selectedColaborador.nombre}. Verifica tu número de colaborador.`);
+  }
+  $('colLoading').style.display = 'block';
   try {
-    const id=empId(n,num), ref=doc(db,'academia_colaboradores',id), snap=await getDoc(ref);
-    if (!snap.exists()) await setDoc(ref,{nombre:n,numero_empleado:num,departamento:d,fecha_inicio:serverTimestamp(),modulos:{},evaluacion_final:{completado:false,puntaje:0},puntaje_total:0,porcentaje_completado:0});
-    session.save(id,n,d);
+    const n = selectedColaborador.nombre;
+    const d = selectedColaborador.departamento;
+    const id = empId(n, num);
+    const ref = doc(db,'academia_colaboradores',id);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) {
+      await setDoc(ref,{nombre:n,numero_empleado:num,departamento:d,fecha_inicio:serverTimestamp(),modulos:{},evaluacion_final:{completado:false,puntaje:0},puntaje_total:0,porcentaje_completado:0});
+    }
+    session.save(id, n, d);
     $('col-login').style.display='none';
     $('col-hub').style.display='block';
     $('colLoading').style.display='none';
@@ -720,8 +841,9 @@ function showErr(id,msg){const el=$(id);el.textContent=msg;el.style.display='blo
 
 window.colLogout = () => {
   session.clear();
+  selectedColaborador = null;
   $('col-login').style.display='block'; $('col-hub').style.display='none';
-  ['colNombre','colNumero','colDepto'].forEach(id=>$(id).value='');
+  limpiarSeleccion();
   ir('view-home');
 };
 
@@ -942,6 +1064,11 @@ const irBase=window.ir;
 window.ir=function(id){
   irBase(id);
   if(id==='view-evalfinal') window.dispatchEvent(new Event('view-evalfinal-shown'));
+  if(id==='view-lamarea' && !session.load().id) cargarRoster();
+  if(id!=='view-biblioteca'){
+    const bibPin=$('bib-pin'), bibCont=$('bib-content');
+    if(bibPin && bibCont){ bibPin.style.display='block'; bibCont.style.display='none'; if($('bibPinInput'))$('bibPinInput').value=''; if($('bibPinError'))$('bibPinError').style.display='none'; }
+  }
 };
 
 // ── Líderes data ──
