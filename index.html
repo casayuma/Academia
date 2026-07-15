@@ -1103,24 +1103,83 @@ window.ir=function(id){
 // ── Líderes data ──
 let TODOS=[],FILTRADOS=[];
 let deptoActivo='', tipoActivo='induccion';
+let ROSTER = {}; // {CY001: {nombre, puesto, departamento}}
+
+async function cargarRosterSheet() {
+  try {
+    const res = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ--HI0oGHx9R4pDI27gtboX5NkW0VlCYeNa6kMWxFyAR5P6VQtUwQwnI9h6Rqrw/pub?gid=319886753&single=true&output=csv');
+    const csv = await res.text();
+    const lines = csv.trim().split('\n').slice(1);
+    lines.forEach(line => {
+      const cols = line.match(/(".*?"|[^,\n]+)/g) || [];
+      const clean = cols.map(c => c.replace(/^"|"$/g,'').trim());
+      const clave = clean[0]?.toUpperCase();
+      if (clave && clean[1] && !clean[1].toLowerCase().includes('vacante')) {
+        ROSTER[clave] = { nombre: clean[1], puesto: clean[2], departamento: clean[3] };
+      }
+    });
+  } catch(e) { console.error('Error cargando roster:', e); }
+}
 
 async function cargarLideres(){
   try {
-    TODOS=(await getDocs(collection(db,'academia_colaboradores'))).docs.map(d=>({id:d.id,...d.data()}));
-    TODOS.sort((a,b)=>(b.porcentaje_completado||0)-(a.porcentaje_completado||0));
-    FILTRADOS=[...TODOS];
+    // Load roster and Firebase in parallel
+    await cargarRosterSheet();
+    const snap = await getDocs(collection(db,'academia_colaboradores'));
+    const firebaseMap = {}; // {CY001: data}
+    snap.docs.forEach(d => {
+      const data = d.data();
+      const clave = data.numero_empleado?.toUpperCase();
+      if (clave) firebaseMap[clave] = {id: d.id, ...data};
+    });
+
+    // Merge: everyone in roster, enriched with Firebase data if exists
+    TODOS = Object.entries(ROSTER).map(([clave, rosterData]) => {
+      const fb = firebaseMap[clave];
+      if (fb) {
+        return { ...fb, _enRoster: true, _sinIniciar: false };
+      } else {
+        // In roster but never logged in
+        return {
+          id: null,
+          numero_empleado: clave,
+          nombre: rosterData.nombre,
+          puesto: rosterData.puesto,
+          departamento: rosterData.departamento,
+          modulos: {},
+          evaluacion_final: { completado: false },
+          puntaje_total: 0,
+          porcentaje_completado: 0,
+          _enRoster: true,
+          _sinIniciar: true
+        };
+      }
+    });
+
+    // Sort: active first, never started last
+    TODOS.sort((a,b) => {
+      if (a._sinIniciar && !b._sinIniciar) return 1;
+      if (!a._sinIniciar && b._sinIniciar) return -1;
+      return (b.porcentaje_completado||0) - (a.porcentaje_completado||0);
+    });
+
+    FILTRADOS = [...TODOS];
     actualizarKPIs(TODOS);
     renderTabla();
     $('ldrUpdate').textContent=`Última actualización: ${new Date().toLocaleString('es-MX')}`;
     cargarComentarios();
-  } catch(e){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Error al cargar datos.</div>';}
+  } catch(e){
+    console.error(e);
+    $('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Error al cargar datos.</div>';
+  }
 }
 
 function actualizarKPIs(lista){
-  const total=lista.length;
-  const completos=lista.filter(c=>c.porcentaje_completado>=100).length;
-  const prom=total>0?Math.round(lista.reduce((s,c)=>s+(c.puntaje_total||0),0)/total):0;
-  const conFinal=lista.filter(c=>c.evaluacion_final?.completado).length;
+  const activos = lista.filter(c => !c._sinIniciar);
+  const total = lista.length;
+  const completos = lista.filter(c=>c.porcentaje_completado>=100).length;
+  const prom = activos.length>0 ? Math.round(activos.reduce((s,c)=>s+(c.puntaje_total||0),0)/activos.length) : 0;
+  const conFinal = lista.filter(c=>c.evaluacion_final?.completado).length;
   $('kpi0').textContent=total;
   $('kpi1').textContent=completos;
   $('kpi2').textContent=prom+'%';
@@ -1145,6 +1204,16 @@ function renderTabla(){
   if(!FILTRADOS.length){$('tableWrap').innerHTML='<div style="text-align:center;padding:40px;color:var(--mid);opacity:0.5;">Sin resultados para este filtro.</div>';return;}
   const rows=FILTRADOS.map(c=>{
     const m=c.modulos||{},ef=c.evaluacion_final||{},pct=c.porcentaje_completado||0,pts=c.puntaje_total||0;
+
+    if (c._sinIniciar) {
+      return `<tr style="opacity:0.55;">
+        <td><div style="font-size:13px;font-weight:500;">${c.nombre}</div><div style="font-size:11px;opacity:0.5;">#${c.numero_empleado}</div></td>
+        <td><span style="padding:3px 9px;border-radius:12px;font-size:10px;background:#f0ece0;color:var(--mid);">${c.departamento||'—'}</span></td>
+        <td colspan="4"><span style="font-size:12px;color:var(--mid);opacity:0.5;letter-spacing:0.05em;">⏳ Aún no ha ingresado a la Academia</span></td>
+        <td style="font-size:11px;opacity:0.4;">—</td>
+      </tr>`;
+    }
+
     const dots=MINFO.map(mi=>{const md=m[mi.key];if(!md?.completado)return `<div class="mod-dot" title="${mi.n}">·</div>`;const p=md.porcentaje||0,col=p>=80?'#27ae60':p>=60?'#e67e22':'#c0392b';return `<div class="mod-dot" style="background:${col}22;border-color:${col};color:${col}" title="${mi.n}: ${p}%">${p}%</div>`;}).join('');
     const bc=pct>=80?'#27ae60':pct>=50?'#e67e22':'#c0392b';
     const pc=pts>=80?'#e8f5e9':pts>=60?'#faf6dc':'#fde8e8',pt=pts>=80?'#1a5c2a':pts>=60?'#7a6e1a':'#7a1a1a';
@@ -1165,10 +1234,13 @@ window.filtrar=()=>{
   const b=$('searchInput').value.toLowerCase();
   const s=$('statusFilter').value;
   FILTRADOS=TODOS.filter(c=>{
-    const mn=c.nombre?.toLowerCase().includes(b)||c.numero_empleado?.includes(b);
+    const mn=c.nombre?.toLowerCase().includes(b)||c.numero_empleado?.toLowerCase().includes(b);
     const md=!deptoActivo||c.departamento===deptoActivo;
     const p=c.porcentaje_completado||0;
-    const ms=!s||(s==='completo'&&p>=100)||(s==='en-progreso'&&p>0&&p<100)||(s==='sin-iniciar'&&p===0);
+    const ms=!s||
+      (s==='completo'&&p>=100)||
+      (s==='en-progreso'&&p>0&&p<100)||
+      (s==='sin-iniciar'&&(p===0||c._sinIniciar));
     return mn&&md&&ms;
   });
   actualizarKPIs(FILTRADOS);
