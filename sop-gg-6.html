@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP GG 6 · Gestión de Personas y Protocolos · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">SOP Gerencia General · 6 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+const MODULO = {
+  key: 'sop_gg_6', numero: 6, icono: '👥', titulo: 'Gestión de Personas y Protocolos',
+  color: '#88285C', siguiente: 'index.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'Gestión de personas y protocolos',
+      texto: 'El equipo de Casa Yuma es el producto. La experiencia que vive el huésped es directamente proporcional a la calidad humana y el estado de ánimo de quien lo atiende.',
+      imagen: '👥'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Contratación y alta — puntos críticos',
+      items: [
+        { icono: '🔍', texto: 'El GM <strong>entrevista a todos los candidatos para posiciones de líder o supervisión</strong>. Tiene la decisión final en todas las contrataciones.' },
+        { icono: '📋', texto: '<strong>Documentos requeridos:</strong> INE, CURP, NSS, comprobante de domicilio, RFC (si aplica), foto, datos del beneficiario y carátula de cuenta bancaria.' },
+        { icono: '⚠️', texto: '<strong>Alta IMSS ANTES de comenzar a trabajar — sin excepción.</strong> Coordinada por Administración.' },
+        { icono: '👕', texto: 'El colaborador debe tener su <strong>uniforme completo desde el primer día o primera semana</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Política de propinas',
+      items: [
+        { icono: '💰', texto: 'Las propinas se distribuyen entre colaboradores del departamento <strong>según las horas trabajadas</strong> en el período.' },
+        { icono: '⏰', texto: '<strong>Retraso hasta 3 veces:</strong> descuento del 10% de la propina del período.' },
+        { icono: '🚨', texto: '<strong>Más de 3 retrasos:</strong> descuento del 70% de la propina del período.' },
+        { icono: '👁️', texto: 'Al firmar la entrega de propina, cada colaborador puede ver el monto de todos — <strong>transparencia total</strong>.' },
+        { icono: '📅', texto: 'Cálculo basado en el sistema de checador. Envíos los días <strong>12 y 27</strong> de cada mes.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Conflictos y bienestar del equipo',
+      items: [
+        { icono: '🗣️', texto: '<strong>No tolerar rumores ni comunicación indirecta.</strong> Si hay algo que decirle a alguien, se le dice. El GM modela este comportamiento.' },
+        { icono: '🚪', texto: 'La puerta del GM está abierta. Todo colaborador debe saber que puede hablar directamente — complementa, no elimina, la cadena de mando.' },
+        { icono: '⭐', texto: '<strong>Reconocer el trabajo bien hecho públicamente.</strong> Un equipo valorado tiene menos rotación y más motivación.' },
+        { icono: '💵', texto: '<strong>Horas extras:</strong> Se pagan según la ley — doble de la hora normal por horas más allá del turno de 8 horas.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Protocolos — quejas de huéspedes',
+      items: [
+        { icono: '👤', texto: '<strong>Primer respondedor:</strong> La Lead de Recepción atiende todas las quejas con autoridad para ofrecer opciones (cortesías, upgrades, compensaciones menores).' },
+        { icono: '📢', texto: '<strong>El GM siempre debe estar informado</strong>, aunque la queja ya se haya resuelto.' },
+        { icono: '💳', texto: '<strong>Cancelaciones no reembolsables:</strong> Opción 1: crédito de estadía hasta 12 meses. Opción 2: reembolso parcial máximo 35% si rechaza el crédito.' },
+        { icono: '💬', texto: '<strong>Reseñas negativas:</strong> Responder siempre, en tono profesional y empático. Nunca confrontar en plataformas públicas.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Protocolos — VIPs y eventos',
+      items: [
+        { icono: '⭐', texto: '<strong>VIPs se mencionan en la junta del miércoles.</strong> La información debe fluir a todos los departamentos antes de la llegada.' },
+        { icono: '🍽️', texto: '<strong>Restricciones alimentarias</strong> (gluten free, vegetariano, alergias): comunicar a Cocina con mínimo 24 horas de anticipación.' },
+        { icono: '🎵', texto: '<strong>Eventos:</strong> Establecer hora máxima de música amplificada desde el contrato. No negociar esto el día del evento.' },
+        { icono: '📸', texto: '<strong>Influencers o medios:</strong> Notificar al GM y a Ventas. Documentar acuerdo de contenido si existe.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Cómo comunicar con los socios',
+      items: [
+        { icono: '🔥', texto: '<strong>Queja de huésped grave:</strong> Al Director de Operaciones de forma inmediata — llamada o WhatsApp con detalle.' },
+        { icono: '📊', texto: '<strong>Revisión P&L mensual:</strong> Al Director de Ops + Socio al cierre del mes — reunión formal con análisis preparado.' },
+        { icono: '👤', texto: '<strong>Contratación de líder de área:</strong> Consultar al Director de Operaciones antes de ofertar.' },
+        { icono: '💰', texto: '<strong>Inversión o gasto >$50,000 MXN:</strong> Al Director de Ops + Socio antes de comprometer el gasto — con propuesta escrita y cotización.' }
+      ]
+    },
+    {
+      tipo: 'ordenar',
+      titulo: 'Ordena el proceso de contratación de un nuevo colaborador',
+      instruccion: 'Toca un paso para seleccionarlo, luego toca su posición correcta.',
+      items: [
+        { id: 'c', texto: '✅ Decisión final del GM (y entrevista si es posición de liderazgo)' },
+        { id: 'e', texto: '👕 Entrega de uniforme completo' },
+        { id: 'a', texto: '📋 Identificación de la vacante por el líder del departamento' },
+        { id: 'd', texto: '📂 Alta en IMSS antes de comenzar a trabajar' },
+        { id: 'b', texto: '🔍 El líder filtra CVs y hace primera entrevista' }
+      ],
+      ordenCorrecto: ['a','b','c','d','e']
+    }
+  ],
+  preguntas: [
+    {
+      tipo: 'vf',
+      pregunta: 'El GM solo necesita entrevistar candidatos para posiciones de liderazgo, no para puestos operativos.',
+      correcta: false,
+      justificacion: 'El GM tiene la decisión final en TODAS las contrataciones, incluyendo las operativas. Entrevista directamente a candidatos para posiciones de líder o supervisión.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: 'Un colaborador llega tarde 4 veces en un período. ¿Qué porcentaje de su propina se descuenta?',
+      opciones: ['10%','25%','50%','70%'],
+      correcta: 3
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'Un huésped VIP con alergia al gluten llega mañana. ¿Qué debes hacer hoy?',
+      opciones: [
+        'Notificarlo en la junta de líderes del miércoles próximo.',
+        'Comunicarlo a Cocina con al menos 24 horas de anticipación.',
+        'Dejar que Recepción lo maneje al momento del check-in.',
+        'Poner una nota en el expediente de Cloudbeds y esperar.'
+      ],
+      correcta: 1,
+      explicacion: 'Las restricciones alimentarias de VIPs deben comunicarse a Cocina con mínimo 24 horas de anticipación para garantizar la experiencia del huésped.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: '¿Cuál es el porcentaje máximo de reembolso para cancelaciones no reembolsables cuando el huésped rechaza el crédito de estadía?',
+      opciones: ['15%','25%','35%','50%'],
+      correcta: 2
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'Un líder de departamento quiere contratar a alguien de confianza sin pasar por el proceso formal. ¿Cuál es la postura correcta del GM?',
+      opciones: [
+        'Lo permite si el líder tiene buen historial de juicio.',
+        'Pide que se haga la contratación rápido para no perder al candidato.',
+        'Insiste en el proceso formal completo incluyendo documentos y alta en IMSS antes de comenzar.',
+        'Deja que el líder decida — es su departamento.'
+      ],
+      correcta: 2,
+      explicacion: 'El proceso formal es innegociable. El alta en IMSS antes de comenzar a trabajar es obligatoria, sin excepción, independientemente de quién sea el candidato.'
+    }
+  ]
+};
+renderModulo(MODULO);
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP GG 3 · Ritmo Operativo · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">SOP Gerencia General · 3 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+const MODULO = {
+  key: 'sop_gg_3', numero: 3, icono: '📅', titulo: 'Ritmo Operativo',
+  color: '#88285C', siguiente: 'index.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'Ritmo Operativo',
+      texto: 'Uno de los activos más valiosos de un GM experimentado es su ritmo: el conjunto de rutinas, reuniones y hábitos que garantizan que nada importante se caiga.',
+      imagen: '📅'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Rutina diaria del GM',
+      items: [
+        { icono: '🚶', texto: '<strong>Al llegar:</strong> Recorrido rápido — lobby, restaurante, alberca, habitaciones en limpieza. Ver y ser visto.' },
+        { icono: '📊', texto: '<strong>Briefing matutino:</strong> Revisar Cloudbeds — llegadas del día, salidas, in-house, ocupación, VIPs.' },
+        { icono: '📋', texto: '<strong>Revisión de incidencias:</strong> Preguntar a la Lead de Recepción qué pasó, qué se resolvió, qué está pendiente. Nunca asumir que "todo está bien".' },
+        { icono: '💬', texto: '<strong>Conversación con huéspedes:</strong> En temporada alta, caminar por áreas comunes. Es la retroalimentación más honesta.' },
+        { icono: '📝', texto: '<strong>Al salir:</strong> Dejar instrucciones claras para el turno siguiente. Documentar temas críticos.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Calendario semanal fijo',
+      items: [
+        { icono: '🔵', texto: '<strong>Lunes — Revenue Management:</strong> Con proveedor externo (HelpDesk). Tarifas, canales, pick-up de la semana.' },
+        { icono: '⚪', texto: '<strong>Martes — Operación:</strong> Sin reunión fija. Día ideal para avanzar pendientes administrativos.' },
+        { icono: '🔴', texto: '<strong>Miércoles — Junta de Líderes 1:00 PM (INAMOVIBLE):</strong> Todos los líderes presentes. Semana anterior, VIPs, punch lists, novedades. NUNCA cancelar.' },
+        { icono: '⚪', texto: '<strong>Jueves — Operación:</strong> Revisión de nómina, compras, reportes de Poster.' },
+        { icono: '🟡', texto: '<strong>Viernes — Reunión de Ventas:</strong> Con Coordinador de Ventas. Leads activos, propuestas, eventos futuros.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Ciclo mensual',
+      items: [
+        { icono: '👤', texto: '<strong>Sesiones 1:1 con líderes</strong> — A inicio de cada mes. Revisar: pendientes, puntos de presión, estado emocional del líder.' },
+        { icono: '💰', texto: '<strong>Revisión del P&L</strong> — Al cierre de cada mes. Análisis con contabilidad y socios.' },
+        { icono: '📦', texto: '<strong>Revisión de inventarios</strong> — Coordinada con Compras. Verificar niveles críticos y ajustar órdenes.' },
+        { icono: '📅', texto: '<strong>Incidencias al checador</strong> — Los días 12 y 27 de cada mes para el cálculo de nómina.' },
+        { icono: '🔄', texto: '<strong>Evaluación de proveedores</strong> — Al menos trimestralmente. ¿Siguen siendo la mejor opción?' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Temporada alta vs. temporada baja',
+      items: [
+        { icono: '🔥', texto: '<strong>Temporada alta (noviembre–abril):</strong> La semana del GM es intensa. La presencia física es crítica. Poco tiempo para proyectos.' },
+        { icono: '🌿', texto: '<strong>Temporada baja (mayo–octubre):</strong> Tiempo para reparar infraestructura, desarrollar estrategias, capacitar al equipo y resolver temas pendientes.' },
+        { icono: '⚡', texto: 'El GM debe usar la temporada baja estratégicamente — <strong>no es un período de descanso sino de trabajo diferente</strong>.' }
+      ]
+    },
+    {
+      tipo: 'ordenar',
+      titulo: 'Ordena la rutina diaria del GM al llegar al hotel',
+      instruccion: 'Toca un paso para seleccionarlo, luego toca su posición correcta.',
+      items: [
+        { id: 'b', texto: '📊 Briefing matutino — revisar Cloudbeds' },
+        { id: 'a', texto: '🚶 Recorrido rápido de áreas principales' },
+        { id: 'd', texto: '💬 Conversación con huéspedes en áreas comunes' },
+        { id: 'c', texto: '📋 Revisión de incidencias con Lead de Recepción' }
+      ],
+      ordenCorrecto: ['a','b','c','d']
+    }
+  ],
+  preguntas: [
+    {
+      tipo: 'mc',
+      pregunta: '¿Qué reunión es INAMOVIBLE y nunca debe cancelarse?',
+      opciones: [
+        'Reunión de Revenue Management los lunes',
+        'Junta de Líderes los miércoles a la 1:00 PM',
+        'Reunión de Ventas los viernes',
+        'Sesiones 1:1 con líderes a inicio de mes'
+      ],
+      correcta: 1
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'La temporada baja (mayo–octubre) es un período de descanso para el GM.',
+      correcta: false,
+      justificacion: 'La temporada baja es tiempo para reparar infraestructura, capacitar al equipo y desarrollar estrategias. Es trabajo diferente, no descanso.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: '¿En qué días del mes se envían las incidencias al sistema de checador para nómina?',
+      opciones: ['1 y 15','5 y 20','12 y 27','15 y 30'],
+      correcta: 2
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'Es miércoles y el Dir. de A&B propone cancelar la Junta de Líderes porque hay mucha ocupación. ¿Qué decides?',
+      opciones: [
+        'Cancelo la junta — la operación es primero.',
+        'La postpongo para el jueves.',
+        'La mantengo — es inamovible. La operación se cubre con el equipo mientras dura la reunión.',
+        'La hago virtual para que el equipo no abandone sus puestos.'
+      ],
+      correcta: 2,
+      explicacion: 'La Junta de Líderes del miércoles es inamovible. Cancelarla repetidamente genera desinformación y pérdida de ritmo operativo.'
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'Las sesiones 1:1 mensuales con líderes son principalmente para revisar números y reportes de desempeño.',
+      correcta: false,
+      justificacion: 'Son conversaciones francas que incluyen pendientes, puntos de presión, áreas de oportunidad y especialmente el estado emocional del líder. Son la herramienta más importante para detectar problemas antes de que exploten.'
+    }
+  ]
+};
+renderModulo(MODULO);
+</script>
+</body>
+</html>

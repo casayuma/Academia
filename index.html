@@ -710,6 +710,25 @@ const MODS = [
 ];
 const MINFO = [{key:'m1',n:'Historia'},{key:'m2',n:'La Marea'},{key:'m3',n:'Código YUMA'},{key:'m4',n:'Espacios'},{key:'m5',n:'Conducta'},{key:'m6',n:'Protocolo'}];
 
+// ── SOP modules by role ──
+const MODS_SOP_GG = [
+  {key:'sop_gg_1',icon:'🧭',bg:'#f5e0ec',title:'Rol y Filosofía del GM',           desc:'Principios, responsabilidades y cadena de mando',    file:'sop-gg-1.html'},
+  {key:'sop_gg_2',icon:'🏨',bg:'#f5e0ec',title:'La Propiedad y los Departamentos', desc:'Áreas, vecinos críticos y puntos clave por depto',   file:'sop-gg-2.html'},
+  {key:'sop_gg_3',icon:'📅',bg:'#f5e0ec',title:'Ritmo Operativo',                  desc:'Rutina diaria, reuniones semanales y ciclo mensual', file:'sop-gg-3.html'},
+  {key:'sop_gg_4',icon:'💻',bg:'#f5e0ec',title:'Sistemas y Herramientas',          desc:'Cloudbeds, Poster, Whistle y dashboards',            file:'sop-gg-4.html'},
+  {key:'sop_gg_5',icon:'💰',bg:'#f5e0ec',title:'Finanzas y KPIs',                  desc:'P&L, umbrales de alerta y reportes a socios',        file:'sop-gg-5.html'},
+  {key:'sop_gg_6',icon:'👥',bg:'#f5e0ec',title:'Gestión de Personas y Protocolos', desc:'Contratación, propinas, quejas y VIPs',              file:'sop-gg-6.html'},
+];
+
+// Colaboradores con acceso a SOP GG (Gerencia General)
+const CLAVES_GG = ['CY001','CY064'];
+
+function getSOPsForUser(claveEmpleado) {
+  const clave = claveEmpleado?.toUpperCase();
+  if (CLAVES_GG.includes(clave)) return MODS_SOP_GG;
+  return []; // más SOPs se agregan aquí cuando estén listos
+}
+
 // ── Helpers ──
 const $ = id => document.getElementById(id);
 const empId = (n,num) => `emp_${num}_${n.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'')}`;
@@ -870,6 +889,12 @@ window.initHub = async () => {
   if (!id) return;
   $('hubName').textContent = nombre;
   $('hubDepto').textContent = depto;
+
+  // Get employee number from session id (emp_CY001_nombre...)
+  const claveMatch = id.match(/emp_(CY\d+[a-z]*)/i);
+  const claveEmpleado = claveMatch ? claveMatch[1].toUpperCase() : '';
+  const sopMods = getSOPsForUser(claveEmpleado);
+
   let data=null;
   try { const s=await getDoc(doc(db,'academia_colaboradores',id)); data=s.exists()?s.data():null; } catch(e){}
   const mods=data?.modulos||{}, ef=data?.evaluacion_final||{}, pct=data?.porcentaje_completado||0, pts=data?.puntaje_total||0;
@@ -884,7 +909,15 @@ window.initHub = async () => {
     $('sFinal').textContent=ef.completado?ef.porcentaje+'%':'—';
     $('sTotal').textContent=pts>0?pts+'%':'—';
   }
+
   const list=$('modList'); list.innerHTML='';
+
+  // ── Inducción general ──
+  const secInduccion = document.createElement('div');
+  secInduccion.className='hub-section';
+  secInduccion.textContent='Inducción general';
+  list.appendChild(secInduccion);
+
   MODS.forEach((m,i)=>{
     const md=mods[m.key], d2=md?.completado, unlocked=i===0||mods[MODS[i-1].key]?.completado;
     const card=document.createElement('div');
@@ -893,6 +926,34 @@ window.initHub = async () => {
     if (unlocked && !d2) card.onclick=()=>abrirModulo(m);
     list.appendChild(card);
   });
+
+  // ── SOP departamental (si aplica) ──
+  if (sopMods.length > 0) {
+    const allInduccionDone = MODS.every(m=>mods[m.key]?.completado);
+    const secSOP = document.createElement('div');
+    secSOP.className='hub-section';
+    secSOP.style.marginTop='28px';
+    secSOP.textContent='SOP — Gerencia General';
+    list.appendChild(secSOP);
+
+    if (!allInduccionDone) {
+      const aviso = document.createElement('div');
+      aviso.style.cssText='background:#faf6dc;border-radius:10px;padding:14px 18px;font-size:13px;color:#7a6e1a;margin-bottom:10px;';
+      aviso.textContent='🔒 Completa primero todos los módulos de inducción general para desbloquear los SOPs.';
+      list.appendChild(aviso);
+    }
+
+    sopMods.forEach((m,i)=>{
+      const md=mods[m.key], d2=md?.completado;
+      const unlocked = allInduccionDone && (i===0 || mods[sopMods[i-1].key]?.completado);
+      const card=document.createElement('div');
+      card.className=`mod-card${d2?' done':''}${!unlocked?' locked':''}`;
+      card.innerHTML=`<div class="mod-icon" style="background:${m.bg}">${m.icon}</div><div class="mod-info"><div class="mod-num">SOP ${i+1} de ${sopMods.length}</div><div class="mod-title">${m.title}</div><div class="mod-desc">${m.desc}</div></div><div class="${d2?'mod-score done':'mod-score'}">${d2?md.porcentaje+'%':unlocked?'→':'🔒'}</div>`;
+      if (unlocked && !d2) card.onclick=()=>abrirModulo(m);
+      list.appendChild(card);
+    });
+  }
+
   const allDone=MODS.every(m=>mods[m.key]?.completado);
   if (allDone){$('finalCard').classList.remove('locked');$('lockMsg').style.display='none';}
   if (ef.completado) $('fScore').textContent=ef.porcentaje+'%';

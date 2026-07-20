@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP GG 1 · Rol y Filosofía · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">SOP Gerencia General · 1 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+const MODULO = {
+  key: 'sop_gg_1', numero: 1, icono: '🧭', titulo: 'Rol y Filosofía del GM',
+  color: '#88285C', siguiente: 'index.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'Gerencia General',
+      texto: 'Este SOP documenta lo que no está escrito en ningún otro lado: las decisiones de juicio, las relaciones que importan y el conocimiento tácito que normalmente se pierde en una transición.',
+      imagen: '🧭'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'El rol del Gerente General',
+      items: [
+        { icono: '⚖️', texto: 'El GM opera como <strong>punto de convergencia entre cuatro fuerzas</strong>: los huéspedes, el equipo, los socios y el mercado.' },
+        { icono: '🎯', texto: 'Su efectividad se mide por la capacidad de <strong>mantener estas cuatro fuerzas en equilibrio sostenible</strong> — no solo por ocupación o GOP.' },
+        { icono: '🔑', texto: '<strong>Toma decisiones operativas</strong> sin escalar. Escala solo lo financiero-estratégico al Director de Operaciones.' },
+        { icono: '👁️', texto: 'Es visible en el hotel durante horas pico. <strong>La gerencia de escritorio no funciona</strong> en un boutique de 25 habitaciones.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Responsabilidades clave',
+      items: [
+        { icono: '🏨', texto: '<strong>Primer responsable</strong> de la experiencia del huésped.' },
+        { icono: '👥', texto: 'Supervisa directamente a los <strong>líderes de cada departamento</strong>.' },
+        { icono: '💰', texto: 'Traduce los <strong>objetivos financieros en acciones operativas</strong>.' },
+        { icono: '🤝', texto: 'Mantiene <strong>comunicación activa con los socios</strong> — proactiva, no reactiva.' },
+        { icono: '⚖️', texto: 'Garantiza el <strong>cumplimiento legal y laboral</strong> del hotel.' },
+        { icono: '🌐', texto: 'Representa al hotel ante <strong>vecinos, proveedores y autoridades</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Principio 1: Presencia primero',
+      items: [
+        { icono: '🚶', texto: 'El GM debe estar en el hotel, <strong>recorriendo áreas</strong>, hablando con huéspedes y con su equipo.' },
+        { icono: '⏰', texto: 'Al llegar: recorrido rápido de áreas principales — <strong>lobby, restaurante, alberca, habitaciones en limpieza</strong>.' },
+        { icono: '💬', texto: 'En temporada alta: dedicar tiempo a caminar por áreas comunes. Es la <strong>fuente de retroalimentación más honesta y rápida</strong>.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Principio 2: Resolver antes de reportar',
+      items: [
+        { icono: '🛠️', texto: 'Cuando algo sale mal, la prioridad es <strong>resolver el problema y luego informar</strong>.' },
+        { icono: '🚫', texto: '<strong>No se escala un problema sin haber intentado una solución</strong>.' },
+        { icono: '📢', texto: 'Las malas noticias se comunican antes de que los socios las descubran solos. <strong>Siempre.</strong>' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Principio 3: El equipo es el producto',
+      items: [
+        { icono: '❤️', texto: 'Un equipo bien atendido, pagado con equidad y <strong>reconocido en sus aportes produce huéspedes felices</strong>.' },
+        { icono: '📊', texto: 'Las métricas de satisfacción del equipo y la rotación son <strong>indicadores tan importantes como el ADR</strong>.' },
+        { icono: '🗣️', texto: 'Reconocer el trabajo bien hecho <strong>públicamente</strong>. La puerta del GM siempre está abierta.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Principios 4, 5 y 6',
+      items: [
+        { icono: '💡', texto: '<strong>Ningún proveedor es intocable:</strong> todo proveedor debe ser evaluado periódicamente en precio, calidad y tiempo de entrega.' },
+        { icono: '🗨️', texto: '<strong>Comunicación directa y sin triangulación:</strong> los problemas se hablan directamente con quien corresponde.' },
+        { icono: '⛓️', texto: '<strong>Cadena de mando sin excepción:</strong> decisiones operativas las toma el GM. Las financieras importantes involucran al Director de Operaciones y/o socios.' }
+      ]
+    },
+    {
+      tipo: 'cita',
+      texto: '"Tienes en tus manos un hotel que funciona, un equipo que conoce su trabajo y socios que quieren que esto salga bien. Los primeros 30 días: observa más que cambias."'
+    },
+    {
+      tipo: 'relacionar',
+      titulo: 'Relaciona el principio con su descripción',
+      instruccion: 'Toca un principio de la izquierda, luego toca su descripción correcta en la derecha.',
+      columnaA: ['Presencia primero','Resolver antes de reportar','El equipo es el producto','Comunicación directa'],
+      columnaB: [
+        'Los problemas se hablan directamente — la triangulación crea malentendidos',
+        'Estar en el hotel, recorriendo áreas, hablando con huéspedes y equipo',
+        'Un equipo bien atendido produce huéspedes felices',
+        'La prioridad es resolver el problema y luego informar'
+      ],
+      pares: [1,3,2,0]
+    }
+  ],
+  preguntas: [
+    {
+      tipo: 'mc',
+      pregunta: '¿Cuáles son las cuatro fuerzas que el GM debe mantener en equilibrio?',
+      opciones: [
+        'Finanzas, operación, marketing y ventas',
+        'Huéspedes, equipo, socios y mercado',
+        'Recepción, cocina, mantenimiento y ama de llaves',
+        'Calidad, precio, servicio y experiencia'
+      ],
+      correcta: 1
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'Cuando surge un problema operativo, el GM debe escalarlo de inmediato a los socios antes de intentar resolverlo.',
+      correcta: false,
+      justificacion: 'El principio es "resolver antes de reportar". No se escala un problema sin haber intentado una solución primero.'
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'Un mesero reporta que la máquina de hielo no funciona a las 7am, antes del desayuno. ¿Cuál es tu primera acción como GM?',
+      opciones: [
+        'Notificar a los socios inmediatamente.',
+        'Avisar al equipo de cocina y buscar solución de emergencia (hielo externo) mientras Mantenimiento lo revisa.',
+        'Esperar a que Mantenimiento lo resuelva sin intervenir.',
+        'Cancelar el servicio de desayuno hasta resolver el problema.'
+      ],
+      correcta: 1,
+      explicacion: 'Resolver antes de reportar. La prioridad es garantizar el servicio al huésped mientras se repara el equipo.'
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'El GM puede tomar decisiones de inversión mayores a $50,000 MXN sin consultar al Director de Operaciones.',
+      correcta: false,
+      justificacion: 'Las decisiones financieras importantes (inversiones >$50,000 MXN) requieren involucrar al Director de Operaciones y/o socios antes de comprometer el gasto.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: '¿Cuál es la estrategia recomendada para los primeros 30 días del nuevo GM?',
+      opciones: [
+        'Implementar cambios inmediatos para demostrar liderazgo.',
+        'Reunirse con todos los proveedores para renegociar contratos.',
+        'Observar más que cambiar: entender por qué las cosas funcionan como funcionan.',
+        'Reorganizar los departamentos según su criterio.'
+      ],
+      correcta: 2
+    }
+  ]
+};
+renderModulo(MODULO);
+</script>
+</body>
+</html>

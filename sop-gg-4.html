@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP GG 4 · Sistemas y Herramientas · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">SOP Gerencia General · 4 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+const MODULO = {
+  key: 'sop_gg_4', numero: 4, icono: '💻', titulo: 'Sistemas y Herramientas',
+  color: '#88285C', siguiente: 'index.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'Sistemas y herramientas',
+      texto: 'Casa Yuma opera con un stack tecnológico deliberadamente simple: herramientas estables, en la nube, accesibles para todo el equipo.',
+      imagen: '💻'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Cloudbeds — PMS (Sistema central)',
+      items: [
+        { icono: '🏨', texto: 'Gestiona <strong>reservas, check-in/out, inventario de habitaciones, tarifas y facturación</strong>.' },
+        { icono: '📊', texto: '<strong>Reportes diarios obligatorios:</strong> In-House Guests, Arrivals Overview, Check-out Review.' },
+        { icono: '📈', texto: '<strong>Reportes semanales:</strong> Occupancy History and Forecast.' },
+        { icono: '🎓', texto: '<strong>Cloudbeds University:</strong> Capacitación oficial obligatoria para todo el equipo de Recepción.' },
+        { icono: '🔑', texto: 'El acceso se gestiona por roles — cada usuario tiene permisos específicos.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Poster, Whistle y otros sistemas',
+      items: [
+        { icono: '🍽️', texto: '<strong>Poster (POS):</strong> Punto de venta del restaurante y bar. Genera reportes de ventas por producto, mesero, turno y período.' },
+        { icono: '💬', texto: '<strong>Whistle:</strong> Centraliza mensajes de OTAs (Booking, Expedia). Acceso principal: Lead de Recepción. GM debe tener acceso secundario.' },
+        { icono: '📊', texto: '<strong>Dashboard Staff:</strong> casayuma.github.io/Dashboard — status habitaciones, llegadas, salidas, ocupación.' },
+        { icono: '📋', texto: '<strong>Weekly Report:</strong> casayuma.github.io/Weekly-Report/ — reporte automático para socios. Actualización automática.' },
+        { icono: '📱', texto: '<strong>WhatsApp Business:</strong> Canal oficial interno. El grupo de Líderes es el canal para comunicaciones urgentes.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: '¿Qué revisar y cuándo?',
+      items: [
+        { icono: '⏰', texto: '<strong>Diario:</strong> Cloudbeds (In-House + Arrivals) · Whistle (mensajes pendientes) · Dashboard de Staff.' },
+        { icono: '📅', texto: '<strong>Diario en temp. alta:</strong> Poster — ventas del día anterior. Revisar con Dir. de A&B.' },
+        { icono: '📆', texto: '<strong>Semanal:</strong> P&L y Weekly Report (viernes o lunes). Base para reunión de Revenue.' },
+        { icono: '🗓️', texto: '<strong>Mensual:</strong> Inventarios por departamento (con Compras) · P&L completo con socios al cierre.' }
+      ]
+    },
+    {
+      tipo: 'relacionar',
+      titulo: 'Relaciona el sistema con su función principal',
+      instruccion: 'Toca el sistema, luego toca la función correcta.',
+      columnaA: ['Cloudbeds','Poster','Whistle','Dashboard Staff'],
+      columnaB: [
+        'Centraliza mensajes de OTAs — Booking, Expedia, Airbnb',
+        'Status de habitaciones, llegadas y salidas en tiempo real',
+        'PMS — reservas, check-in/out, inventario de habitaciones',
+        'Punto de venta — ventas de restaurante y bar por turno'
+      ],
+      pares: [2,3,0,1]
+    }
+  ],
+  preguntas: [
+    {
+      tipo: 'mc',
+      pregunta: '¿Cuál es el sistema central del hotel que gestiona reservas y check-in/out?',
+      opciones: ['Poster','Whistle','Cloudbeds','Google Sheets'],
+      correcta: 2
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'El GM no necesita acceso a Whistle — eso es responsabilidad exclusiva de la Lead de Recepción.',
+      correcta: false,
+      justificacion: 'El GM debe tener acceso secundario a Whistle para emergencias, aunque el acceso principal sea de la Lead de Recepción.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: '¿Con qué frecuencia debe revisar el GM el reporte de In-House Guests en Cloudbeds?',
+      opciones: ['Semanalmente','Mensualmente','Diariamente al llegar al hotel','Solo en temporada alta'],
+      correcta: 2
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'Un socio te pregunta cómo estuvo la ocupación de la semana pasada a las 9pm. ¿Cuál es el recurso más rápido para responder?',
+      opciones: [
+        'Pido el reporte a Recepción y lo envío mañana.',
+        'Accedo al Weekly Report en casayuma.github.io/Weekly-Report/ — está disponible en tiempo real.',
+        'Genero un reporte desde Cloudbeds y lo envío por correo.',
+        'Reviso el grupo de WhatsApp de líderes.'
+      ],
+      correcta: 1,
+      explicacion: 'El Weekly Report está disponible en tiempo real para los socios. Están diseñados para consultarlo sin necesidad de pedírselo al GM.'
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'Cloudbeds University es capacitación opcional para el equipo de Recepción.',
+      correcta: false,
+      justificacion: 'Cloudbeds University es capacitación oficial OBLIGATORIA para todo el equipo de Recepción.'
+    }
+  ]
+};
+renderModulo(MODULO);
+</script>
+</body>
+</html>

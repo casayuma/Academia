@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP GG 2 · La Propiedad y Departamentos · Academia Casa Yuma</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modulo.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="index.html" class="logo">← Mis módulos</a>
+  <span class="subtitle">SOP Gerencia General · 2 de 6</span>
+</nav>
+<div id="app"></div>
+<script type="module">
+import { renderModulo } from './modulo.js';
+const MODULO = {
+  key: 'sop_gg_2', numero: 2, icono: '🏨', titulo: 'La Propiedad y los Departamentos',
+  color: '#88285C', siguiente: 'index.html',
+  slides: [
+    {
+      tipo: 'portada',
+      titulo: 'La propiedad y los departamentos',
+      texto: 'Casa Yuma es un hotel boutique de 25 habitaciones en ~5,000 m² con frente al océano Pacífico. La disposición es horizontal — prácticamente todo es accesible a pie.',
+      imagen: '🏨'
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Áreas clave de la propiedad',
+      items: [
+        { icono: '🏢', texto: '<strong>01 Gerencia</strong> — Oficina de administración. Centro de operaciones, llaves maestras y documentación.' },
+        { icono: '🚪', texto: '<strong>02 Lobby</strong> — Primera impresión del hotel. Punto de llegada y salida de huéspedes.' },
+        { icono: '👥', texto: '<strong>03 Staff Room</strong> — Área exclusiva del equipo. Debe mantenerse ordenada como reflejo de la cultura interna.' },
+        { icono: '🛏️', texto: '<strong>04–15 Habitaciones</strong> — 25 habitaciones en bloques: Standard, Garden, Ocean y Rooftop.' },
+        { icono: '🍽️', texto: '<strong>16-17 Mesa del Sol + Bar</strong> — Segundo generador de ingresos. Opera en horario de restaurante y eventos.' },
+        { icono: '🏊', texto: '<strong>21 Alberca</strong> — Activo clave. Mantenimiento de cloro: Mantenimiento. Experiencia: F&B y Recepción.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Vecinos críticos — gestión proactiva',
+      items: [
+        { icono: '⬅️', texto: '<strong>Vecino izquierda — Familia Montero:</strong> Muy reactivo al ruido nocturno. Notificar con mínimo 48 horas antes de eventos con amplificación. Apagar música puntualmente a la hora acordada.' },
+        { icono: '➡️', texto: '<strong>Vecino derecha — Rutilo Montero (tío):</strong> Sensible al acceso de proveedores. Coordinar rutas de carga/descarga para no cruzar su propiedad. Conflictos históricos por paso de proveedores.' },
+        { icono: '💡', texto: '<strong>Regla general:</strong> Cualquier evento con ruido, tráfico de proveedores o actividad inusual en los límites se comunica antes. <strong>La sorpresa genera conflicto; el aviso previo genera tolerancia.</strong>' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Estructura de departamentos',
+      items: [
+        { icono: '📊', texto: '<strong>Administración</strong> — Gerente Administrativo + Coord. Ventas y Eventos. Nómina, administración, ventas grupales, contabilidad externa.' },
+        { icono: '🛒', texto: '<strong>Compras</strong> — Gerente de Compras. Requisiciones, proveedores, caja chica, inventario general, camioneta del hotel.' },
+        { icono: '🍽️', texto: '<strong>F&B</strong> — Dir. A&B + Gerente A&B. Restaurante, bar, room service, minibar, pool concierge, cocina, eventos.' },
+        { icono: '🔧', texto: '<strong>Mantenimiento</strong> — Gerente. Infraestructura, internet, alberca, jardín, seguridad, punch lists.' },
+        { icono: '🛏️', texto: '<strong>Ama de Llaves</strong> — Camaristas, áreas públicas, lavandería, estándares de montaje de habitaciones.' },
+        { icono: '🏪', texto: '<strong>Recepción</strong> — Lead House Manager. Check-in/out, Cloudbeds, OTAs, Whistle, quejas, spa, masajes.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Puntos críticos por departamento (F&B y Compras)',
+      items: [
+        { icono: '💰', texto: '<strong>F&B:</strong> Food cost objetivo 25–30% del revenue de alimentos. Por encima del 35% se revisa de inmediato.' },
+        { icono: '🍺', texto: '<strong>F&B:</strong> La propina es históricamente sensible. El sistema de distribución debe comunicarse con transparencia.' },
+        { icono: '📋', texto: '<strong>Compras:</strong> Mínimo 2 cotizaciones para compras >$2,000 MXN. Para >$10,000 MXN, siempre 3 cotizaciones.' },
+        { icono: '🔑', texto: '<strong>Compras:</strong> La caja chica no es ilimitada. Cada requisición debe tener destino claro y autorización del GM.' }
+      ]
+    },
+    {
+      tipo: 'dato',
+      titulo: 'Puntos críticos por departamento (los demás)',
+      items: [
+        { icono: '⚡', texto: '<strong>Mantenimiento:</strong> Sistema de punch lists. GM revisa estatus semanalmente. Prioridad máxima: agua caliente, internet, A/C, electricidad, alberca.' },
+        { icono: '🛁', texto: '<strong>Ama de Llaves:</strong> El estándar de montaje es no negociable. Existe un cuarto modelo de referencia. Lavandería tercerizada.' },
+        { icono: '💻', texto: '<strong>Recepción:</strong> Cloudbeds University es capacitación obligatoria. Whistle centraliza mensajes de OTAs. GM debe estar siempre informado de quejas aunque ya se hayan resuelto.' },
+        { icono: '📅', texto: '<strong>Administración:</strong> Revenue Management con proveedor externo (HelpDesk): reunión fija los lunes. Ventas: revisión de leads los viernes.' }
+      ]
+    },
+    {
+      tipo: 'ordenar',
+      titulo: 'Ordena el proceso de compras',
+      instruccion: 'Toca un paso para seleccionarlo, luego toca su posición correcta.',
+      items: [
+        { id: 'c', texto: '✅ Aprobación del GM con monto máximo y proveedor' },
+        { id: 'a', texto: '📋 El líder genera la requisición con detalle y urgencia' },
+        { id: 'e', texto: '📂 Documentación pasa a Administración para registro contable' },
+        { id: 'b', texto: '🔍 Compras verifica si existe en almacén' },
+        { id: 'd', texto: '🛒 Compras ejecuta, recaba factura y entrega' }
+      ],
+      ordenCorrecto: ['a','b','c','d','e']
+    }
+  ],
+  preguntas: [
+    {
+      tipo: 'mc',
+      pregunta: '¿Con cuántas horas de anticipación mínimo se debe notificar a los vecinos sobre eventos con amplificación?',
+      opciones: ['12 horas','24 horas','48 horas','72 horas'],
+      correcta: 2
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'El GM puede aprobar compras de $15,000 MXN con una sola cotización si conoce bien al proveedor.',
+      correcta: false,
+      justificacion: 'Para compras superiores a $10,000 MXN se requieren siempre 3 cotizaciones, sin excepción, independientemente de la relación con el proveedor.'
+    },
+    {
+      tipo: 'escenario',
+      pregunta: 'El food cost de F&B llegó al 38% este mes. ¿Qué haces?',
+      opciones: [
+        'Espero a ver si el siguiente mes se normaliza solo.',
+        'Lo reviso de inmediato con el Dir. de A&B — el umbral de alerta es 35%.',
+        'Informo a los socios y espero instrucciones.',
+        'Reduzco el menú sin consultar al equipo de cocina.'
+      ],
+      correcta: 1,
+      explicacion: 'El food cost por encima del 35% es una alerta que se revisa de inmediato con el Director de A&B.'
+    },
+    {
+      tipo: 'mc',
+      pregunta: '¿Qué sistema maneja la comunicación centralizada con huéspedes de OTAs (Booking, Expedia)?',
+      opciones: ['Cloudbeds','Poster','Whistle','WhatsApp Business'],
+      correcta: 2
+    },
+    {
+      tipo: 'vf',
+      pregunta: 'Si un huésped presenta una queja y la Lead de Recepción ya la resolvió, el GM no necesita enterarse.',
+      correcta: false,
+      justificacion: 'El GM siempre debe estar informado de las quejas de huéspedes, aunque ya se hayan resuelto. La Lead de Recepción debe reportarle activamente.'
+    }
+  ]
+};
+renderModulo(MODULO);
+</script>
+</body>
+</html>
